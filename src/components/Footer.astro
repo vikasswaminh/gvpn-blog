@@ -1,0 +1,17 @@
+---
+import { SITE } from '../config';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p>© {year} {SITE.brand}. All rights reserved.</p>
+    <p class="footer-links">
+      <a href={SITE.marketingUrl}>{SITE.marketingLabel}</a>
+      <span aria-hidden="true">·</span>
+      <a href="/rss.xml">RSS</a>
+      <span aria-hidden="true">·</span>
+      <a href="/tags/">Tags</a>
+    </p>
+  </div>
+</footer>

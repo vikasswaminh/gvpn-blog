@@ -1,0 +1,24 @@
+# build output
+dist/
+.output/
+
+# dependencies
+node_modules/
+
+# NEVER commit a lock file to these repos.
+# The deploy runs `npm ci || npm install`; a lock generated off-Linux pins the wrong
+# rollup binary and every CI build dies with "Cannot find module @rollup/rollup-linux-x64-gnu".
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# astro
+.astro/
+
+# env / editor / os
+.env
+.env.*
+!.env.example
+.DS_Store
+.vscode/
+*.log

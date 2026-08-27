@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../config';
+---
+
+<BaseLayout title="About" description={`About the ${SITE.brand} blog.`}>
+  <article class="post">
+    <h1 class="post-title">About</h1>
+    <div class="prose">
+      <p>Welcome to the {SITE.brand} blog — {SITE.description}</p>
+      <p>
+        Looking for the product itself? Head to
+        <a href={SITE.marketingUrl}>{SITE.marketingLabel}</a>.
+      </p>
+    </div>
+  </article>
+</BaseLayout>

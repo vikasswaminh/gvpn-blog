@@ -1,0 +1,15 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  Ownership rules for this blog repo.
+#
+#  Default: @vikasswaminh owns EVERYTHING (build, CI, config, layout, styling).
+#  Any pull request that changes those files needs @vikasswaminh's review to merge.
+#
+#  Exception: the two paths below have NO required owner, so the SEO/content team
+#  can add and edit posts and images freely (their PRs merge without owner review).
+# ─────────────────────────────────────────────────────────────────────────────
+
+*                       @vikasswaminh
+
+# Content the SEO team owns day-to-day (no required review):
+/src/content/blog/
+/public/

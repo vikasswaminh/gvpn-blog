@@ -1,0 +1,73 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import { SITE } from '../config';
+import { readingTime } from '../utils/posts';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+const { post } = Astro.props;
+const { title, description, pubDate, updatedDate, author, tags, cover } = post.data;
+const minutes = readingTime(post.body);
+const canonical = new URL(`/blog/${post.slug}/`, Astro.site).href;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: pubDate.toISOString(),
+  dateModified: (updatedDate ?? pubDate).toISOString(),
+  author: { '@type': 'Organization', name: author ?? SITE.author },
+  publisher: { '@type': 'Organization', name: SITE.brand },
+  mainEntityOfPage: canonical,
+  ...(cover ? { image: new URL(cover, Astro.site).href } : {}),
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  image={cover}
+  article={{
+    publishedTime: pubDate.toISOString(),
+    modifiedTime: (updatedDate ?? pubDate).toISOString(),
+    author: author ?? SITE.author,
+    tags,
+  }}
+>
+  <article class="post">
+    <header class="post-header">
+      <p class="post-eyebrow"><a href="/">← All posts</a></p>
+      <h1 class="post-title">{title}</h1>
+      <p class="post-meta">
+        <FormattedDate date={pubDate} />
+        <span aria-hidden="true">·</span>
+        <span>{minutes} min read</span>
+        {author && <span aria-hidden="true">·</span>}
+        {author && <span>{author}</span>}
+      </p>
+      {
+        tags && tags.length > 0 && (
+          <p class="post-tags">
+            {tags.map((t) => (
+              <a class="tag" href={`/tags/${t}/`}>
+                #{t}
+              </a>
+            ))}
+          </p>
+        )
+      }
+    </header>
+    {cover && <img class="post-cover" src={cover} alt="" loading="lazy" />}
+    <div class="prose">
+      <slot />
+    </div>
+    <footer class="post-footer">
+      <a class="btn" href={SITE.marketingUrl}>Learn more about {SITE.brand} →</a>
+    </footer>
+  </article>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>

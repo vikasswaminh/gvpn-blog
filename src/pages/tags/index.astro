@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublishedPosts } from '../../utils/posts';
+
+const posts = await getPublishedPosts();
+const counts = new Map<string, number>();
+for (const p of posts) for (const t of p.data.tags) counts.set(t, (counts.get(t) ?? 0) + 1);
+const tags = [...counts.entries()].sort((a, b) => b[1] - a[1]);
+---
+
+<BaseLayout title="Tags" description="Browse posts by topic.">
+  <h1 class="page-title">Tags</h1>
+  {tags.length === 0 && <p class="empty">No tags yet.</p>}
+  <div class="tag-cloud">
+    {
+      tags.map(([t, n]) => (
+        <a class="tag tag-lg" href={`/tags/${t}/`}>
+          #{t} <span class="tag-count">{n}</span>
+        </a>
+      ))
+    }
+  </div>
+</BaseLayout>

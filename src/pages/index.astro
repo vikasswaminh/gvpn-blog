@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import { SITE } from '../config';
+import { getPublishedPosts, readingTime } from '../utils/posts';
+
+const posts = await getPublishedPosts();
+const featured = posts[0];
+const rest = posts.slice(1);
+---
+
+<BaseLayout>
+  <section class="hero">
+    <h1 class="hero-title">{SITE.brand} <span>Blog</span></h1>
+    <p class="hero-tagline">{SITE.description}</p>
+  </section>
+
+  {posts.length === 0 && <p class="empty">No posts yet — check back soon.</p>}
+
+  {
+    featured && (
+      <a class="featured" href={`/blog/${featured.slug}/`}>
+        <span class="featured-label">Latest</span>
+        <h2 class="featured-title">{featured.data.title}</h2>
+        <p class="featured-desc">{featured.data.description}</p>
+        <span class="featured-more">Read article →</span>
+      </a>
+    )
+  }
+
+  {
+    rest.length > 0 && (
+      <div class="post-list">
+        {rest.map((p) => (
+          <PostCard
+            url={`/blog/${p.slug}/`}
+            title={p.data.title}
+            description={p.data.description}
+            pubDate={p.data.pubDate}
+            tags={p.data.tags}
+            minutes={readingTime(p.body)}
+          />
+        ))}
+      </div>
+    )
+  }
+</BaseLayout>
