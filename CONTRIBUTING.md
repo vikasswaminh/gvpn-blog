@@ -1,25 +1,27 @@
 # Writing for this blog
 
-This repo powers **`blogs.<project>.com`**. When a post is merged to `main`, it builds and goes
-live automatically in about a minute. You do **not** need to touch any code or run anything.
+When you commit a post to the `main` branch, it builds and goes **live automatically in about a minute**.
+You don't need to run anything, and you don't need to open a pull request — just commit straight to `main`.
 
 ## What you can edit
 
 ✅ **Add or edit posts** in `src/content/blog/` — one Markdown (`.md`) file per post.
 ✅ **Add images** in `public/` and reference them as `/my-image.png`.
 
-That's it. Everything else (layout, styling, build, deploy config) is locked and maintained by
-NH Ops — a pull request that touches those files needs owner review before it can merge. This is
-by design, so a typo in a config file can never take the site down.
+Please leave everything else alone (layout, styling, build, deploy config) — changing those files can break
+the site build. If something you need is in one of those files, ping NH Ops.
 
-## Add a new post (easiest — right in GitHub)
+## Add a new post (right in GitHub — the easy way)
 
-1. Go to the **`src/content/blog/`** folder in this repo.
+1. Open the **`src/content/blog/`** folder in this repo.
 2. Click **Add file → Create new file**.
-3. Name it with lowercase words and dashes, ending in `.md` — e.g. `best-vpn-for-android.md`.
-   **This filename becomes the URL:** `/blog/best-vpn-for-android/`.
-4. Paste the template below, edit it, then **Commit** → **Create a pull request**.
-5. Because you're only adding a post, you can **merge your own PR** immediately. Done — it deploys.
+3. Name it lowercase-with-dashes, ending in `.md` — e.g. `best-vpn-for-android.md`.
+   **The filename becomes the URL:** `/blog/best-vpn-for-android/`.
+4. Paste the template below and write your post.
+5. Scroll down, keep **“Commit directly to the `main` branch”** selected, and click **Commit changes**.
+
+Done — your post is live in ~1 minute. Editing an existing post is the same: open the `.md` file, click the
+pencil ✏️, make changes, and **Commit changes** to `main`.
 
 ## Post template
 
@@ -52,11 +54,14 @@ Add a link like [this](https://example.com), or an image: `![alt text](/my-image
 | `author`      | no       | Defaults to the site author.                                 |
 | `tags`        | no       | A list, e.g. `['guides', 'privacy']`. Creates tag pages.     |
 | `cover`       | no       | Path to a header image in `public/`, e.g. `/covers/foo.png`. |
-| `draft`       | no       | `true` hides the post from the live site (preview only).     |
+| `draft`       | no       | `true` hides the post from the live site while you write.    |
 
 ## Tips
 
 - Keep the filename lowercase-with-dashes — it's the permanent URL, so don't rename it later.
-- Quote the `title` and `description` values, especially if they contain a `:` or `'`.
+- Quote the `title` and `description` values, especially if they contain a `:` or an apostrophe.
 - Set `draft: true` while you're still writing; remove it (or set `false`) to publish.
-- Questions or something you can't edit? Ping NH Ops.
+- After you commit, watch the **Actions** tab — a green check means it deployed. A red X means a typo broke
+  the build (usually the frontmatter); fix it and commit again. The live site keeps the last good version
+  until the build passes, so a mistake never takes the blog down.
+- Questions, or need something outside `src/content/blog/`? Ping NH Ops.
