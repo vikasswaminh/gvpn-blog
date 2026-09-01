@@ -72,7 +72,7 @@ const rightSidebarPosts = rightSidebarSlugs.map(getPost).filter(Boolean);
         {featured && (
           <a href={`/blog/${featured.slug}/`} class="mag-featured hover-card" data-tilt>
             <div class="feat-img">
-              {featured.data.cover && <img src={featured.data.cover} alt="" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;" />}
+              {featured.data.cover && <img src={featured.data.cover} alt={featured.data.title} style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;" />}
               <div class="mesh-bg" style="opacity: 0.2;"></div>
             </div>
             <div class="feat-content">
