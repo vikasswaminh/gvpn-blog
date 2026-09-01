@@ -5,13 +5,54 @@ const year = new Date().getFullYear();
 
 <footer class="site-footer">
   <div class="wrap footer-inner">
-    <p>© {year} {SITE.brand}. All rights reserved.</p>
-    <p class="footer-links">
-      <a href={SITE.marketingUrl}>{SITE.marketingLabel}</a>
-      <span aria-hidden="true">·</span>
-      <a href="/rss.xml">RSS</a>
-      <span aria-hidden="true">·</span>
-      <a href="/tags/">Tags</a>
-    </p>
+    <div class="footer-top">
+      <div class="footer-brand-col">
+        <a class="brand" href="/">
+          <span class="brand-mark" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"> <circle cx="12" cy="6" r="2"></circle><circle cx="6" cy="14" r="2"></circle><circle cx="18" cy="14" r="2"></circle><circle cx="12" cy="20" r="1.5"></circle> <path d="M12 8 L6 14 M12 8 L18 14 M6 14 L12 20 M18 14 L12 20 M6 14 L18 14"></path> </svg>
+          </span>
+          <span class="brand-name">{SITE.brand}</span>
+        </a>
+        <p class="footer-desc">
+          Hosted WireGuard mesh + zero-trust access. Strict per-org isolation, fast-acting policies, works with the routers you already own.
+        </p>
+      </div>
+      
+      <div class="footer-links-grid">
+        <div class="footer-col">
+          <h4 class="footer-col-title">PRODUCT</h4>
+          <a href="#">Quickstart</a>
+          <a href="#">Docs</a>
+          <a href="#">Pricing</a>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-col-title">ACCOUNT</h4>
+          <a href="#">Sign in ↗</a>
+          <a href="#">Sign up free ↗</a>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-col-title">CONTACT</h4>
+          <a href="#">Contact us</a>
+          <a href="#">Talk to us (Pro)</a>
+          <a href="mailto:hello@meshwg.com">hello@meshwg.com</a>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-col-title">COMPANY</h4>
+          <a href="#">Careers</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="fb-left">
+        © {year} {SITE.brand}. All rights reserved.
+      </div>
+      <div class="fb-center">
+        <a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Refund & Cancellation</a> · <a href="#">Security</a>
+      </div>
+      <div class="fb-right">
+        WireGuard is a registered trademark of Jason A. Donenfeld.
+      </div>
+    </div>
   </div>
 </footer>
