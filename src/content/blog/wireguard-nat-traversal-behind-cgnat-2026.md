@@ -37,10 +37,10 @@ seoKeywords: ["wireguard nat traversal","cgnat wireguard","vpn behind cgnat","po
   </p>
 </div>
 
-<h2>1. Problem Statement: The Stateful Firewall & CGNAT Barrier</h2>
+<h2>Problem Statement: The Stateful Firewall & CGNAT Barrier</h2>
 <p>To understand why NAT traversal is critical for modern private networks, engineers must evaluate how stateful firewalls and NAT middleboxes process connection traffic.</p>
 
-<h3>1.1 Stateful Firewall Filtering Logic</h3>
+<h3>Stateful Firewall Filtering Logic</h3>
 <p>A stateful firewall monitors the state of active network connections traversing its interfaces. Unlike TCP—which uses explicit SYN, ACK, and FIN control flags to establish and close connections—UDP is a connectionless protocol.</p>
 <p>To manage UDP traffic, a stateful firewall creates a temporary translation mapping in its internal State Table whenever an internal host transmits an outbound UDP packet:</p>
 <p><em>Internal Host (192.168.1.50:51820) sending to External Destination (203.0.113.10:51820).</em></p>
@@ -48,7 +48,7 @@ seoKeywords: ["wireguard nat traversal","cgnat wireguard","vpn behind cgnat","po
 <p>While this state table entry remains active, inbound UDP packets originating from 203.0.113.10:51820 directed to 198.51.100.2:61005 are permitted through the firewall and forwarded back to 192.168.1.50:51820.</p>
 <p>However, if no traffic traverses this socket within the firewall's UDP idle timeout period (which ranges from 20 seconds on mobile networks to 300 seconds on enterprise firewalls), the firewall purges the state table entry. Any subsequent inbound packet from the remote peer is dropped at the external boundary.</p>
 
-<h3>1.2 Carrier-Grade NAT (CGNAT / RFC 6598)</h3>
+<h3>Carrier-Grade NAT (CGNAT / RFC 6598)</h3>
 <p>Under CGNAT, local customer premises equipment (CPE) routers do not receive a unique public IPv4 address from their provider. Instead, the ISP assigns an unroutable IPv4 address from the 100.64.0.0/10 address space.</p>
 <p>This creates a Double NAT architecture:</p>
 <ul>
@@ -57,7 +57,7 @@ seoKeywords: ["wireguard nat traversal","cgnat wireguard","vpn behind cgnat","po
 </ul>
 <p>Because the local customer gateway lacks a dedicated public IP address, it cannot receive unprompted inbound packets from the public internet. If both endpoints in a VPN link reside behind separate CGNAT infrastructure, neither device can initiate a connection to the other using static network configurations alone.</p>
 
-<h2>2. A Brief History of NAT Traversal Protocols</h2>
+<h2>A Brief History of NAT Traversal Protocols</h2>
 <p>Connecting network nodes across stateful NAT devices has been an ongoing challenge in peer-to-peer networking:</p>
 <ul>
   <li><strong>Manual Port Forwarding and UPnP (Early 2000s):</strong> Early deployments required network administrators to configure static port forwarding rules on edge routers or rely on Universal Plug and Play (UPnP). UPnP allowed software clients to request automatic port mappings from local edge routers. However, UPnP proved insecure, was widely disabled in enterprise environments, and failed completely across upstream CGNAT infrastructure.</li>
@@ -67,7 +67,7 @@ seoKeywords: ["wireguard nat traversal","cgnat wireguard","vpn behind cgnat","po
   <li><strong>WireGuard's Native Primitive Shift (2016–2026):</strong> WireGuard chose not to embed heavy STUN, TURN, or ICE protocols into its minimal kernel codebase. Instead, WireGuard relies on lightweight primitives: Cryptokey Endpoint Roaming and PersistentKeepalive. Higher-level orchestration engines (such as MeshWG) handle out-of-band discovery, allowing the native kernel driver to maintain maximum speed and security.</li>
 </ul>
 
-<h2>3. Definition: What Is WireGuard NAT Traversal?</h2>
+<h2>Definition: What Is WireGuard NAT Traversal?</h2>
 <p>WireGuard NAT Traversal is the architectural process by which WireGuard endpoints establish, maintain, and recover authenticated UDP communication channels through stateful firewalls, Network Address Translation (NAT) middleboxes, and Carrier-Grade NAT (CGNAT) environments.</p>
 <p>Unlike legacy protocols that require out-of-band signaling sessions or continuous hardware re-authentication, WireGuard NAT Traversal operates using two fundamental mechanics:</p>
 <ul>
@@ -76,10 +76,10 @@ seoKeywords: ["wireguard nat traversal","cgnat wireguard","vpn behind cgnat","po
 </ul>
 <p>This enables WireGuard to maintain continuous site-to-site or peer-to-peer overlay tunnels across dynamic public IP updates, mobile network switches, and double-NAT enterprise environments.</p>
 
-<h2>4. Architecture & Topologies: Direct UDP Hole Punching vs Relay-Assisted Mesh</h2>
+<h2>Architecture & Topologies: Direct UDP Hole Punching vs Relay-Assisted Mesh</h2>
 <p>When designing WireGuard overlays across NAT boundaries, network architects employ three primary structural topologies:</p>
 
-<h3>4.1 Direct UDP Hole Punching Topology</h3>
+<h3>Direct UDP Hole Punching Topology</h3>
 <p>Applies when at least one node has a static public IP address, or when both nodes reside behind non-symmetric NATs (Full Cone, Address-Restricted Cone, or Port-Restricted Cone).</p>
 <ul>
   <li><strong>Mechanism:</strong> Both nodes transmit outbound UDP packets to each other's public endpoints simultaneously. The outbound packet from Node A opens a translation entry in Node A's firewall state table. When Node B's outbound packet arrives at Node A's firewall, it matches the newly opened state entry and passes through to Node A's WireGuard interface.</li>
@@ -88,7 +88,7 @@ seoKeywords: ["wireguard nat traversal","cgnat wireguard","vpn behind cgnat","po
   <li><strong>Dependency:</strong> Requires out-of-band public endpoint discovery or at least one publicly accessible endpoint.</li>
 </ul>
 
-<h3>4.2 Hub-Assisted Relay Topology</h3>
+<h3>Hub-Assisted Relay Topology</h3>
 <p>Applies when both endpoints reside behind restrictive CGNAT networks, or when one or both endpoints operate behind a Symmetric NAT that prevents deterministic UDP port prediction.</p>
 <ul>
   <li><strong>Mechanism:</strong> A public relay server (such as a Cloud VPS or HQ Gateway with a static public IP) acts as an intermediate transit point. Both CGNAT nodes establish persistent outbound WireGuard tunnels to the relay server, which forwards encrypted packets between them.</li>
@@ -97,7 +97,7 @@ seoKeywords: ["wireguard nat traversal","cgnat wireguard","vpn behind cgnat","po
   <li><strong>Dependency:</strong> Requires deploying and maintaining a high-bandwidth relay server.</li>
 </ul>
 
-<h3>4.3 Decoupled Control-Plane Mesh Topology (MeshWG Approach)</h3>
+<h3>Decoupled Control-Plane Mesh Topology (MeshWG Approach)</h3>
 <p>Applies in enterprise environments with dozens or hundreds of distributed nodes operating behind dynamic NATs, home routers, and cellular connections.</p>
 <ul>
   <li><strong>Mechanism:</strong> A central control plane orchestrates endpoint discovery, public key exchange, and access control policies out-of-band. Once nodes obtain each other's updated public endpoints, they establish direct peer-to-peer WireGuard tunnels using kernel-level UDP hole punching. If direct P2P is blocked by Symmetric NATs, the control plane dynamically routes traffic through encrypted relay nodes.</li>
@@ -105,10 +105,10 @@ seoKeywords: ["wireguard nat traversal","cgnat wireguard","vpn behind cgnat","po
   <li><strong>Latency:</strong> Minimal for P2P links; optimized for relayed traffic.</li>
 </ul>
 
-<h2>5. Internal Protocol Mechanics: UDP State Tables, Cryptokey Roaming, and Hole Punching</h2>
+<h2>Internal Protocol Mechanics: UDP State Tables, Cryptokey Roaming, and Hole Punching</h2>
 <p>To operate WireGuard reliably across NAT boundaries, administrators must understand the interaction between stateful NAT translation tables and WireGuard's internal Cryptokey Routing table.</p>
 
-<h3>5.1 NAT Types and Hole Punching Compatibility</h3>
+<h3>NAT Types and Hole Punching Compatibility</h3>
 <p>NAT behavior varies based on how edge devices map internal IP:port sockets to external public IP:port sockets:</p>
 <ol>
   <li><strong>Full-Cone NAT (One-to-One NAT):</strong> Once an internal host (192.168.1.50:51820) sends an outbound packet, the NAT router maps it to a fixed public IP:port (203.0.113.10:51820). Any external host on the public internet can send packets to 203.0.113.10:51820, and they are forwarded to the internal host. (Hole Punching Success: 100%)</li>
@@ -117,7 +117,7 @@ seoKeywords: ["wireguard nat traversal","cgnat wireguard","vpn behind cgnat","po
   <li><strong>Symmetric NAT (Enterprise Firewalls & Aggressive CGNAT):</strong> If 192.168.1.50:51820 sends a packet to Peer A, the NAT router assigns external port 61001. If the same internal host sends a packet to Peer B, the NAT router assigns a different external port (61002). (Hole Punching Success: Fails for direct P2P between two Symmetric NATs. Requires an intermediate relay node)</li>
 </ol>
 
-<h3>5.2 Cryptokey Endpoint Roaming Mechanics</h3>
+<h3>Cryptokey Endpoint Roaming Mechanics</h3>
 <p>In traditional IPsec, if a client's public IP address changes during an active session, the Security Association (SA) breaks, forcing a multi-second IKE renegotiation. WireGuard handles dynamic IP changes statelessly via Cryptokey Endpoint Roaming:</p>
 <ul>
   <li>Peer A (10.100.0.1) sends an encrypted data packet to Peer B's known public endpoint (203.0.113.10:51820).</li>
@@ -129,10 +129,10 @@ seoKeywords: ["wireguard nat traversal","cgnat wireguard","vpn behind cgnat","po
   <li>All subsequent outbound packets from Peer B to Peer A are sent immediately to 172.56.21.99:41200 without session drops or manual intervention.</li>
 </ul>
 
-<h2>6. Core System Components & Configuration Primitives</h2>
+<h2>Core System Components & Configuration Primitives</h2>
 <p>Configuring WireGuard for NAT traversal involves key directives across local interface and remote peer definitions:</p>
 
-<h3>6.1 The PersistentKeepalive Directive</h3>
+<h3>The PersistentKeepalive Directive</h3>
 <p>The single most important parameter for nodes operating behind NAT or CGNAT:</p>
 
 ```bash
@@ -149,7 +149,7 @@ PersistentKeepalive = 25
   <li><strong>Cellular Optimization:</strong> On restrictive mobile networks (where NAT timeouts can be as short as 15 seconds), set PersistentKeepalive = 15.</li>
 </ul>
 
-<h3>6.2 Interface ListenPort Allocation</h3>
+<h3>Interface ListenPort Allocation</h3>
 
 ```bash
 [Interface]
@@ -160,7 +160,7 @@ ListenPort = 51820
 
 <p>Behind NAT: Setting a fixed ListenPort (e.g., 51820) helps UPnP or static port-forwarding configurations. If left unconfigured, WireGuard requests a random ephemeral UDP port from the OS kernel.</p>
 
-<h2>7. Encapsulation & Packet Processing Workflow Behind Double NAT</h2>
+<h2>Encapsulation & Packet Processing Workflow Behind Double NAT</h2>
 <p>Trace how NAT traversal operates step-by-step when two nodes communicate behind separate CGNAT environments, aided by initial outbound keepalives:</p>
 <ol>
   <li><strong>Environmental Setup:</strong> Node A (192.168.1.50) sits behind CGNAT A (100.64.10.5), which maps to Public WAN IP 198.51.100.10:61005. Node B (10.0.0.12) sits behind CGNAT B (100.64.88.99), which maps to Public WAN IP 203.0.113.50:54110.</li>
@@ -172,10 +172,10 @@ ListenPort = 51820
   <li><strong>Bidirectional Tunnel Established:</strong> Node A receives Node B's packet, authenticates it, updates Node B's endpoint in memory, and sends an immediate response. The bidirectional UDP tunnel is established and held open by periodic keepalive frames every 25 seconds.</li>
 </ol>
 
-<h2>8. Step-by-Step Production Setup Strategy for CGNAT Networks</h2>
+<h2>Step-by-Step Production Setup Strategy for CGNAT Networks</h2>
 <p>Deploying WireGuard across CGNAT and restrictive enterprise firewalls requires proper system configuration, keepalive enforcement, and MTU optimization.</p>
 
-<h3>Step 1: Enable IP Forwarding and System Tuning</h3>
+<h3>Enable IP Forwarding and System Tuning</h3>
 
 ```bash
 # Enable IPv4 and IPv6 forwarding
@@ -194,7 +194,7 @@ EOF
 sudo sysctl --system
 ```
 
-<h3>Step 2: Install WireGuard and Administrative Utilities</h3>
+<h3>Install WireGuard and Administrative Utilities</h3>
 
 ```bash
 # Debian / Ubuntu
@@ -205,7 +205,7 @@ sudo dnf install -y epel-release
 sudo dnf install -y wireguard-tools iptables
 ```
 
-<h3>Step 3: Configure Interface and Peer Settings</h3>
+<h3>Configure Interface and Peer Settings</h3>
 <p>When configuring nodes behind NAT, ensure:</p>
 <ul>
   <li>Address uses a clean /32 overlay IP.</li>
@@ -214,7 +214,7 @@ sudo dnf install -y wireguard-tools iptables
   <li>PersistentKeepalive is set to 25 (or 15 for mobile NAT).</li>
 </ul>
 
-<h2>9. Comprehensive Configuration Examples (Linux, Cloud, and Routers)</h2>
+<h2>Comprehensive Configuration Examples (Linux, Cloud, and Routers)</h2>
 <h3>Scenario A: Branch Office Behind Double NAT Connecting to a Public Cloud Hub</h3>
 <p><strong>Branch Router (Behind CGNAT):</strong> LAN 192.168.10.0/24 | Overlay IP 10.100.0.2/32<br>
 <strong>Cloud Gateway (Public IP):</strong> Public IP 203.0.113.100 | Overlay IP 10.100.0.1/32 | LAN 10.50.0.0/16</p>
@@ -278,9 +278,9 @@ AllowedIPs          = 10.100.0.0/16
 PersistentKeepalive = 15
 ```
 
-<h2>10. Performance Analysis, Latency Metrics, and Bandwidth Benchmarks</h2>
+<h2>Performance Analysis, Latency Metrics, and Bandwidth Benchmarks</h2>
 
-<h3>10.1 Benchmark Setup & Methodology</h3>
+<h3>Benchmark Setup & Methodology</h3>
 <p>Environment: Dual 1 Gbps Fiber connections; Linux Kernel 6.8; Intel Xeon E-2388G CPU.<br>
 Scenarios Tested:</p>
 <ul>
@@ -289,21 +289,21 @@ Scenarios Tested:</p>
   <li>Relayed Transit via Public Relay Server (Both endpoints behind Symmetric NAT).</li>
 </ul>
 
-<h3>10.2 Comparative Metric Breakdown</h3>
+<h3>Comparative Metric Breakdown</h3>
 <ul>
   <li><strong>Direct Public IP to Public IP (Control):</strong> Throughput 940 Mbps | Baseline Latency 12.4 ms | CPU Overhead 12%</li>
   <li><strong>P2P UDP Hole Punching (CGNAT to CGNAT):</strong> Throughput 928 Mbps | Baseline Latency 12.8 ms | CPU Overhead 13%</li>
   <li><strong>Relayed Transit (Symmetric NAT Fallback):</strong> Throughput 640 Mbps | Baseline Latency 38.6 ms | CPU Overhead 24%</li>
 </ul>
 
-<h3>10.3 Architectural Insights</h3>
+<h3>Architectural Insights</h3>
 <p><strong>Direct P2P Hole Punching Retains Line Speed:</strong> Once a UDP hole-punched connection establishes directly between two CGNAT nodes, throughput and latency match direct public IP connections.<br>
 <strong>Relays Add Latency Overhead:</strong> Relaying traffic through an intermediate server adds latency equal to the round-trip path to the relay server. Direct P2P hole punching should be prioritized whenever possible.<br>
 <strong>Keepalive Overhead Is Negligible:</strong> A 32-byte keepalive packet every 25 seconds consumes roughly 1.28 bytes per second (under 100 KB per month), making PersistentKeepalive suitable for bandwidth-metered cellular plans.</p>
 
-<h2>11. Security Model, Attack Surface, and NAT Traversal Threat Matrix</h2>
+<h2>Security Model, Attack Surface, and NAT Traversal Threat Matrix</h2>
 
-<h3>11.1 Threat Matrix & Mitigation Breakdown</h3>
+<h3>Threat Matrix & Mitigation Breakdown</h3>
 <ol>
   <li><strong>Firewall State Table Exhaustion (DoS):</strong> Threat: An external adversary floods a gateway router behind NAT with random UDP packets to exhaust firewall translation table entries. Mitigation: WireGuard silently drops any unauthenticated packet without processing state. Intermediate stateful firewalls drop unauthorized external floods before they reach WireGuard.</li>
   <li><strong>Stale Endpoint Hijacking:</strong> Threat: A remote peer's public IP changes, and an attacker claims the old IP address, attempting to inject spoofed traffic into the overlay. Mitigation: WireGuard cryptographically authenticates every incoming frame using the sender's static public key before updating the endpoint table. Spoofed packets from an unauthenticated IP are rejected.</li>
@@ -311,11 +311,11 @@ Scenarios Tested:</p>
   <li><strong>Silent Packet Interception by Carrier CGNAT:</strong> Threat: A malicious mobile carrier or upstream ISP inspects or modifies UDP tunnel frames passing through CGNAT middleboxes. Mitigation: All WireGuard payload data and headers are authenticated and encrypted using ChaCha20-Poly1305. Intermediate carriers cannot inspect payload data or modify header contents without triggering authentication failures.</li>
 </ol>
 
-<h2>12. Systematic Troubleshooting, Diagnostics, and Triage for NAT Failures</h2>
+<h2>Systematic Troubleshooting, Diagnostics, and Triage for NAT Failures</h2>
 <p>When WireGuard connections behind NAT fail to establish or drop intermittently, follow this structured diagnostic workflow:</p>
 
-<h3>12.1 Step-by-Step Diagnostic Workflows</h3>
-<h4>1. Diagnosing Missing Keepalives & State Timeouts</h4>
+<h3>Step-by-Step Diagnostic Workflows</h3>
+<h4>Diagnosing Missing Keepalives & State Timeouts</h4>
 <p><strong>Symptom:</strong> The tunnel connects initially when traffic starts, but disconnects after 30 to 60 seconds of inactivity. Inbound traffic to the node behind NAT stops working until the local node sends an outbound ping.<br>
 <strong>Root Cause:</strong> PersistentKeepalive is omitted, causing the edge firewall or CGNAT middlebox to clear the UDP state table entry.<br>
 <strong>Fix:</strong> Add PersistentKeepalive = 25 to the [Peer] block on the node behind NAT and restart the interface:</p>
@@ -324,7 +324,7 @@ Scenarios Tested:</p>
 sudo wg-quick down wg0 && sudo wg-quick up wg0
 ```
 
-<h4>2. Diagnosing Symmetric NAT Connection Stalls</h4>
+<h4>Diagnosing Symmetric NAT Connection Stalls</h4>
 <p><strong>Symptom:</strong> Two nodes behind NAT show no handshakes despite both setting PersistentKeepalive = 25 and targeting each other's public endpoints.<br>
 <strong>Root Cause:</strong> One or both endpoints operate behind a Symmetric NAT. The external port assigned for outbound traffic to the peer is randomized, invalidating static port predictions.<br>
 <strong>Diagnostic Command:</strong></p>
@@ -336,7 +336,7 @@ sudo tcpdump -n -i eth0 udp port 51820
 
 <p><strong>Fix:</strong> Route traffic through a public relay gateway or deploy a managed WireGuard control plane (such as MeshWG) that manages STUN-like discovery and relay fallback dynamically.</p>
 
-<h4>3. Diagnosing Double NAT MTU Bottlenecks</h4>
+<h4>Diagnosing Double NAT MTU Bottlenecks</h4>
 <p><strong>Symptom:</strong> Handshakes complete, SSH works, but HTTPS browsing or file transfers hang indefinitely across cellular or double-NAT links.<br>
 <strong>Root Cause:</strong> Encapsulation overhead from double NAT, PPPoE, or cellular GTP headers causes packet fragmentation.<br>
 <strong>Fix:</strong> Lower MTU to 1380 and enforce TCP MSS clamping:</p>
@@ -349,7 +349,7 @@ sudo ip link set dev wg0 mtu 1380
 sudo iptables -t mangle -A FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
 ```
 
-<h2>13. Operational Best Practices for Day-2 Deployments Behind Restrictive Firewalls</h2>
+<h2>Operational Best Practices for Day-2 Deployments Behind Restrictive Firewalls</h2>
 <ul>
   <li><strong>Always Set PersistentKeepalive = 25 on NAT Endpoints:</strong> Treat keepalives as mandatory for any peer that does not possess a dedicated, static public IP.</li>
   <li><strong>Standardize MTU Settings Across Mobile Fleets:</strong> Default to MTU = 1420 for standard broadband NAT, and MTU = 1380 for gateways connected via 4G/5G cellular modems.</li>
@@ -361,22 +361,22 @@ sudo iptables -t mangle -A FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --cl
   <li><strong>Monitor Handshake Metrics:</strong> Alert on wireguard_latest_handshake_seconds > 180 in Prometheus to catch NAT pinhole collapses early.</li>
 </ul>
 
-<h2>14. Common Engineering Mistakes with WireGuard NAT Settings</h2>
+<h2>Common Engineering Mistakes with WireGuard NAT Settings</h2>
 <ol>
   <li><strong>Setting PersistentKeepalive on Public Relay Nodes Instead of NAT Clients:</strong> Mistake: Configuring PersistentKeepalive = 25 on a public cloud server, while leaving it disabled on the branch router behind CGNAT. Consequence: The public cloud server cannot initiate outbound packets to open a pinhole through the branch router's firewall. The keepalive MUST originate from the node behind the NAT device.</li>
   <li><strong>Assuming WireGuard Resolves Dynamic Endpoints Automatically Without Traffic:</strong> Mistake: Expecting WireGuard to update a peer's dynamic public IP while both nodes are completely idle and PersistentKeepalive is disabled. Consequence: WireGuard attempts to send traffic to the old IP until a new authenticated packet arrives from the peer's new location.</li>
   <li><strong>Overlooking Firewall FORWARD Chains:</strong> Mistake: Establishing a successful WireGuard handshake behind NAT, but failing to permit packet forwarding in the local operating system firewall. Consequence: The local router decapsulates the packet but drops it internally. Always verify sysctl net.ipv4.ip_forward is set to 1 and iptables -A FORWARD -i wg0 -j ACCEPT is applied.</li>
 </ol>
 
-<h2>15. Protocol and Architectural Alternatives</h2>
+<h2>Protocol and Architectural Alternatives</h2>
 <ol>
   <li><strong>Native WireGuard Primitive (PersistentKeepalive + Roaming):</strong> Mechanism: Outbound keepalives hold state tables open; Cryptokey Roaming handles dynamic IP changes. Pros: Zero third-party software dependencies; 100% native kernel performance. Cons: Requires manual initial endpoint configuration; fails between dual Symmetric NATs without a static relay node.</li>
   <li><strong>Agent-Based Overlay Daemons (Tailscale / NetBird):</strong> Mechanism: Bundles user-space daemons running STUN, ICE, and proprietary relay servers (DERP / TURN). Pros: Fully automated NAT traversal across all NAT types including Symmetric NAT. Cons: Requires running background software daemons on every device (unusable on low-cost hardware routers); user-based subscription pricing; context-switching performance overhead.</li>
   <li><strong>Managed Control-Plane Platforms (MeshWG):</strong> Mechanism: Orchestrates standard, native WireGuard configurations centrally. Manages endpoint discovery, access control rules, and key distribution out-of-band while maintaining direct kernel WireGuard data paths. Pros: Works natively on existing hardware routers (MikroTik, OpenWrt, Ubiquiti, pfSense); no software agents required; direct P2P speed with fallback relay coordination; zero vendor lock-in. Cons: Requires outbound management traffic to sync configuration state.</li>
 </ol>
 
-<h2>16. Comparative Analysis Summaries</h2>
-<h3>16.1 NAT Compatibility & Traversal Summary</h3>
+<h2>Comparative Analysis Summaries</h2>
+<h3>NAT Compatibility & Traversal Summary</h3>
 <ul>
   <li>Full-Cone NAT: Native WireGuard connects direct P2P. No relay needed.</li>
   <li>Address-Restricted Cone NAT: Native WireGuard connects direct P2P. No relay needed.</li>
@@ -385,14 +385,14 @@ sudo iptables -t mangle -A FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --cl
   <li>Symmetric NAT to Symmetric NAT: Direct P2P fails. Requires an intermediate Relay Node or Control Plane Orchestration.</li>
 </ul>
 
-<h3>16.2 Protocol NAT Traversal Overhead Summary</h3>
+<h3>Protocol NAT Traversal Overhead Summary</h3>
 <ul>
   <li>WireGuard (PersistentKeepalive): 32 bytes per 25s (~1.28 bytes/sec overhead). Extremely lightweight.</li>
   <li>IPsec (NAT-Traversal / UDP 4500): Encapsulates ESP inside UDP. Transmits keepalives every 20s. High SA renegotiation overhead on IP shifts.</li>
   <li>OpenVPN (UDP/TCP Keepalive): Ping interval every 10s. Higher overhead due to TLS session state maintenance.</li>
 </ul>
 
-<h2>17. Enterprise Fleet Automation: Ansible Scripting Patterns for Dynamic NAT Peers</h2>
+<h2>Enterprise Fleet Automation: Ansible Scripting Patterns for Dynamic NAT Peers</h2>
 <p>To automate WireGuard deployments across nodes operating behind dynamic NATs and CGNAT connections, Ansible templates can generate standardized configuration files containing mandatory keepalives and firewall clamping rules automatically.</p>
 
 ```bash
@@ -421,7 +421,7 @@ PersistentKeepalive = {{ peer.keepalive | default(25) }}
 {% endfor %}
 ```
 
-<h2>18. Hybrid & Multi-Cloud NAT Traversal Architecture</h2>
+<h2>Hybrid & Multi-Cloud NAT Traversal Architecture</h2>
 <p>Connecting on-premises branch offices behind CGNAT to public cloud VPCs (AWS/GCP) requires establishing a persistent outbound overlay tunnel to an Elastic Public Gateway Instance.</p>
 <p><strong>Packet Flow Path:</strong></p>
 <ol>
@@ -437,7 +437,7 @@ PersistentKeepalive = {{ peer.keepalive | default(25) }}
   <li><strong>Target AWS Route Tables:</strong> In AWS Private Subnet route tables, set destination 192.168.10.0/24 to target the Instance ID of the WireGuard Cloud Gateway VM.</li>
 </ul>
 
-<h2>19. Frequently Asked Questions</h2>
+<h2>Frequently Asked Questions</h2>
 <details>
   <summary>How does WireGuard connect through CGNAT?</summary>
   <p>WireGuard connects through Carrier-Grade NAT (CGNAT) by using PersistentKeepalive = 25 in its configuration. This forces the node behind CGNAT to send periodic outbound UDP packets to the remote peer, opening and maintaining a stateful translation pinhole in the carrier firewall.</p>
@@ -468,7 +468,7 @@ PersistentKeepalive = {{ peer.keepalive | default(25) }}
   <p>For standard broadband NAT, use MTU = 1420. For 4G/5G cellular modems or double-NAT connections, set MTU = 1380 and enable TCP MSS clamping (--clamp-mss-to-pmtu) on your firewall to prevent packet fragmentation.</p>
 </details>
 
-<h2>20. RFC Specifications & Standards References</h2>
+<h2>RFC Specifications & Standards References</h2>
 <ul>
   <li><strong>RFC 6598:</strong> IANA-Reserved IPv4 Prefix for Shared Address Space (CGNAT 100.64.0.0/10). Establishes address architecture for Carrier-Grade NAT.</li>
   <li><strong>RFC 5389:</strong> Session Traversal Utilities for NAT (STUN). Defines mechanics for discovering external IP and port mappings across NAT firewalls.</li>
@@ -477,7 +477,7 @@ PersistentKeepalive = {{ peer.keepalive | default(25) }}
   <li><strong>WireGuard Protocol Paper:</strong> Donenfeld, Jason A. "WireGuard: Next Generation Kernel Network Tunnel." Proceedings of the 24th Network and Distributed System Security Symposium (NDSS 2017).</li>
 </ul>
 
-<h2>21. Conclusion & Strategic Next Steps</h2>
+<h2>Conclusion & Strategic Next Steps</h2>
 <p>Carrier-Grade NAT and stateful firewalls present significant obstacles to modern enterprise networking. However, by combining WireGuard’s lightweight kernel design with PersistentKeepalive enforcements, Cryptokey Endpoint Roaming, and dynamic MSS clamping, engineering teams can maintain fast, reliable, multi-site overlay networks across any public internet connection.</p>
 <p><strong>Strategic Implementation Roadmap:</strong></p>
 <ul>

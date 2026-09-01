@@ -20,7 +20,7 @@
   
 /* Fonts */
 :root {
-  --font-body: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-body: 'Lato', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-heading: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --font-mono: 'Lato', ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
 
@@ -104,7 +104,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); color: var(--text); m
 .pill-purple { color: #ffffff; background: #a855f7; }
 
 .mag-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 24px; }
-.mag-list-link { display: block; font-size: 14px; font-weight: 500; color: var(--text-2); line-height: 1.6; transition: color 0.15s ease; }
+.mag-list-link { display: block; font-size: 16px; font-weight: 500; color: var(--text-2); line-height: 1.6; transition: color 0.15s ease; }
 .mag-list-link:hover { color: var(--accent); }
 
 .mag-center {}
@@ -185,7 +185,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); color: var(--text); m
 .nh-sidebar-pill.pill-orange { background: linear-gradient(to right, #f59e0b, #f97316); }
 .nh-sidebar-pill.pill-purple { background: linear-gradient(to right, #8b5cf6, #d946ef); }
 .nh-sidebar-nav { display: flex; flex-direction: column; gap: 4px; }
-.nh-sidebar-link { display: block; padding: 4px 6px; font-size: 11.5px; border-radius: 4px; color: #737373; transition: all 0.2s; line-height: 1.25; }
+.nh-sidebar-link { display: block; padding: 4px 6px; font-size: 14px; border-radius: 4px; color: #737373; transition: all 0.2s; line-height: 1.4; }
 .nh-sidebar-link:hover { color: #b45309; background: #fffbeb; }
 
 .nh-breadcrumbs { font-size: 14px; color: var(--text-3); margin-bottom: 24px; display: flex; gap: 8px; align-items: center; }

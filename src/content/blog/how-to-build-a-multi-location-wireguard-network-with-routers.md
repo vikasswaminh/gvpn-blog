@@ -38,7 +38,7 @@ seoKeywords: ["multi location wireguard","wireguard router network","site to sit
   </div>
 
 
-  <h2 id="problem-statement">1. Problem statement</h2>
+  <h2 id="problem-statement">Problem statement</h2>
   <p>
     Modern enterprise networks no longer operate within a single physical building or a single cloud virtual private cloud. Distributed organizations operate branch offices, regional warehouses, edge computing nodes, on-premises data centers, and multi-cloud infrastructure. Establishing secure, high-speed, direct site-to-site communication between all nodes introduces four major structural engineering challenges:
   </p>
@@ -52,7 +52,7 @@ seoKeywords: ["multi location wireguard","wireguard router network","site to sit
     <strong>Third</strong>, manual configuration management scale collapse occurs as node counts grow. WireGuard requires explicitly defining every peer's public key, allowed IP space, and network endpoint inside local configuration files. In a 5-site network, managing 10 point-to-point tunnels manually is tedious but manageable. In a 50-site network operating a full-mesh topology, engineers must generate, distribute, and maintain 1,225 unique peer relationships. A single subnet change or public WAN IP update requires updating configuration files across dozens of remote devices.
   </p>
 
-  <h2 id="history">2. History</h2>
+  <h2 id="history">History</h2>
   <p>
     To understand the architecture of modern site-to-site network design, one must trace the historical progression of wide-area networking protocols and overlay management systems.
   </p>
@@ -69,7 +69,7 @@ seoKeywords: ["multi location wireguard","wireguard router network","site to sit
     In 2016, Jason A. Donenfeld released WireGuard, a radical rethinking of VPN protocol design. Built with fewer than 4,000 lines of code—compared to hundreds of thousands of lines in IPsec and OpenVPN—WireGuard was designed specifically for inclusion in the Linux kernel. It abandoned complex cryptographic negotiation in favor of a fixed suite of modern cryptographic primitives: ChaCha20 for symmetric encryption, Poly1305 for authentication, Curve25519 for Diffie-Hellman key exchange, BLAKE2s for hashing, and SipHash for hashtable keys. In March 2020, WireGuard was officially merged into the main Linux 5.6 kernel tree.
   </p>
 
-  <h2 id="definition">3. Definition</h2>
+  <h2 id="definition">Definition</h2>
   <p>
     A multi-location WireGuard router network is a secure, encrypted virtual overlay network spanning multiple geographically separated physical or virtual routers, where each router acts as a gateway connecting its local area network subnets to all other sites across public or un-trusted transport networks.
   </p>
@@ -83,7 +83,7 @@ seoKeywords: ["multi location wireguard","wireguard router network","site to sit
     <li><strong>MeshWG Orchestration Layer:</strong> A central management and distributed agent architecture that coordinates public key exchanges, monitors peer endpoints, manages network topology states, and updates route tables across edge routers in real time without passing private keys to a central server.</li>
   </ul>
 
-  <h2 id="architecture">4. Architecture</h2>
+  <h2 id="architecture">Architecture</h2>
   <p>
     Designing a multi-location WireGuard network requires choosing an overlay topology that balances latency, redundancy, bandwidth consumption, and operational overhead. There are three primary topological models deployed on router networks.
   </p>
@@ -98,7 +98,7 @@ seoKeywords: ["multi location wireguard","wireguard router network","site to sit
     <strong>The Automated Mesh Topology utilizing MeshWG</strong> combines the operational simplicity of a Hub-and-Spoke deployment with the latency and bandwidth advantages of a Full-Mesh layout. In an automated mesh, edge routers initially register their public keys, local LAN subnets, and WAN endpoints with a control coordinator. MeshWG calculates the global topology and distributes configuration instructions to each edge router. The routers dynamically establish direct peer-to-peer WireGuard tunnels with one another whenever possible. If two branch routers sit behind strict symmetric NAT gateways that block direct UDP peer discovery, MeshWG dynamically routes traffic between those specific nodes through an optimal intermediate relay node while maintaining direct peer connections across all other sites.
   </p>
 
-  <h2 id="internal-working">5. Internal working</h2>
+  <h2 id="internal-working">Internal working</h2>
   <p>
     WireGuard's performance advantage over legacy protocols stems from its execution inside the Linux kernel driver subsystem. Understanding the internal life of a packet as it traverses a multi-location WireGuard router highlights why it outperforms traditional tools.
   </p>
@@ -122,7 +122,7 @@ seoKeywords: ["multi location wireguard","wireguard router network","site to sit
     <strong>Fifth</strong>, the host operating system forwards the UDP packet out the physical WAN interface (eth0) across the public Internet.
   </p>
 
-  <h2 id="components">6. Components</h2>
+  <h2 id="components">Components</h2>
   <p>
     Constructing a multi-location WireGuard router network requires selecting and integrating specific software and hardware components.
   </p>
@@ -143,7 +143,7 @@ seoKeywords: ["multi location wireguard","wireguard router network","site to sit
     A modern firewall engine, specifically nftables (or legacy iptables), is required on every router to perform critical routing functions.
   </p>
 
-  <h2 id="workflow">7. Workflow</h2>
+  <h2 id="workflow">Workflow</h2>
   <p>
     Deploying a multi-location router network follows a systematic, six-phase technical lifecycle:
   </p>
@@ -166,8 +166,8 @@ seoKeywords: ["multi location wireguard","wireguard router network","site to sit
     <strong>In Phase 6 (Continuous Telemetry and Path Optimization)</strong>, the MeshWG agent continuously sends light health probes across all active peer tunnels. If a branch router's primary ISP fails and switches over to a secondary 5G cellular link, MeshWG automatically updates peer endpoint configurations across all remaining network nodes within seconds, restoring site-to-site connectivity.
   </p>
 
-  <h2 id="configuration">8. Configuration</h2>
-  <h3>1. Kernel Optimization (/etc/sysctl.d/99-wireguard-routing.conf)</h3>
+  <h2 id="configuration">Configuration</h2>
+  <h3>Kernel Optimization (/etc/sysctl.d/99-wireguard-routing.conf)</h3>
   <p>
     Enable packet forwarding and expand UDP socket buffers across all edge routers:
   </p>
@@ -176,14 +176,14 @@ seoKeywords: ["multi location wireguard","wireguard router network","site to sit
     <li><strong>Apply:</strong> <code>sysctl --system</code></li>
   </ul>
   
-  <h3>2. Site Topology Matrix</h3>
+  <h3>Site Topology Matrix</h3>
   <ul>
     <li><strong>Site A (Primary Gateway):</strong> Static WAN 198.51.100.10:51820 | Overlay 172.16.255.1/24 | LAN 10.100.0.0/16</li>
     <li><strong>Site B (Branch 1):</strong> Static WAN 203.0.113.50:51820 | Overlay 172.16.255.2/24 | LAN 10.101.0.0/16</li>
     <li><strong>Site C (Branch 2 - CGNAT):</strong> Dynamic WAN (No endpoint) | Overlay 172.16.255.3/24 | LAN 10.102.0.0/16</li>
   </ul>
 
-  <h3>3. Core wg0.conf Anatomy</h3>
+  <h3>Core wg0.conf Anatomy</h3>
   <p>
     Every site router requires three core configuration elements inside <code>/etc/wireguard/wg0.conf</code>:
   </p>
@@ -197,7 +197,7 @@ PostUp = nft add table inet wg_filter; nft add chain inet wg_filter forward &#12
 PostDown = nft delete table inet wg_filter; iptables -t mangle -D FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtud
 ```
 
-  <h2 id="examples">9. Examples</h2>
+  <h2 id="examples">Examples</h2>
   <p>
     Understanding operational deployment scenarios helps illustrate how multi-location WireGuard networks handle complex enterprise environments.
   </p>
@@ -235,7 +235,7 @@ wg set wg0 peer OPENWRT_STORE_PUBLIC_KEY allowed-ips 172.16.255.50/32,10.150.0.0
     The MeshWG agent automatically generates a local private/public key pair, discovers the node's public WAN IP and NAT characteristics via STUN signaling, configures the local wg0 interface, and establishes direct encrypted UDP tunnels to all other 14 site routers.
   </p>
 
-  <h2 id="performance">10. Performance</h2>
+  <h2 id="performance">Performance</h2>
   <p>
     Optimizing performance across a multi-location WireGuard network requires tuning cryptographic processing, network buffer queues, and system packet fragmentation settings.
   </p>
@@ -267,7 +267,7 @@ ethtool -G eth0 rx 4096 tx 4096
     Total IPv4 WireGuard Overhead = 60 bytes. Total IPv6 WireGuard Overhead = 80 bytes.
   </p>
 
-  <h2 id="security">11. Security</h2>
+  <h2 id="security">Security</h2>
   <p>
     Building a multi-location WireGuard network requires adopting a zero-trust model for the transport network layer.
   </p>
@@ -283,11 +283,11 @@ ethtool -G eth0 rx 4096 tx 4096
     WireGuard provides unique firewall-like properties natively through Cryptokey Routing. When a rogue device attempts to send forged IP packets into a WireGuard interface, the kernel checks the packet against the peer's AllowedIPs list. If the source IP address in the inner header does not match the precise subnet mapped to the peer's public key, the kernel drops the packet immediately.
   </p>
 
-  <h2 id="troubleshooting">12. Troubleshooting</h2>
+  <h2 id="troubleshooting">Troubleshooting</h2>
   <p>
     Diagnosing network failures across a multi-location WireGuard topology requires a structured, multi-tier diagnostic approach across sequential steps.
   </p>
-  <h3>Step 1: Inspect Interface and Handshake Status</h3>
+  <h3>Inspect Interface and Handshake Status</h3>
   <p>
     Execute the low-level WireGuard status command on the local edge router:
   </p>
@@ -300,7 +300,7 @@ wg show
     <li><strong>Transfer Counters:</strong> Check the transfer field. If sent bytes are increasing but received bytes remain static at 0 bytes, the local router is sending outbound UDP traffic, but return packets are blocked.</li>
   </ul>
 
-  <h3>Step 2: Validate System Routing Table Logic</h3>
+  <h3>Validate System Routing Table Logic</h3>
   <p>
     Verify that the local operating system kernel forwards destination subnets to the wg0 interface:
   </p>
@@ -311,7 +311,7 @@ ip route get 10.101.5.20
     If the output indicates traffic is routed through the default WAN gateway instead of wg0, your AllowedIPs configuration or system route entries are missing the target LAN subnet.
   </p>
 
-  <h2 id="best-practices">13. Best practices</h2>
+  <h2 id="best-practices">Best practices</h2>
   <ul>
     <li><strong>Standardize Site IP Addressing Schemes:</strong> Adopt an IP allocation schema that embeds location metadata directly into subnet ranges. This simplifies static routing aggregation.</li>
     <li><strong>Enforce Automated Key Rotation Schedules:</strong> Do not keep static cryptographic private keys on routers indefinitely. Use MeshWG or automated scripts to rotate key pairs every 90 days.</li>
@@ -320,7 +320,7 @@ ip route get 10.101.5.20
     <li><strong>Implement Dynamic Routing for Scale:</strong> When operating networks larger than 25 physical sites, configure dynamic routing software suites like FRRouting (FRR) on edge routers to run Border Gateway Protocol (BGP).</li>
   </ul>
 
-  <h2 id="common-mistakes">14. Common mistakes</h2>
+  <h2 id="common-mistakes">Common mistakes</h2>
   <ul>
     <li><strong>Overlapping Physical Subnets:</strong> Deploying identical LAN subnets (e.g., 192.168.1.0/24) at Site A and Site B makes routing impossible without deploying complex NAT maps.</li>
     <li><strong>Setting AllowedIPs = 0.0.0.0/0 on Site Routers:</strong> Configuring this on a branch router forces all local internet traffic through the tunnel to the remote site.</li>
@@ -328,12 +328,12 @@ ip route get 10.101.5.20
     <li><strong>Asymmetric Path Routing Failures:</strong> Failing to add Site A's LAN to Site B's router AllowedIPs list causes packets to travel from Site A to Site B successfully, only to be dropped silently by Site B's kernel.</li>
   </ul>
 
-  <h2 id="alternatives">15. Alternatives</h2>
+  <h2 id="alternatives">Alternatives</h2>
   <p>
     Evaluating alternative site-to-site networking technologies helps contextualize WireGuard's role in modern enterprise architecture. Traditional alternatives like IPsec and OpenVPN often suffer from code complexity, slower connection times, and higher computational overhead.
   </p>
 
-  <h2 id="comparison">16. Comparison tables</h2>
+  <h2 id="comparison">Comparison tables</h2>
   <h3>Technical Protocol Comparison: WireGuard vs. IPsec vs. OpenVPN</h3>
   <div class="post-block">
     <table>
@@ -374,7 +374,7 @@ ip route get 10.101.5.20
     </table>
   </div>
 
-  <h2 id="enterprise-deployment">17. Enterprise deployment</h2>
+  <h2 id="enterprise-deployment">Enterprise deployment</h2>
   <p>
     Deploying WireGuard across large multi-site enterprises requiring 99.999% availability involves incorporating high-availability gateway pairs, dynamic routing protocols, and automated orchestration.
   </p>
@@ -383,7 +383,7 @@ ip route get 10.101.5.20
     To eliminate single points of failure at corporate hub sites, deploy dual edge routers configured in an Active/Passive failover topology using Keepalived and Virtual Router Redundancy Protocol (VRRP). Both routers run the MeshWG edge agent. If HA1 suffers a hardware or link failure, keepalived drops heartbeat signals, and HA2 promotes itself to MASTER state, claiming the Virtual WAN and LAN IPs.
   </p>
 
-  <h2 id="cloud-deployment">18. Cloud deployment</h2>
+  <h2 id="cloud-deployment">Cloud deployment</h2>
   <p>
     Integrating physical multi-location router networks with Cloud Providers (Amazon Web Services, Google Cloud Platform, Microsoft Azure) extends the private enterprise overlay directly into cloud Virtual Private Clouds (VPCs).
   </p>
@@ -398,7 +398,7 @@ ip route get 10.101.5.20
     <li>Update the AWS VPC Subnet Route Tables to direct traffic destined for physical site subnets to the WireGuard EC2 Instance ENI ID.</li>
   </ul>
 
-  <h2 id="faqs">19. FAQs</h2>
+  <h2 id="faqs">FAQs</h2>
   <div class="post-block faq-item">
     <details>
       <summary>Q1. Can WireGuard handle dynamic WAN IP addresses on edge routers automatically?</summary>
@@ -426,7 +426,7 @@ ip route get 10.101.5.20
     </details>
   </div>
 
-  <h2 id="references">20. References</h2>
+  <h2 id="references">References</h2>
   <ul>
     <li>Donenfeld, J. A. (2017). WireGuard: Next Generation Kernel Network Tunnel. WireGuard Official Whitepaper.</li>
     <li>MeshWG Documentation & Architecture Guide. Automated Mesh WireGuard Orchestration for Distributed Edge Networks.</li>
@@ -435,7 +435,7 @@ ip route get 10.101.5.20
     <li>Linux Kernel Networking Documentation: WireGuard Module Administration.</li>
   </ul>
 
-  <h2 id="conclusion">21. Conclusion</h2>
+  <h2 id="conclusion">Conclusion</h2>
   <p>
     Building a high-performance, multi-location WireGuard network across edge routers provides a modern, secure, and computationally efficient alternative to traditional legacy IPsec and OpenVPN architectures. By executing directly inside the operating system kernel and utilizing a minimalist cryptographic design, WireGuard enables hardware edge gateways to deliver high-throughput, low-latency site-to-site encrypted tunnels.
   </p>

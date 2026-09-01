@@ -25,7 +25,7 @@ cover: '/images/self_hosted_wireguard.png'
   </div>
 </div>
 
-## 1. Executive summary
+## Executive summary
 Selecting between managed and self-hosted WireGuard control planes represents one of the most consequential decisions in modern cloud network engineering. At its foundation, raw WireGuard provides an exceptionally fast, cryptographically opinionated virtual interface implemented directly inside the Linux kernel. However, vanilla WireGuard was designed as a static point-to-point tunneling mechanism. When an enterprise attempts to connect hundreds of dynamic edge devices, cloud servers, and employee laptops, configuration complexity grows exponentially. Managing static IP mappings and public key distribution across a full mesh network quickly becomes impossible without an automated control plane framework.
 
 Managed WireGuard platforms, such as Tailscale or NetBird Cloud, eliminate this administrative burden by delivering the control plane completely as a software service. They automate dynamic node discovery, peer key exchanges, identity provider authentication, and fallback relaying across complex enterprise firewalls. The tradeoff for this operational simplicity is dependency and metadata exposure: all node registries, connection timestamps, hostnames, and user access topologies reside within third-party vendor infrastructure.
@@ -35,7 +35,7 @@ Conversely, self-hosted control planes, such as Headscale, Netmaker, or NetBird 
 This architectural guide provides infrastructure architects, security teams, and DevOps engineers with the quantitative benchmarks, structural analysis, and deployment code necessary to evaluate both deployment models under real-world engineering constraints.
 
 
-## 2. Key takeaways
+## Key takeaways
 
 **Control Plane and Data Plane Decoupling:**
 Managed and self-hosted platforms separate administrative policy management from network data transport.
@@ -63,7 +63,7 @@ Security teams enforce centralized Access Control Lists (ACLs), multi-factor aut
 
 
 
-## 1. Problem statement
+## Problem statement
 Legacy enterprise remote access solutions, such as traditional IPsec and OpenVPN deployments, suffer from structural limitations that fail to meet modern cloud-native connectivity requirements.
 
 **Hub-and-Spoke Bottlenecks:** Traditional architectures route all remote client traffic through a central hardware concentrator or firewall appliance before forwarding it to cloud resources.
@@ -78,7 +78,7 @@ This hairpin routing pattern creates severe performance bottlenecks, increases n
 **Lack of Native Identity Integration:** Base WireGuard works strictly with static public and private key pairs. It lacks native awareness of corporate single sign-on users, multi-factor authentication requirements, or centralized role-based access control policies.
 
 
-## 2. History
+## History
 The evolution of modern overlay network orchestration traces back to fundamental shifts in cryptographic protocol design and kernel networking over the past decade.
 
 **2016 — The Introduction of WireGuard:** Security researcher Jason A. Donenfeld releases WireGuard as a modern replacement for IPsec and OpenVPN. WireGuard introduces an opinionated design, using fixed cryptographic primitives: Curve25519 for key exchange, ChaCha20-Poly1305 for authenticated encryption, BLAKE2s for hashing, and SipHash24 for hashtable indexing.
@@ -93,7 +93,7 @@ Open-source developers reverse-engineer these protocols to create Headscale, an 
 **2025 to 2026 — Cloud-Native Zero-Trust Overlays:** Mesh networking shifts from basic site-to-site tunneling to automated zero-trust overlay meshes. Modern platforms integrate directly into Kubernetes clusters, multi-cloud VPC environments, edge computing nodes, and enterprise identity providers.
 
 
-## 3. Definition
+## Definition
 
 Understanding cloud WireGuard platforms requires defining both the underlying technology and the deployment models available to enterprise teams.
 
@@ -105,7 +105,7 @@ Understanding cloud WireGuard platforms requires defining both the underlying te
 Guarantees 100% data and metadata sovereignty, ensuring connection maps and authentication logs remain isolated within private infrastructure boundaries.
 
 
-## 4. Architecture
+## Architecture
 Modern WireGuard deployment frameworks enforce a strict structural separation between the Control Plane and the Data Plane.
 
 **The Control Plane (Administrative & Coordination Layer):**
@@ -122,7 +122,7 @@ Proxy Routing for Strict Firewalls: Relays traffic when restrictive symmetric en
 End-to-End Encryption Preservation: Relays inspect only outer transport headers. Payloads remain encrypted with the target peer's private key, preventing relay servers from inspecting application data.
 
 
-## 5. Internal working
+## Internal working
 
 WireGuard's speed and security rely on Cryptokey Routing, interactive NAT hole-punching, and the Noise Protocol Framework.
 
@@ -139,7 +139,7 @@ Response: The receiving node authenticates the initiation message, responds with
 Rekeying & Nonce Increments: Symmetric session keys rotate automatically based on time intervals (every 120 seconds) and transferred packet volumes, ensuring forward secrecy across all active channels.
 
 
-## 6. Components
+## Components
 An enterprise WireGuard platform relies on seven core components to coordinate key management, user authentication, data transport, and fallback routing.
 
 **Local Client Agent:** A background daemon (such as tailscaled, netmaker-client, or netbird) installed on endpoint laptops, cloud servers, or edge devices. Manages local virtual interfaces, monitors network topology changes, and updates kernel routing tables.
@@ -158,7 +158,7 @@ Hosted as a cloud SaaS API in managed models, or as a software service (Headscal
 **Subnet Routers / Egress Gateways:** Specialized overlay nodes configured to bridge traffic between the [WireGuard mesh network](/blog/wireguard-site-to-site-vpn-multiple-locations/) and legacy physical networks or cloud VPC subnets.
 
 
-## 7. Workflow
+## Workflow
 Understanding the operational workflow reveals how authentication, public key distribution, NAT hole-punching, and data channel setup occur across the lifecycle of a node.
 
 **Phase 1: Agent Initialization & Key Generation:**
@@ -184,7 +184,7 @@ The agent reports its socket details to the control plane, which shares them wit
 Peers send simultaneous outbound UDP handshake packets to each other's socket addresses, establishing direct stateful firewall rules.
 
 
-## 8. Configuration
+## Configuration
 
 Comparing configuration files illustrates the operational shift from manually editing static peer files on every endpoint to managing a single, centralized control plane.
 
@@ -215,7 +215,7 @@ PersistentKeepalive = 25
 **Peer Blocks:** Manually maps static public keys, optional post-quantum pre-shared keys (PQ-PSK), dynamic public endpoints, allowed IP subnets, and keepalive intervals per device.
 
 
-## 9. Examples
+## Examples
 
 A common production scenario is connecting a public cloud Kubernetes cluster (AWS EKS in us-east-1) to on-premises bare-metal servers inside a private data center without exposing internal API endpoints or database ports to the public internet.
 
@@ -248,7 +248,7 @@ netbird status
 **Output Verification:** Confirms peer connection state, showing active status, direct peer-to-peer UDP connection paths, virtual IP allocations, and active subnet routes into 10.0.0.0/16. Data center servers can now communicate securely with private AWS instances across an encrypted kernel-level mesh tunnel.
 
 
-## 10. Performance
+## Performance
 
 Benchmark tests were conducted on AWS c6i.2xlarge compute instances (Linux Kernel 6.8, 10GbE network interfaces) to evaluate throughput, latency, and CPU overhead across deployment modes:
 
@@ -265,7 +265,7 @@ Benchmark tests were conducted on AWS c6i.2xlarge compute instances (Linux Kerne
 - eBPF Acceleration: Platforms leveraging eBPF process routing decisions directly at the network driver socket layer, delivering throughput near unencrypted hardware limits.
 
 
-## 11. Security
+## Security
 Evaluating overlay network security requires assessing data plane cryptographic mechanisms alongside control plane security vectors and metadata management.
 
 **Data Plane Cryptographic Primitives:**
@@ -289,7 +289,7 @@ Evaluating overlay network security requires assessing data plane cryptographic 
 - Mitigation: Inject Post-Quantum Pre-Shared Keys (PQ-PSK) into WireGuard peer configurations. Adding a 256-bit symmetric key ensures that captured traffic remains secure even if underlying ECDH key exchanges are compromised.
 
 
-## 12. Troubleshooting
+## Troubleshooting
 Diagnosing network failures across dynamic mesh overlays requires a structured troubleshooting process to identify issues like MTU fragmentation, firewall blockages, or unprivileged container environments.
 
 **Scenario 1: Handshake Fails / Zero Bytes Received:**
@@ -318,7 +318,7 @@ iptables -A FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
 ```
 
 
-## 13. Best practices
+## Best practices
 
 - Enforce Post-Quantum Pre-Shared Keys: Add a 256-bit symmetric pre-shared key ( PresharedKey parameter) to peer configurations to protect traffic against future quantum decryption threats.
 - Standardize Overlay Interface MTU Values: Configure interface MTU settings to 1280 or 1360 bytes across client configurations to prevent packet fragmentation across cloud provider networks.
@@ -329,7 +329,7 @@ iptables -A FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
 - Automate Key Lifecycle Management: Set administrative policies to expire and rotate node key pairs every 30 to 90 days, requiring users to re-authenticate through central single sign-on workflows.
 
 
-## 14. Common mistakes
+## Common mistakes
 
 **Overlapping Network Address Pools:**
 - Assigning virtual mesh IP pools that collide with existing physical subnets (such as 192.168.1.0/24 or 172.31.0.0/16).
@@ -354,7 +354,7 @@ sudo sysctl --system
 - Forces the client agent to fall back to userspace drivers ( wireguard-go), increasing CPU consumption and reducing throughput.
 
 
-## 15. Alternatives
+## Alternatives
 
 While WireGuard overlay platforms represent the current standard for high-performance mesh networking, enterprise architects also consider alternative Zero Trust Network Access (ZTNA) frameworks.
 
@@ -377,7 +377,7 @@ While WireGuard overlay platforms represent the current standard for high-perfor
   - Uses central "Lighthouse" discovery servers for NAT hole-punching. Runs entirely in userspace, providing cross-platform portability at the cost of lower throughput compared to kernel-space WireGuard.
 
 
-## 16. Comparison tables
+## Comparison tables
 
 **Operational & Governance Feature Matrix**
 
@@ -400,7 +400,7 @@ While WireGuard overlay platforms represent the current standard for high-perfor
 - Fallback Relay Infrastructure: Self-funded and self-managed custom DERP servers.
 
 
-## 17. Enterprise deployment
+## Enterprise deployment
 
 Deploying a self-hosted WireGuard control plane within an enterprise environment requires a high-availability design that eliminates single points of failure across availability zones.
 
@@ -421,7 +421,7 @@ Deploying a self-hosted WireGuard control plane within an enterprise environment
 - Relay nodes run independently of central API databases, functioning as stateless encrypted packet proxies. If a regional relay fails, client agents automatically fall back to the next closest healthy relay node.
 
 
-## 18. Cloud deployment
+## Cloud deployment
 
 The following Infrastructure-as-Code Terraform snippet provisions a hardened Headscale control plane host on AWS EC2:
 
@@ -465,7 +465,7 @@ resource "aws_instance" "headscale_server" {
 - Automated Bootstrap: Executes a cloud-init script to install Docker runtimes, create configuration directories, and download the Headscale control plane binary at initial boot.
 
 
-## 19. FAQs
+## FAQs
 
 **Q1. Does a managed WireGuard SaaS provider have access to unencrypted application data?**
 No. WireGuard uses end-to-end authenticated encryption. Data payloads are encrypted using the destination peer's public key on the local device before entering the physical network. Managed SaaS platforms operate only the control plane, managing public key exchanges and network mapping updates. Data payloads travel directly between client nodes over peer-to-peer connections.
@@ -483,7 +483,7 @@ WireGuard features built-in connection roaming capabilities. When an endpoint ch
 Yes, but the container requires explicit network administration permissions ( --cap-add=NET_ADMIN) to create and modify system network interfaces ( /dev/net/tun or wg0). If a container host restricts system capabilities, the client software must run using a userspace implementation ( wireguard-go), which increases CPU usage and reduces network throughput compared to native kernel-space execution.
 
 
-## 20. References
+## References
 - Donenfeld, Jason A. (2017). WireGuard: Next Generation Kernel Network Tunnel. Fast Software Encryption, IETF Literature. https://www.wireguard.com/papers/wireguard.pdf
 - Internet Engineering Task Force (IETF). RFC 7693: The BLAKE2 Cryptographic Hash and Message Authentication Code (MAC). https://tools.ietf.org/html/rfc7693
 - OpenID Foundation (2023). OpenID Connect Core 1.0 incorporating errata set 1. https://openid.net/specs/openid-connect-core-1_0.html
@@ -492,7 +492,7 @@ Yes, but the container requires explicit network administration permissions ( --
 - National Institute of Standards and Technology (NIST). Guide to Zero Trust Architecture (Special Publication 800-207). https://csrc.nist.gov/publications/detail/sp/800-207/final
 
 
-## 21. Conclusion
+## Conclusion
 Deciding between managed and self-hosted cloud WireGuard VPN platforms comes down to balancing operational simplicity against metadata sovereignty and infrastructure control.
 
 **Managed Platforms (Tailscale / NetBird Cloud):**
