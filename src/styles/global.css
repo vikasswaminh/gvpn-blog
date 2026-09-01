@@ -73,7 +73,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); color: var(--text); m
 .nav { display: flex; align-items: center; gap: 1.1rem; }
 .nav-link { color: var(--text-3); font-weight: 500; font-size: 15px; }
 .nav-link.active, .nav-link:hover { color: var(--text); text-decoration: none; }
-.nav-cta { color: var(--accent); font-weight: 600; font-size: 15px; }
+.nav-cta { color: #1677FF; font-weight: 600; font-size: 15px; }
 
 /* ----------------------------------
    Buttons
