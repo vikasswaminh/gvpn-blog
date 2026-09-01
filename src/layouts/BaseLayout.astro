@@ -2,6 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import SearchModal from '../components/SearchModal.astro';
 import { SITE } from '../config';
 import '../styles/global.css';
 
@@ -9,26 +10,89 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
+  seoKeywords?: string[];
   article?: {
     publishedTime?: string;
     modifiedTime?: string;
     author?: string;
     tags?: string[];
   };
+  bodyClass?: string;
 }
-const { title = SITE.title, description, image, article } = Astro.props;
+const { title = SITE.title, description, image, seoKeywords, article, bodyClass } = Astro.props;
 ---
 
 <!doctype html>
 <html lang={SITE.locale} style={`--accent:${SITE.accent}`}>
   <head>
-    <BaseHead title={title} description={description} image={image} article={article} />
+    <BaseHead title={title} description={description} image={image} seoKeywords={seoKeywords} article={article} />
   </head>
-  <body>
+  <body class={bodyClass}>
     <Header />
-    <main class="container">
-      <slot />
-    </main>
+    <slot />
     <Footer />
+    <SearchModal />
+    
+    <script is:inline>
+      document.addEventListener('astro:page-load', function () {
+        try {
+          document.documentElement.classList.add('js-reveal');
+
+          // Scroll-reveal sections
+          if ('IntersectionObserver' in window) {
+            var io = new IntersectionObserver(function (entries) {
+              entries.forEach(function (e) {
+                if (e.isIntersecting) {
+                  e.target.classList.add('in-view');
+                  io.unobserve(e.target);
+                }
+              });
+            }, { threshold: 0.08, rootMargin: '0px 0px -8% 0px' });
+            
+            document.querySelectorAll('section').forEach(function (s) { io.observe(s); });
+            document.querySelectorAll('[data-reveal]').forEach((el) => {
+              io.observe(el);
+            });
+          } else {
+            // No IO fallback
+            document.querySelectorAll('section').forEach(function (s) { s.classList.add('in-view'); });
+          }
+
+          // 3D Tilt Animation Logic
+          document.querySelectorAll('[data-tilt]').forEach(el => {
+            el.addEventListener('mousemove', (e) => {
+              const rect = el.getBoundingClientRect();
+              const x = e.clientX - rect.left;
+              const y = e.clientY - rect.top;
+              
+              const centerX = rect.width / 2;
+              const centerY = rect.height / 2;
+              
+              const rotateX = ((y - centerY) / centerY) * -6; 
+              const rotateY = ((x - centerX) / centerX) * 6;
+              
+              el.style.setProperty('--rotateX', `${rotateX}deg`);
+              el.style.setProperty('--rotateY', `${rotateY}deg`);
+            });
+            
+            el.addEventListener('mouseleave', () => {
+              el.style.setProperty('--rotateX', '0deg');
+              el.style.setProperty('--rotateY', '0deg');
+            });
+          });
+
+          // Frosted nav on scroll
+          var nav = document.querySelector('.nav');
+          if (nav) {
+            var onScroll = function () {
+              if (window.scrollY > 60) nav.classList.add('nav--scrolled');
+              else nav.classList.remove('nav--scrolled');
+            };
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+          }
+        } catch (_) {}
+      });
+    </script>
   </body>
 </html>

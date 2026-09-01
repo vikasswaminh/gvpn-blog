@@ -1,34 +1,35 @@
 ---
-import FormattedDate from './FormattedDate.astro';
-
 interface Props {
   url: string;
   title: string;
   description: string;
   pubDate: Date;
   tags?: string[];
-  minutes?: number;
+  minutes?: string;
+  pillText?: string;
+  pillColor?: 'orange' | 'red' | 'purple';
+  cover?: string;
 }
-const { url, title, description, pubDate, tags = [], minutes } = Astro.props;
+
+const { url, title, description, pubDate, tags, minutes, pillText = 'engineering guide', pillColor = 'orange', cover } = Astro.props;
 ---
 
-<article class="post-card">
-  <h2 class="post-card-title"><a href={url}>{title}</a></h2>
-  <p class="post-card-meta">
-    <FormattedDate date={pubDate} />
-    {minutes ? <span aria-hidden="true">·</span> : null}
-    {minutes ? <span>{minutes} min read</span> : null}
-  </p>
-  <p class="post-card-desc">{description}</p>
-  {
-    tags.length > 0 && (
-      <p class="post-card-tags">
-        {tags.map((t) => (
-          <a class="tag" href={`/tags/${t}/`}>
-            #{t}
-          </a>
-        ))}
-      </p>
-    )
-  }
-</article>
+<a href={url} class="mag-card hover-card" data-tilt>
+  {cover && (
+    <div class="card-img-container">
+      <img src={cover} alt="" class="card-img" />
+    </div>
+  )}
+  <div class="card-content">
+    <div class={`mag-pill pill-${pillColor}`}>{pillText}</div>
+    <h3 class="card-t">{title}</h3>
+    <p class="card-d">{description}</p>
+    {minutes && (
+      <div class="card-meta">
+        <span>{minutes} min read</span>
+        <span class="dot">·</span>
+        <span class="read-link">Read article &rarr;</span>
+      </div>
+    )}
+  </div>
+</a>

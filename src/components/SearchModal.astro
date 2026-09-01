@@ -1,0 +1,211 @@
+---
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+const searchData = posts.map(post => ({
+  title: post.data.title,
+  slug: post.slug,
+  description: post.data.description,
+  keywords: (post.data.seoKeywords || []).join(' ')
+}));
+---
+
+<div id="search-modal" class="search-overlay" aria-hidden="true">
+  <div class="search-container">
+    <div class="search-header">
+      <input type="search" id="search-input" placeholder="Search articles..." autocomplete="off" />
+      <button id="search-close" class="close-btn" aria-label="Close search">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <div class="search-results-wrapper">
+      <ul id="search-results" class="search-results-list"></ul>
+      <div id="search-empty" class="search-empty" style="display: none;">No results found.</div>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ searchData }}>
+  document.addEventListener('astro:page-load', () => {
+    const modal = document.getElementById('search-modal');
+    const input = document.getElementById('search-input');
+    const closeBtn = document.getElementById('search-close');
+    const resultsList = document.getElementById('search-results');
+    const emptyState = document.getElementById('search-empty');
+    
+    if (!modal || !input) return;
+
+    const openSearch = () => {
+      modal.setAttribute('aria-hidden', 'false');
+      input.focus();
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeSearch = () => {
+      modal.setAttribute('aria-hidden', 'true');
+      input.value = '';
+      resultsList.innerHTML = '';
+      emptyState.style.display = 'none';
+      document.body.style.overflow = '';
+    };
+
+    window.addEventListener('open-search', openSearch);
+    closeBtn.addEventListener('click', closeSearch);
+    
+    // Close on escape
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') {
+        closeSearch();
+      }
+      // Ctrl+K to open
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        openSearch();
+      }
+    });
+
+    // Close on click outside
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeSearch();
+    });
+
+    input.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      resultsList.innerHTML = '';
+      
+      if (!query) {
+        emptyState.style.display = 'none';
+        return;
+      }
+
+      const results = searchData.filter(post => {
+        return post.title.toLowerCase().includes(query) || 
+               post.description.toLowerCase().includes(query) ||
+               post.keywords.toLowerCase().includes(query);
+      });
+
+      if (results.length === 0) {
+        emptyState.style.display = 'block';
+      } else {
+        emptyState.style.display = 'none';
+        results.forEach(result => {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = `/blog/${result.slug}/`;
+          a.className = 'search-result-item';
+          
+          const title = document.createElement('div');
+          title.className = 'search-result-title';
+          title.textContent = result.title;
+          
+          const desc = document.createElement('div');
+          desc.className = 'search-result-desc';
+          desc.textContent = result.description;
+          
+          a.appendChild(title);
+          a.appendChild(desc);
+          li.appendChild(a);
+          resultsList.appendChild(li);
+        });
+      }
+    });
+  });
+</script>
+
+<style>
+  .search-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(11, 18, 32, 0.75);
+    backdrop-filter: blur(8px);
+    z-index: 100000;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 10vh;
+    opacity: 1;
+    transition: opacity 0.2s;
+  }
+  .search-overlay[aria-hidden="true"] {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .search-container {
+    background: var(--surface);
+    width: 100%;
+    max-width: 600px;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border-strong);
+    overflow: hidden;
+    transform: translateY(0);
+    transition: transform 0.2s;
+  }
+  .search-overlay[aria-hidden="true"] .search-container {
+    transform: translateY(-20px);
+  }
+  .search-header {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--border-strong);
+    padding: 16px;
+  }
+  #search-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-size: 1.25rem;
+    outline: none;
+  }
+  #search-input::placeholder {
+    color: var(--text-4);
+  }
+  .close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-3);
+    cursor: pointer;
+    padding: 8px;
+  }
+  .close-btn:hover {
+    color: var(--text);
+  }
+  .search-results-wrapper {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  .search-results-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .search-result-item {
+    display: block;
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+  }
+  .search-result-item:hover {
+    background: var(--bg-2);
+  }
+  .search-result-title {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+  }
+  .search-result-desc {
+    color: var(--text-3);
+    font-size: 0.9rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .search-empty {
+    padding: 32px;
+    text-align: center;
+    color: var(--text-4);
+  }
+</style>

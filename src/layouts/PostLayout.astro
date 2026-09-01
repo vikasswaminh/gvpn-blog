@@ -3,13 +3,13 @@ import type { CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import { SITE } from '../config';
-import { readingTime } from '../utils/posts';
+import { readingTime, getPublishedPosts } from '../utils/posts';
 
 interface Props {
   post: CollectionEntry<'blog'>;
 }
 const { post } = Astro.props;
-const { title, description, pubDate, updatedDate, author, tags, cover } = post.data;
+const { title, description, pubDate, updatedDate, author, tags, cover, seoKeywords } = post.data;
 const minutes = readingTime(post.body);
 const canonical = new URL(`/blog/${post.slug}/`, Astro.site).href;
 
@@ -25,49 +25,180 @@ const jsonLd = {
   mainEntityOfPage: canonical,
   ...(cover ? { image: new URL(cover, Astro.site).href } : {}),
 };
+
+const allPosts = await getPublishedPosts();
 ---
 
 <BaseLayout
   title={title}
   description={description}
   image={cover}
+  seoKeywords={seoKeywords}
   article={{
     publishedTime: pubDate.toISOString(),
     modifiedTime: (updatedDate ?? pubDate).toISOString(),
     author: author ?? SITE.author,
     tags,
   }}
+  bodyClass="no-grid"
 >
-  <article class="post">
-    <header class="post-header">
-      <p class="post-eyebrow"><a href="/">← All posts</a></p>
-      <h1 class="post-title">{title}</h1>
-      <p class="post-meta">
-        <FormattedDate date={pubDate} />
-        <span aria-hidden="true">·</span>
-        <span>{minutes} min read</span>
-        {author && <span aria-hidden="true">·</span>}
-        {author && <span>{author}</span>}
-      </p>
-      {
-        tags && tags.length > 0 && (
-          <p class="post-tags">
-            {tags.map((t) => (
-              <a class="tag" href={`/tags/${t}/`}>
-                #{t}
-              </a>
+  <div id="progress-container">
+    <div id="progress-bar"></div>
+  </div>
+  <main class="post-layout" style="padding: 32px 0 48px 0;">
+    <div class="wrap post-body-grid">
+      
+      <!-- LEFT SIDEBAR -->
+      <aside class="nh-sidebar">
+        <div>
+          <span class="nh-sidebar-pill pill-purple">STRATEGY & ARCHITECTURE</span>
+          <nav class="nh-sidebar-nav">
+            {[...allPosts].reverse().map(p => (
+              <a href={`/blog/${p.slug}/`} class="nh-sidebar-link">{p.data.title}</a>
             ))}
-          </p>
-        )
-      }
-    </header>
-    {cover && <img class="post-cover" src={cover} alt="" loading="lazy" />}
-    <div class="prose">
-      <slot />
+          </nav>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <article class="post-content">
+        <header class="post-header">
+          <div class="post-meta-top">
+            {tags && tags.length > 0 && (
+              <>
+                <span class="mag-pill" style="background: #FFF7ED; color: #F97316; font-size: 11px; padding: 4px 12px; border-radius: 100px; font-weight: 700; text-transform: uppercase;">{tags[0]}</span>
+                <span class="meta-dot">•</span>
+              </>
+            )}
+            <span class="meta-date">{pubDate.toISOString().split('T')[0]}</span>
+            <span class="meta-dot">•</span>
+            <span class="meta-read">{minutes} MIN READ</span>
+          </div>
+          <h1 class="post-h1">{title}</h1>
+          {description && <p class="post-desc">{description}</p>}
+        </header>
+        
+        <div class="post-author-row">
+          <div class="author-block">
+            <div class="author-avatar" style="background: #FFF7ED; color: #F97316;">⚡</div>
+            <div class="author-info">
+              <div class="author-name">{author ?? SITE.author}</div>
+              <div class="author-role">Network Architecture</div>
+            </div>
+          </div>
+          
+          {tags && tags.length > 0 && (
+            <div class="post-tags">
+              {tags.map((tag: string) => (
+                <span class="tag">#{tag}</span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div class="prose">
+          <slot />
+        </div>
+      </article>
+
+      <!-- RIGHT SIDEBAR -->
+      <aside class="nh-sidebar">
+        <div>
+          <span class="nh-sidebar-pill pill-orange">ENGINEERING GUIDES</span>
+          <nav class="nh-sidebar-nav">
+            {allPosts.map(p => (
+              <a href={`/blog/${p.slug}/`} class="nh-sidebar-link">{p.data.title}</a>
+            ))}
+          </nav>
+        </div>
+      </aside>
+
     </div>
-    <footer class="post-footer">
-      <a class="btn" href={SITE.marketingUrl}>Learn more about {SITE.brand} →</a>
-    </footer>
-  </article>
+  </main>
+  
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tocList = document.getElementById('toc-list');
+      if (!tocList) return;
+      const headings = document.querySelectorAll('.prose h2, .prose h3');
+      
+      headings.forEach(h => {
+        if (!h.id) {
+          h.id = h.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        }
+        if (!h.id) return;
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = '#' + h.id;
+        a.textContent = h.textContent.replace(/^[0-9]+\.\s*/, ''); 
+        if (h.tagName === 'H3') a.style.paddingLeft = '32px';
+        li.appendChild(a);
+        tocList.appendChild(li);
+      });
+
+      let currentId = '';
+      const onScroll = () => {
+        const scrollY = window.scrollY;
+        let mostVisibleId = '';
+        
+        headings.forEach(h => {
+          const top = h.offsetTop;
+          // Offset by 120px to account for the fixed header
+          if (scrollY >= top - 120) {
+            mostVisibleId = h.id;
+          }
+        });
+        
+        // Highlight the last item if scrolled to the absolute bottom
+        if (window.innerHeight + scrollY >= document.documentElement.scrollHeight - 10) {
+          if (headings.length > 0) {
+            mostVisibleId = headings[headings.length - 1].id;
+          }
+        }
+        
+        if (mostVisibleId && currentId !== mostVisibleId) {
+          currentId = mostVisibleId;
+          document.querySelectorAll('.toc-list a').forEach(a => a.classList.remove('active'));
+          const activeA = document.querySelector(`.toc-list a[href="#${currentId}"]`);
+          if (activeA) activeA.classList.add('active');
+        }
+      };
+      
+      window.addEventListener('scroll', onScroll, { passive: true });
+      setTimeout(onScroll, 100); // Trigger once on load
+      
+      // Reading Progress Bar
+      const progressBar = document.getElementById('progress-bar');
+      const updateProgress = () => {
+        if (!progressBar) return;
+        const scrollTotal = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollPos = document.documentElement.scrollTop;
+        if (scrollTotal > 0) {
+          const percent = (scrollPos / scrollTotal) * 100;
+          progressBar.style.width = percent + '%';
+        }
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress();
+    });
+  </script>
+  
+  <style>
+    #progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      z-index: 9999;
+    }
+    #progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38BDF8, #a855f7);
+      transition: width 0.1s ease-out;
+    }
+  </style>
 </BaseLayout>

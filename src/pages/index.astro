@@ -1,47 +1,124 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
-import { SITE } from '../config';
 import { getPublishedPosts, readingTime } from '../utils/posts';
 
-const posts = await getPublishedPosts();
-const featured = posts[0];
-const rest = posts.slice(1);
+const allPosts = await getPublishedPosts();
+
+// Helper to find a post by slug
+const getPost = (slug: string) => allPosts.find(p => p.slug === slug);
+
+const featured = getPost('cloud-wireguard-vpn-meshwg');
+
+const gridSlugs = [
+  'how-to-build-a-multi-location-wireguard-network-with-routers',
+  'how-to-set-up-a-router-vpn-without-installing-vpn-software',
+  'managed-vs-self-hosted-wireguard-vpn-2026',
+  'wireguard-site-to-site-vpn-multiple-locations',
+  'wireguard-nat-traversal-cgnat-firewalls-2026',
+  'manage-multiple-wireguard-tunnels-mesh-vpn-2026',
+  'mesh-vpn-vs-ipsec-vs-sdwan-2026'
+];
+const gridPosts = gridSlugs.map(getPost).filter(Boolean);
+
+const leftSidebarSlugs = [
+  'mesh-vpn-vs-ipsec-vs-sdwan-2026',
+  'branch-office-vpn-smb-rollout-playbook-2026',
+  'sd-wan-alternatives-2026',
+  'managed-vs-self-hosted-wireguard-vpn-2026',
+  'manage-multiple-wireguard-tunnels-mesh-vpn-2026'
+];
+const leftSidebarPosts = leftSidebarSlugs.map(getPost).filter(Boolean);
+
+const rightSidebarSlugs = [
+  'how-to-set-up-a-router-vpn-without-installing-vpn-software',
+  'wireguard-site-to-site-vpn-multiple-locations',
+  'wireguard-nat-traversal-cgnat-firewalls-2026',
+  'wireguard-site-to-site-vpn-how-it-works-2026',
+  'tp-link-site-to-site-vpn-wireguard-2026'
+];
+const rightSidebarPosts = rightSidebarSlugs.map(getPost).filter(Boolean);
 ---
 
 <BaseLayout>
-  <section class="hero">
-    <h1 class="hero-title">{SITE.brand} <span>Blog</span></h1>
-    <p class="hero-tagline">{SITE.description}</p>
+  <section class="mag-section">
+    <div class="mag-wrap">
+      
+      <!-- LEFT SIDEBAR -->
+      <aside class="mag-sidebar mag-left">
+        <div class="mag-pill pill-purple">STRATEGY & ARCHITECTURE</div>
+        <ul class="mag-list">
+           {rightSidebarPosts.map(p => (
+            <li>
+              <a href={`/blog/${p.slug}/`} class="mag-list-link">{p.data.title}</a>
+            </li>
+          ))}
+        </ul>
+      </aside>
+
+      <!-- CENTER MAIN -->
+      <main class="mag-center">
+        <div class="mag-header">
+          <h1 class="mag-h1">MeshWG Engineering & Strategy Blog</h1>
+          <p class="mag-desc">Expert articles on mesh networks, WireGuard, routing, & IT infrastructure</p>
+        </div>
+
+        <div class="mag-pill-row" style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
+          <div class="mag-pill pill-blue" style="background: #1F4FD8; color: white; display: flex; align-items: center; gap: 6px; margin-bottom: 0;"><span style="color: #f97316; font-size: 1.2em;">🔥</span> NEWEST ARTICLES</div>
+          <span class="mag-subtext" style="color: #6b7280; font-size: 14px; font-weight: 500;">Latest from our experts</span>
+        </div>
+
+        <!-- Featured Post -->
+        {featured && (
+          <a href={`/blog/${featured.slug}/`} class="mag-featured hover-card" data-tilt>
+            <div class="feat-img">
+              {featured.data.cover && <img src={featured.data.cover} alt="" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;" />}
+              <div class="mesh-bg" style="opacity: 0.2;"></div>
+            </div>
+            <div class="feat-content">
+              <div class="mag-pill-row" style="border-bottom: 0; padding-bottom: 0; margin-bottom: 12px;">
+                <div class="mag-pill pill-orange">engineering guide</div>
+                <div class="mag-pill pill-red">NEW</div>
+              </div>
+              <h2 class="feat-t">{featured.data.title}</h2>
+              <p class="feat-d">{featured.data.description}</p>
+              <div class="feat-meta">
+                <span>{readingTime(featured.body)} min read</span>
+                <span class="dot">·</span>
+                <span class="read-link">Read article &rarr;</span>
+              </div>
+            </div>
+          </a>
+        )}
+
+        <!-- Grid Posts -->
+        <div class="mag-grid">
+          {gridPosts.map((p) => (
+            <PostCard
+              url={`/blog/${p.slug}/`}
+              title={p.data.title}
+              description={p.data.description}
+              pubDate={p.data.pubDate}
+              tags={p.data.tags}
+              cover={p.data.cover}
+              minutes={readingTime(p.body).toString()}
+            />
+          ))}
+        </div>
+      </main>
+
+      <!-- RIGHT SIDEBAR -->
+      <aside class="mag-sidebar mag-right">
+        <div class="mag-pill pill-orange">ENGINEERING GUIDES</div>
+        <ul class="mag-list">
+          {leftSidebarPosts.map(p => (
+            <li>
+              <a href={`/blog/${p.slug}/`} class="mag-list-link">{p.data.title}</a>
+            </li>
+          ))}
+        </ul>
+      </aside>
+
+    </div>
   </section>
-
-  {posts.length === 0 && <p class="empty">No posts yet — check back soon.</p>}
-
-  {
-    featured && (
-      <a class="featured" href={`/blog/${featured.slug}/`}>
-        <span class="featured-label">Latest</span>
-        <h2 class="featured-title">{featured.data.title}</h2>
-        <p class="featured-desc">{featured.data.description}</p>
-        <span class="featured-more">Read article →</span>
-      </a>
-    )
-  }
-
-  {
-    rest.length > 0 && (
-      <div class="post-list">
-        {rest.map((p) => (
-          <PostCard
-            url={`/blog/${p.slug}/`}
-            title={p.data.title}
-            description={p.data.description}
-            pubDate={p.data.pubDate}
-            tags={p.data.tags}
-            minutes={readingTime(p.body)}
-          />
-        ))}
-      </div>
-    )
-  }
 </BaseLayout>
