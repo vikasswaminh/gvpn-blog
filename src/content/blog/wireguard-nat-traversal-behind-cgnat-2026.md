@@ -4,7 +4,7 @@ description: 'Complete 2026 engineering guide to WireGuard NAT Traversal. Learn 
 pubDate: 2026-08-31
 updatedDate: 2026-08-31
 author: 'MeshWG editorial team'
-tags: ['engineering guide']
+tags: ['engineering guide', 'wireguard', 'cgnat', 'nat traversal', 'networking']
 cover: '../../assets/images/nat_cgnat.png'
 seoKeywords: ["wireguard nat traversal","cgnat wireguard","vpn behind cgnat","port forwarding alternative"]
 ---

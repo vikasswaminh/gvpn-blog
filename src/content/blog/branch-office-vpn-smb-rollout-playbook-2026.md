@@ -4,7 +4,7 @@ description: 'How to roll out a branch-office VPN across 5 to 50 sites in 2026, 
 pubDate: 2026-05-16
 updatedDate: 2026-05-16
 author: 'MeshWG editorial team'
-tags: ['strategy guide']
+tags: ['strategy guide', 'smb', 'branch office', 'vpn', 'playbook']
 seoKeywords: ["branch office vpn","smb vpn rollout","wireguard smb playbook","multi site vpn"]
 cover: '../../assets/images/branch_office_vpn.png'
 ---

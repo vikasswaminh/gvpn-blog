@@ -5,19 +5,260 @@ import { getPublishedPosts } from '../../utils/posts';
 const posts = await getPublishedPosts();
 const counts = new Map<string, number>();
 for (const p of posts) for (const t of p.data.tags) counts.set(t, (counts.get(t) ?? 0) + 1);
-const tags = [...counts.entries()].sort((a, b) => b[1] - a[1]);
+const allTags = [...counts.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+
+// Categorize tags
+const categories = {
+  guides: { title: "Strategy & Guides", desc: "Playbooks, Engineering Guides, and Strategic Overviews", color: "#1d4ed8", bg: "#eff6ff", border: "#bfdbfe", tags: [] as [string, number][] },
+  tech: { title: "Technology & Protocols", desc: "WireGuard, VPNs, IPsec, CGNAT, and Core Protocols", color: "#6b21a8", bg: "#faf5ff", border: "#e9d5ff", tags: [] as [string, number][] },
+  infra: { title: "Infrastructure & Hardware", desc: "Routers, Cloud, Branch Offices, and SMB Deployments", color: "#0f766e", bg: "#f0fdfa", border: "#99f6e4", tags: [] as [string, number][] },
+  general: { title: "General Networking", desc: "Other networking topics and articles", color: "#c2410c", bg: "#fff7ed", border: "#fed7aa", tags: [] as [string, number][] }
+};
+
+for (const tag of allTags) {
+  const t = tag[0].toLowerCase();
+  if (t.includes('guide') || t.includes('playbook') || t.includes('deep-dive')) {
+    categories.guides.tags.push(tag);
+  } else if (t.includes('wireguard') || t.includes('vpn') || t.includes('ipsec') || t.includes('sd-wan') || t.includes('nat') || t.includes('cgnat') || t.includes('firewall') || t.includes('security')) {
+    categories.tech.tags.push(tag);
+  } else if (t.includes('router') || t.includes('hardware') || t.includes('cloud') || t.includes('smb') || t.includes('enterprise') || t.includes('site-to-site') || t.includes('infrastructure') || t.includes('multi-location') || t.includes('branch') || t.includes('setup') || t.includes('management') || t.includes('architecture')) {
+    categories.infra.tags.push(tag);
+  } else {
+    categories.general.tags.push(tag);
+  }
+}
+
+const activeCategories = Object.entries(categories).filter(([_, cat]) => cat.tags.length > 0);
 ---
 
-<BaseLayout title="Tags" description="Browse posts by topic.">
-  <h1 class="page-title">Tags</h1>
-  {tags.length === 0 && <p class="empty">No tags yet.</p>}
-  <div class="tag-cloud">
-    {
-      tags.map(([t, n]) => (
-        <a class="tag tag-lg" href={`/tags/${t}/`}>
-          #{t} <span class="tag-count">{n}</span>
-        </a>
-      ))
-    }
+<BaseLayout title="Topics Taxonomy | MeshWG Blog" description="Explore our network architecture, VPN, and engineering guides by topic.">
+  <div class="taxonomy-page-wrapper">
+    <div class="wrap">
+      
+      <!-- SEO Hero Section -->
+      <header class="seo-hero">
+        <div class="eyebrow-badge mono">TOPIC TAXONOMY</div>
+        <h1 class="hero-title">Tags & <span class="hero-title-blog">Category</span></h1>
+        <p class="hero-tagline">
+          Browse our complete directory of {allTags.length} networking topics. Explore comprehensive engineering guides, VPN configuration playbooks, and network architecture strategies.
+        </p>
+        
+        <!-- SEO-friendly Jump Links -->
+        <nav class="jump-links" aria-label="Category navigation">
+          {activeCategories.map(([key, cat]) => (
+            <a href={`#${key}`} class="jump-link" style={`--cat-color: ${cat.color}`}>
+              <span class="dot" style={`background: ${cat.color}`}></span>
+              {cat.title}
+            </a>
+          ))}
+        </nav>
+      </header>
+
+      <!-- Bento Box Layout for SEO -->
+      <main class="bento-grid">
+        {activeCategories.map(([key, cat]) => (
+          <section id={key} class="bento-card" style={`--card-color: ${cat.color}; --card-bg: ${cat.bg}; border-color: ${cat.border}`}>
+            <header class="bento-header" style={`background: ${cat.bg}`}>
+              <h2 class="bento-title" style={`color: ${cat.color}`}>{cat.title}</h2>
+              <p class="bento-desc">{cat.desc}</p>
+            </header>
+            
+            <ul class="bento-tag-list" aria-label={`Topics under ${cat.title}`}>
+              {cat.tags.map(([t, n]) => (
+                <li class="bento-tag-item">
+                  <a href={`/tags/${t}/`} class="bento-tag-pill">
+                    <span class="tag-hash" style={`color: ${cat.color}`}>#</span>
+                    <span class="tag-name">{t}</span>
+                    <span class="tag-count mono">{n}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </main>
+
+    </div>
   </div>
 </BaseLayout>
+
+<style>
+  .mono { font-family: var(--font-mono); }
+  
+  .taxonomy-page-wrapper {
+    background: #f8fafc;
+    min-height: 100vh;
+    padding-top: 60px;
+    padding-bottom: 100px;
+  }
+  
+  .seo-hero {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 60px;
+  }
+  
+  .eyebrow-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #1d4ed8;
+    background: #eff6ff;
+    padding: 6px 14px;
+    border-radius: 99px;
+    margin-bottom: 16px;
+  }
+  
+  .hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--text);
+    margin: 0 0 16px 0;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .hero-title-blog { color: #0B257A; }
+  
+  .hero-tagline {
+    font-size: 1.125rem;
+    color: var(--text-2);
+    margin: 0 0 32px 0;
+    line-height: 1.6;
+  }
+
+  .jump-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+  
+  .jump-link {
+    display: inline-flex;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    border-radius: 99px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text);
+    text-decoration: none;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  }
+  .jump-link:hover {
+    border-color: var(--cat-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  .jump-link .dot {
+    width: 8px; height: 8px; border-radius: 50%; margin-right: 8px;
+  }
+
+  /* Bento Grid */
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 24px;
+    align-items: stretch;
+  }
+  @media (max-width: 600px) {
+    .bento-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .bento-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    transition: all 0.3s;
+    scroll-margin-top: 100px;
+  }
+  .bento-card:hover {
+    box-shadow: 0 12px 24px rgba(0,0,0,0.06);
+    border-color: var(--card-color);
+  }
+
+  .bento-header {
+    padding: 24px 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  .bento-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.01em;
+  }
+  .bento-desc {
+    font-size: 0.95rem;
+    color: var(--text-2);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .bento-tag-list {
+    list-style: none;
+    padding: 24px 32px;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    flex-grow: 1;
+    align-content: flex-start;
+  }
+  .bento-tag-item {
+    margin: 0;
+    padding: 0;
+  }
+
+  .bento-tag-pill {
+    display: inline-flex;
+    align-items: center;
+    background: var(--bg-2);
+    border: 1px solid transparent;
+    padding: 6px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .bento-tag-pill:hover {
+    background: #ffffff;
+    border-color: var(--card-color);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transform: translateY(-2px);
+  }
+  
+  .tag-hash {
+    font-weight: 800;
+    margin-right: 6px;
+    font-family: var(--font-mono);
+  }
+  .tag-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text);
+    margin-right: 8px;
+  }
+  .bento-tag-pill:hover .tag-name {
+    color: var(--card-color);
+  }
+  .tag-count {
+    font-size: 0.7rem;
+    color: var(--text-3);
+    background: var(--border);
+    padding: 2px 6px;
+    border-radius: 99px;
+    font-weight: 700;
+  }
+  .bento-tag-pill:hover .tag-count {
+    background: var(--card-color);
+    color: #ffffff;
+  }
+</style>

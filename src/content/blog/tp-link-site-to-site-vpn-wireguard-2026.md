@@ -4,7 +4,7 @@ description: 'Connect two, three, or thirty TP-Link branches with WireGuard site
 pubDate: 2026-05-16
 updatedDate: 2026-05-16
 author: 'MeshWG editorial team'
-tags: ['engineering guide']
+tags: ['engineering guide', 'tp-link', 'wireguard', 'site-to-site', 'hardware']
 seoKeywords: ["tp link site to site vpn","wireguard on tp link","router vpn setup tp link"]
 cover: '../../assets/images/tp_link_vpn_new.png'
 ---

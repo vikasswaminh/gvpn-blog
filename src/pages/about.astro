@@ -4,14 +4,29 @@ import { SITE } from '../config';
 ---
 
 <BaseLayout title="About" description={`About the ${SITE.brand} blog.`}>
-  <article class="post">
-    <h1 class="post-title">About</h1>
-    <div class="prose">
-      <p>Welcome to the {SITE.brand} blog — {SITE.description}</p>
-      <p>
-        Looking for the product itself? Head to
-        <a href={SITE.marketingUrl}>{SITE.marketingLabel}</a>.
-      </p>
-    </div>
-  </article>
+  <div class="wrap about-page">
+    <article class="post">
+      <h1 class="post-title">About</h1>
+      <div class="prose">
+        <p>Welcome to the {SITE.brand} blog — {SITE.description}</p>
+        <p>
+          Looking for the product itself? Head to
+          <a href={SITE.marketingUrl}>{SITE.marketingLabel}</a>.
+        </p>
+      </div>
+    </article>
+  </div>
 </BaseLayout>
+
+<style>
+  .about-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    text-align: center;
+  }
+  .about-page .prose {
+    margin: 0 auto;
+  }
+</style>

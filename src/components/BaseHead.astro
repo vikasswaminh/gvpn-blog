@@ -73,3 +73,32 @@ const fullTitle = title === SITE.title ? title : `${title} · ${SITE.brand} Blog
   title={`${SITE.brand} Blog`}
   href="/rss.xml"
 />
+
+{
+  article && (
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": title,
+      "description": description,
+      "image": ogImage || `${Astro.site}default-og.png`,
+      "url": canonical,
+      "author": {
+        "@type": "Person",
+        "name": article.author || SITE.brand
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": SITE.brand,
+        "logo": {
+          "@type": "ImageObject",
+          "url": `${Astro.site}favicon.svg`
+        }
+      },
+      "datePublished": article.publishedTime,
+      "dateModified": article.modifiedTime || article.publishedTime,
+      "keywords": seoKeywords ? seoKeywords.join(", ") : undefined
+    })} />
+  )
+}
+
