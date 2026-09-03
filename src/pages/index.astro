@@ -18,27 +18,16 @@ const gridSlugs = [
   'wireguard-nat-traversal-cgnat-firewalls-2026',
   'manage-multiple-wireguard-tunnels-mesh-vpn-2026',
   'mesh-vpn-vs-ipsec-vs-sdwan-2026',
-  'tp-link-site-to-site-vpn-wireguard-2026'
+  'tp-link-site-to-site-vpn-wireguard-2026',
+  'branch-office-vpn-smb-rollout-playbook-2026',
+  'sd-wan-alternatives-2026'
 ];
 const gridPosts = gridSlugs.map(getPost).filter(Boolean);
 
-const leftSidebarSlugs = [
-  'mesh-vpn-vs-ipsec-vs-sdwan-2026',
-  'branch-office-vpn-smb-rollout-playbook-2026',
-  'sd-wan-alternatives-2026',
-  'managed-vs-self-hosted-wireguard-vpn-2026',
-  'manage-multiple-wireguard-tunnels-mesh-vpn-2026'
-];
-const leftSidebarPosts = leftSidebarSlugs.map(getPost).filter(Boolean);
+// Dynamically distribute based on tags
+const strategyPosts = allPosts.filter(p => p.data.tags.some(tag => tag.toLowerCase().includes('strategy') || tag.toLowerCase().includes('architecture') || tag.toLowerCase().includes('protocol'))).slice(0, 5);
 
-const rightSidebarSlugs = [
-  'how-to-set-up-a-router-vpn-without-installing-vpn-software',
-  'wireguard-site-to-site-vpn-multiple-locations',
-  'wireguard-nat-traversal-cgnat-firewalls-2026',
-  'wireguard-site-to-site-vpn-how-it-works-2026',
-  'tp-link-site-to-site-vpn-wireguard-2026'
-];
-const rightSidebarPosts = rightSidebarSlugs.map(getPost).filter(Boolean);
+const engineeringPosts = allPosts.filter(p => p.data.tags.some(tag => tag.toLowerCase().includes('engineering'))).slice(0, 5);
 ---
 
 <BaseLayout>
@@ -49,7 +38,7 @@ const rightSidebarPosts = rightSidebarSlugs.map(getPost).filter(Boolean);
       <aside class="mag-sidebar mag-left">
         <div class="mag-pill pill-purple">STRATEGY & ARCHITECTURE</div>
         <ul class="mag-list">
-           {rightSidebarPosts.map(p => (
+           {strategyPosts.map(p => (
             <li>
               <a href={`/blog/${p.slug}/`} class="mag-list-link">{p.data.title}</a>
             </li>
@@ -112,7 +101,7 @@ const rightSidebarPosts = rightSidebarSlugs.map(getPost).filter(Boolean);
       <aside class="mag-sidebar mag-right">
         <div class="mag-pill pill-orange">ENGINEERING GUIDES</div>
         <ul class="mag-list">
-          {leftSidebarPosts.map(p => (
+          {engineeringPosts.map(p => (
             <li>
               <a href={`/blog/${p.slug}/`} class="mag-list-link">{p.data.title}</a>
             </li>

@@ -4,7 +4,7 @@ description: 'Comprehensive architectural comparison of self-hosted (Headscale, 
 pubDate: 2026-08-24
 updatedDate: 2026-08-24
 author: 'MeshWG editorial team'
-tags: ['engineering guide']
+tags: ['strategy guide']
 seoKeywords: ["Cloud WireGuard VPN", "Managed WireGuard", "Self-Hosted WireGuard", "WireGuard Mesh Network", "Headscale vs Tailscale", "Netmaker Deployment", "WireGuard NAT Traversal", "Zero Trust Overlay Network", "Kernel WireGuard vs Userspace", "DERP Relaying", "Noise Protocol Handshake", "eBPF Mesh Routing", "WireGuard SSO OIDC Integration", "Split Tunneling WG"]
 cover: '/images/self_hosted_wireguard.png'
 ---
