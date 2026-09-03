@@ -4,14 +4,14 @@ import { defineCollection, z } from 'astro:content';
 // with the frontmatter below. See CONTRIBUTING.md for the authoring guide.
 const blog = defineCollection({
   type: 'content',
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     description: z.string(),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     author: z.string().optional(),
     tags: z.array(z.string()).default([]),
-    cover: z.string().optional(),
+    cover: image().optional(),
     draft: z.boolean().default(false),
     seoKeywords: z.array(z.string()).optional(),
   }),

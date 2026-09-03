@@ -5,7 +5,7 @@ pubDate: 2026-05-16
 author: 'MeshWG editorial team'
 tags: ['strategy guide']
 seoKeywords: ["Mesh VPN", "IPsec", "SD-WAN", "Private Network 2026", "WireGuard SDWAN alternative"]
-cover: '/images/vs_ipsec_sdwan.png'
+cover: '../../assets/images/vs_ipsec_sdwan.png'
 ---
 
 <div class="tldr-box">

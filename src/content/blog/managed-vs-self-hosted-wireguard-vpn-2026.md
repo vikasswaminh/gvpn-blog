@@ -6,7 +6,7 @@ updatedDate: 2026-08-24
 author: 'MeshWG editorial team'
 tags: ['strategy guide']
 seoKeywords: ["Cloud WireGuard VPN", "Managed WireGuard", "Self-Hosted WireGuard", "WireGuard Mesh Network", "Headscale vs Tailscale", "Netmaker Deployment", "WireGuard NAT Traversal", "Zero Trust Overlay Network", "Kernel WireGuard vs Userspace", "DERP Relaying", "Noise Protocol Handshake", "eBPF Mesh Routing", "WireGuard SSO OIDC Integration", "Split Tunneling WG"]
-cover: '/images/self_hosted_wireguard.png'
+cover: '../../assets/images/self_hosted_wireguard.png'
 ---
 
 

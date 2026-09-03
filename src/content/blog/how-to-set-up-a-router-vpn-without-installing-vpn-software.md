@@ -6,7 +6,7 @@ updatedDate: 2026-08-25
 author: 'MeshWG editorial team'
 tags: ['engineering guide']
 seoKeywords: ["router vpn without software","set up router vpn","openwrt wireguard setup","meshwg router integration","native router vpn gateway","policy based routing wireguard", "router level zero trust", "wireguard mesh router configuration", "iptables kill switch openwrt", "unmanaged device vpn protection", "kernel level wireguard routing"]
-cover: '/images/router_vpn_setup.png'
+cover: '../../assets/images/router_vpn_setup.png'
 ---
 
 <div class="tldr-box">

@@ -6,7 +6,7 @@ updatedDate: 2026-08-31
 author: 'Senior Infrastructure & Network Systems Architect'
 tags: ['engineering guide']
 seoKeywords: ["Cloud WireGuard VPN", "hybrid cloud-to-branch network", "MeshWG", "WireGuard cloud servers", "AWS VPC WireGuard", "GCP WireGuard"]
-cover: '/images/cloud_wireguard_vpn.png'
+cover: '../../assets/images/cloud_wireguard_vpn.png'
 ---
 
 <div class="bp-intro">

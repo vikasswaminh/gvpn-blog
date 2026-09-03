@@ -6,7 +6,7 @@ updatedDate: 2026-08-21
 author: 'MeshWG engineering team'
 tags: ['engineering guide']
 seoKeywords: ["wireguard nat traversal", "wireguard cgnat", "udp hole punching wireguard", "persistentkeepalive wireguard", "wireguard behind firewall", "wireguard dynamic endpoint", "relay node vpn"]
-cover: '/images/nat_firewalls.png'
+cover: '../../assets/images/nat_firewalls.png'
 ---
 
 

@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
 import { getPublishedPosts, readingTime } from '../utils/posts';
@@ -62,7 +63,7 @@ const engineeringPosts = allPosts.filter(p => p.data.tags.some(tag => tag.toLowe
         {featured && (
           <a href={`/blog/${featured.slug}/`} class="mag-featured hover-card" data-tilt>
             <div class="feat-img">
-              {featured.data.cover && <img src={featured.data.cover} alt={featured.data.title} style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;" />}
+              {featured.data.cover && <Image src={featured.data.cover} alt={featured.data.title} width={1200} height={630} style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;" />}
               <div class="mesh-bg" style="opacity: 0.2;"></div>
             </div>
             <div class="feat-content">

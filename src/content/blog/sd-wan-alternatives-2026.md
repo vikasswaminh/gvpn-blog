@@ -6,7 +6,7 @@ updatedDate: 2026-05-16
 author: 'MeshWG editorial team'
 tags: ['strategy guide']
 seoKeywords: ["sd wan alternatives","wireguard sd wan","meshwg sd wan replacement"]
-cover: '/images/sdwan_alternatives.png'
+cover: '../../assets/images/sdwan_alternatives.png'
 ---
 
 <div class="bp-intro"> <!-- § Why look for alternatives --> <div class="tldr-box"> <h3>TL;DR</h3> <p>

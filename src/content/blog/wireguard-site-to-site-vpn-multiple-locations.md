@@ -6,7 +6,7 @@ updatedDate: 2026-08-24
 author: 'MeshWG editorial team'
 tags: ['engineering guide']
 seoKeywords: ["WireGuard Site-to-Site VPN", "WireGuard connect multiple locations", "WireGuard multi-site setup", "WireGuard site to site router configuration", "WireGuard site to site subnet routing", "WireGuard mesh network", "MeshWG site-to-site VPN"]
-cover: '/images/branch_office_vpn.png'
+cover: '../../assets/images/branch_office_vpn.png'
 ---
 
 

@@ -5,7 +5,7 @@ pubDate: 2026-08-31
 updatedDate: 2026-08-31
 author: 'MeshWG editorial team'
 tags: ['engineering guide']
-cover: '/nat_traversal_cover.png'
+cover: '../../assets/images/nat_cgnat.png'
 seoKeywords: ["wireguard nat traversal","cgnat wireguard","vpn behind cgnat","port forwarding alternative"]
 ---
 

@@ -6,7 +6,7 @@ updatedDate: 2026-08-20
 author: 'MeshWG editorial team'
 tags: ['strategy guide']
 seoKeywords: ["wireguard mesh vpn", "manage multiple wireguard tunnels", "wireguard mesh", "wireguard site to site mesh", "wireguard automation", "wireguard peer management", "full mesh wireguard", "wireguard orchestration"]
-cover: '/images/manage_tunnels.png'
+cover: '../../assets/images/manage_tunnels.png'
 ---
 
 Executive Summary

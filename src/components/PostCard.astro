@@ -1,4 +1,7 @@
 ---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
 interface Props {
   url: string;
   title: string;
@@ -8,20 +11,31 @@ interface Props {
   minutes?: string;
   pillText?: string;
   pillColor?: 'orange' | 'red' | 'purple';
-  cover?: string;
+  cover?: ImageMetadata;
 }
 
-const { url, title, description, pubDate, tags, minutes, pillText = 'engineering guide', pillColor = 'orange', cover } = Astro.props;
+const { url, title, description, pubDate, tags, minutes, cover } = Astro.props;
+
+let finalPillText = 'ENGINEERING GUIDE';
+let finalPillColor = 'orange';
+
+if (tags && tags.length > 0) {
+  const hasStrategy = tags.some(tag => tag.toLowerCase().includes('strategy') || tag.toLowerCase().includes('architecture') || tag.toLowerCase().includes('protocol'));
+  if (hasStrategy) {
+    finalPillText = 'STRATEGY & ARCHITECTURE';
+    finalPillColor = 'purple';
+  }
+}
 ---
 
 <a href={url} class="mag-card hover-card" data-tilt>
   {cover && (
     <div class="card-img-container">
-      <img src={cover} alt={title} class="card-img" width="800" height="400" loading="lazy" decoding="async" />
+      <Image src={cover} alt={title} class="card-img" width={800} height={400} loading="lazy" decoding="async" />
     </div>
   )}
   <div class="card-content">
-    <div class={`mag-pill pill-${pillColor}`}>{pillText}</div>
+    <div class={`mag-pill pill-${finalPillColor}`}>{finalPillText}</div>
     <h3 class="card-t">{title}</h3>
     <p class="card-d">{description}</p>
     {minutes && (

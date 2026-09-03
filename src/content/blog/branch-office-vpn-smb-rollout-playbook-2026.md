@@ -6,7 +6,7 @@ updatedDate: 2026-05-16
 author: 'MeshWG editorial team'
 tags: ['strategy guide']
 seoKeywords: ["branch office vpn","smb vpn rollout","wireguard smb playbook","multi site vpn"]
-cover: '/images/branch_office_vpn.png'
+cover: '../../assets/images/branch_office_vpn.png'
 ---
 
 <div class="bp-intro"> <p>

@@ -6,7 +6,7 @@ updatedDate: 2026-05-16
 author: 'MeshWG editorial team'
 tags: ['engineering guide']
 seoKeywords: ["tp link site to site vpn","wireguard on tp link","router vpn setup tp link"]
-cover: '/images/tp_link_vpn_new.png'
+cover: '../../assets/images/tp_link_vpn_new.png'
 ---
 
 <article class="post-block intro"> 

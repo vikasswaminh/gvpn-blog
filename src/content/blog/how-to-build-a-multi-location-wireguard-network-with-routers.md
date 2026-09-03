@@ -5,7 +5,8 @@ pubDate: 2026-08-27T00:00:00Z
 author: 'MeshWG editorial team'
 authorRole: 'Network Architecture'
 tags: ['engineering guide']
-seoKeywords: ["vpn", "wireguard", "meshwg", "network"]cover: '/multi-location-routers.png'
+seoKeywords: ["vpn", "wireguard", "meshwg", "network"]
+cover: '../../assets/images/multiple_locations.png'
 ---
 
 <div class="bp-intro">

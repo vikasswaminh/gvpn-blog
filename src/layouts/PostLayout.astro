@@ -23,16 +23,20 @@ const jsonLd = {
   author: { '@type': 'Organization', name: author ?? SITE.author },
   publisher: { '@type': 'Organization', name: SITE.brand },
   mainEntityOfPage: canonical,
-  ...(cover ? { image: new URL(cover, Astro.site).href } : {}),
+  ...(cover ? { image: new URL(cover.src, Astro.site).href } : {}),
 };
 
 const allPosts = await getPublishedPosts();
+
+const hasStrategy = tags && tags.some((tag: string) => tag.toLowerCase().includes('strategy') || tag.toLowerCase().includes('architecture') || tag.toLowerCase().includes('protocol'));
+const pillText = hasStrategy ? 'STRATEGY & ARCHITECTURE' : 'ENGINEERING GUIDE';
+const pillClass = hasStrategy ? 'mag-pill pill-purple' : 'mag-pill pill-orange';
 ---
 
 <BaseLayout
   title={title}
   description={description}
-  image={cover}
+  image={cover?.src}
   seoKeywords={seoKeywords}
   article={{
     publishedTime: pubDate.toISOString(),
@@ -66,7 +70,7 @@ const allPosts = await getPublishedPosts();
           <div class="post-meta-top">
             {tags && tags.length > 0 && (
               <>
-                <span class="mag-pill" style="background: #FFF7ED; color: #F97316; font-size: 11px; padding: 4px 12px; border-radius: 100px; font-weight: 700; text-transform: uppercase;">{tags[0]}</span>
+                <span class={pillClass} style="font-size: 11px; padding: 4px 12px; border-radius: 100px; font-weight: 700; text-transform: uppercase;">{pillText}</span>
                 <span class="meta-dot">•</span>
               </>
             )}

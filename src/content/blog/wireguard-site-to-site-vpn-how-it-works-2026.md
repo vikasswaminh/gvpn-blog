@@ -6,7 +6,7 @@ updatedDate: 2026-05-16
 author: 'MeshWG editorial team'
 tags: ['protocol deep-dive']
 seoKeywords: ["wireguard site to site vpn","how wireguard works","site to site vpn guide"]
-cover: '/images/how_it_works.png'
+cover: '../../assets/images/how_it_works.png'
 ---
 
 <div class="bp-intro"> <!-- Intro / UVP --> <p class="lede-p">
