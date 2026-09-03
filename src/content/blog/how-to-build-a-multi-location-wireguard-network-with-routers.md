@@ -5,7 +5,7 @@ pubDate: 2026-08-27T00:00:00Z
 author: 'MeshWG editorial team'
 authorRole: 'Network Architecture'
 tags: ['engineering guide']
-cover: '/multi-location-routers.png'
+seoKeywords: ["vpn", "wireguard", "meshwg", "network"]cover: '/multi-location-routers.png'
 ---
 
 <div class="bp-intro">
@@ -437,3 +437,5 @@ wg set wg0 peer OPENWRT_STORE_PUBLIC_KEY allowed-ips 172.16.255.50/32,10.150.0.0
   </div>
 
   
+
+> **Related Reading:** [Learn more about MeshWG VPN](/blog/cloud-wireguard-vpn-meshwg/)
