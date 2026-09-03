@@ -17,7 +17,7 @@ const { url, title, description, pubDate, tags, minutes, pillText = 'engineering
 <a href={url} class="mag-card hover-card" data-tilt>
   {cover && (
     <div class="card-img-container">
-      <img src={cover} alt={title} class="card-img" />
+      <img src={cover} alt={title} class="card-img" width="800" height="400" loading="lazy" decoding="async" />
     </div>
   )}
   <div class="card-content">
