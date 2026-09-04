@@ -229,8 +229,8 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); color: var(--text); m
 .prose li + li { margin-top: 0.75rem; }
 .prose blockquote { font-size: 1.25rem; font-style: italic; line-height: 1.6; margin: 2.5rem 0; padding: 1.25rem 2rem; border-left: 4px solid var(--accent); color: var(--text); background: var(--bg-2); border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
 .prose code { font-family: var(--font-mono); font-size: 0.85em; background: var(--bg-2); border: 1px solid var(--border); border-radius: 6px; padding: 0.2rem 0.4rem; color: var(--brand-red); font-weight: 500; }
-.prose pre { background: #0B1220; padding: 1.75rem; border-radius: var(--radius-lg); overflow-x: auto; margin: 2.5rem 0; border: 1px solid var(--border-strong); box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-.prose pre code { background: transparent; border: 0; padding: 0; color: #e2e8f0; font-size: 0.9em; font-weight: 400; font-family: var(--font-mono); }
+.prose pre { background: #F0F7FF !important; padding: 1.75rem; border-radius: var(--radius-lg); overflow-x: auto; margin: 2.5rem 0; border: 1px solid var(--border-strong); box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+.prose pre code { background: transparent; border: 0; padding: 0; color: var(--text-2); font-size: 0.9em; font-weight: 500; font-family: var(--font-mono); }
 .prose a:not(.btn) { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 2px; text-decoration-color: var(--accent-glow); color: var(--accent-strong); transition: all 0.2s ease; }
 .prose a:not(.btn):hover { text-decoration-color: var(--accent-strong); color: var(--accent); }
 
@@ -276,6 +276,8 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); color: var(--text); m
   .mag-wrap { grid-template-columns: 1fr; }
   .mag-sidebar { display: none; }
   .post-layout { grid-template-columns: 1fr; }
+  .post-body-grid { grid-template-columns: 1fr; }
+  .nh-sidebar { display: none; }
   .post-toc { display: none; }
   .foot-grid { grid-template-columns: 1fr; gap: 48px; }
   .foot-right { grid-template-columns: 1fr 1fr; }
