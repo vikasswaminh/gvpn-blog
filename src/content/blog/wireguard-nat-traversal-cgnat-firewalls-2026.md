@@ -4,7 +4,7 @@ description: 'Complete 2026 engineering guide to WireGuard NAT Traversal. Learn 
 pubDate: 2026-08-21
 updatedDate: 2026-08-21
 author: 'MeshWG engineering team'
-tags: ['engineering guide', 'wireguard', 'nat traversal', 'cgnat', 'firewalls', 'enterprise wireguard setup', 'mesh vpn architecture 2026', 'zero trust network access', 'wireguard routing guide']
+tags: ['engineering guide', 'wireguard', 'nat traversal', 'cgnat', 'firewalls', 'enterprise wireguard setup', 'mesh vpn architecture 2026', 'zero trust network access', 'wireguard routing guide', 'network hardware', 'cloud vpn', 'enterprise routing', 'router configuration', 'network management', 'mesh infrastructure', 'hardware deployment']
 seoKeywords: ["wireguard nat traversal", "wireguard cgnat", "udp hole punching wireguard", "persistentkeepalive wireguard", "wireguard behind firewall", "wireguard dynamic endpoint", "relay node vpn"]
 cover: '../../assets/images/nat_firewalls.png'
 ---

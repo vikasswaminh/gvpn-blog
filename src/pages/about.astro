@@ -27,8 +27,13 @@ import { SITE } from '../config';
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 60vh;
+    min-height: 80vh;
     text-align: center;
+    background-image: 
+      linear-gradient(to right, var(--border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+    background-size: 48px 48px;
+    background-position: center top;
   }
   .about-page .prose {
     margin: 0 auto;
