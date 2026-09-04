@@ -18,14 +18,15 @@ interface Props {
     tags?: string[];
   };
   bodyClass?: string;
+  noindex?: boolean;
 }
-const { title = SITE.title, description, image, seoKeywords, article, bodyClass } = Astro.props;
+const { title = SITE.title, description, image, seoKeywords, article, bodyClass, noindex } = Astro.props;
 ---
 
 <!doctype html>
 <html lang={SITE.locale} style={`--accent:${SITE.accent}`}>
   <head>
-    <BaseHead title={title} description={description} image={image} seoKeywords={seoKeywords} article={article} />
+    <BaseHead title={title} description={description} image={image} seoKeywords={seoKeywords} article={article} noindex={noindex} />
   </head>
   <body class={bodyClass}>
     <Header />

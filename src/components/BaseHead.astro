@@ -12,9 +12,10 @@ interface Props {
     author?: string;
     tags?: string[];
   };
+  noindex?: boolean;
 }
 
-const { title, description = SITE.description, image, seoKeywords, article } = Astro.props;
+const { title, description = SITE.description, image, seoKeywords, article, noindex } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImage = image ? new URL(image, Astro.site).href : undefined;
 const fullTitle = title === SITE.title ? title : `${title} · ${SITE.brand} Blog`;
@@ -25,6 +26,7 @@ const fullTitle = title === SITE.title ? title : `${title} · ${SITE.brand} Blog
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="canonical" href={canonical} />
 <meta name="generator" content={Astro.generator} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
 
 <!-- Google Fonts: Lato -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
