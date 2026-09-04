@@ -1,5 +1,5 @@
 ---
-title: 'Cloud WireGuard VPN: How to Connect Cloud Servers and Branch Networks with MeshWG'
+title: 'Cloud WireGuard VPN: Connect Cloud Servers and Branch Networks'
 description: 'Complete technical blueprint for designing, deploying, securing, and maintaining a high-performance hybrid cloud-to-branch network using MeshWG.'
 pubDate: 2026-08-31
 updatedDate: 2026-08-31

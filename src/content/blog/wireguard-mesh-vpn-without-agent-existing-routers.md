@@ -1,6 +1,6 @@
 ---
 title: 'WireGuard Mesh VPN Without an Agent: How It Works on Existing Routers'
-description: 'No agent, no new hardware. Learn how a WireGuard mesh VPN runs directly on the routers you already own — TP-Link, MikroTik, OpenWrt, Ubiquiti, OPNsense — with a cloud control plane handling keys, peers, and policy. Two-minute onboarding, CGNAT-native, encrypted peer-to-peer.'
+description: 'Run a WireGuard mesh VPN directly on existing routers (TP-Link, MikroTik, Ubiquiti) with a cloud control plane. Two-minute onboarding, CGNAT-native, encrypted peer-to-peer.'
 pubDate: 2026-09-04
 updatedDate: 2026-09-04
 author: 'MeshWG editorial team'

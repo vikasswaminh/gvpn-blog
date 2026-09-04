@@ -1,6 +1,6 @@
 ---
-title: 'SD-WAN alternatives in 2026: seven modern options for connecting branch offices — MeshWG'
-description: 'Seven modern alternatives to box-based SD-WAN in 2026 — from BYO-router mesh VPN to ZTNA platforms. Honest comparison for SMB and mid-market teams who want branch connectivity without the appliance refresh cycle.'
+title: 'SD-WAN Alternatives in 2026: Seven Options for Branch Offices'
+description: 'Seven modern alternatives to box-based SD-WAN. An honest comparison for SMB and mid-market teams seeking branch connectivity without the expensive appliance refresh cycle.'
 pubDate: 2026-05-16
 updatedDate: 2026-05-16
 author: 'MeshWG editorial team'

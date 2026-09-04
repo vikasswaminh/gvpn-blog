@@ -1,6 +1,6 @@
 ---
 title: 'How to Set Up a WireGuard Mesh VPN: Step-by-Step Tutorial (2026)'
-description: 'Set up a WireGuard mesh VPN in under 2 minutes per site — no new hardware, no agent, no certificates. Step-by-step guide with router configs, zero-trust policies, and cost breakdown.'
+description: 'Set up a WireGuard mesh VPN in under 2 minutes per site—no new hardware, agents, or certs. Step-by-step guide with router configs, zero-trust policies, and cost breakdown.'
 pubDate: 2026-09-04
 updatedDate: 2026-09-04
 author: 'MeshWG Engineering'

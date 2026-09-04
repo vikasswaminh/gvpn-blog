@@ -9,6 +9,16 @@ seoKeywords: ["wireguard mesh vpn", "manage multiple wireguard tunnels", "wiregu
 cover: '../../assets/images/manage_tunnels.png'
 ---
 
+<div class="tldr-box">
+  <h3>TL;DR</h3>
+  <ul>
+    <li>Building a full-mesh WireGuard network manually scales exponentially and becomes unmanageable past 10 nodes.</li>
+    <li>Use a single interface (<code>wg0</code>) for standard overlays to conserve kernel memory and simplify Cryptokey routing.</li>
+    <li>Use dynamic routing protocols like BGP over WireGuard for complex multi-cloud deployments to automate route discovery.</li>
+    <li>Separate your data plane (kernel WireGuard) from your control plane (orchestration tools like MeshWG) to eliminate configuration drift.</li>
+  </ul>
+</div>
+
 Executive Summary
 WireGuard has redefined point-to-point network encryption by delivering lightweight, kernel-space performance with a minimal cryptographic footprint. However, when enterprise infrastructure expands beyond a single static site-to-site link, administrators face a severe operational challenge: managing multiple WireGuard tunnels and building a scalable full-mesh topology.
 

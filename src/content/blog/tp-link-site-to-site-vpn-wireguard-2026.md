@@ -1,6 +1,6 @@
 ---
-title: 'TP-Link site-to-site VPN with WireGuard: a 2026 guide for branch offices — MeshWG'
-description: 'Connect two, three, or thirty TP-Link branches with WireGuard site-to-site VPN. No static public IPs needed, no firmware changes, no IPsec gymnastics. Founder-written guide for 2026.'
+title: 'TP-Link Site-to-Site VPN with WireGuard: 2026 Guide'
+description: 'Connect TP-Link branches with WireGuard site-to-site VPN. No static public IPs, no firmware changes, no IPsec gymnastics. Founder-written 2026 branch office guide.'
 pubDate: 2026-05-16
 updatedDate: 2026-05-16
 author: 'MeshWG editorial team'

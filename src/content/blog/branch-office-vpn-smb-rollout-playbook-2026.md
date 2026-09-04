@@ -1,6 +1,6 @@
 ---
 title: 'Branch office VPN for SMBs in 2026: a 5-phase rollout playbook — MeshWG'
-description: 'How to roll out a branch-office VPN across 5 to 50 sites in 2026, without an SDWAN appliance budget or a full-time network team. Five-phase playbook with real numbers from retail, clinic, and distributor deployments.'
+description: 'Roll out a branch-office VPN across 5-50 sites without SDWAN budgets or a full-time network team. A five-phase playbook with real numbers from retail and clinic deployments.'
 pubDate: 2026-05-16
 updatedDate: 2026-05-16
 author: 'MeshWG editorial team'
