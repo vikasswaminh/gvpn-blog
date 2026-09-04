@@ -31,6 +31,13 @@ const allPosts = await getPublishedPosts();
 const hasStrategy = tags && tags.some((tag: string) => tag.toLowerCase().includes('strategy') || tag.toLowerCase().includes('architecture') || tag.toLowerCase().includes('protocol'));
 const pillText = hasStrategy ? 'STRATEGY & ARCHITECTURE' : 'ENGINEERING GUIDE';
 const pillClass = hasStrategy ? 'mag-pill pill-purple' : 'mag-pill pill-orange';
+
+const sidebarPosts = allPosts.filter(p => {
+  const pHasStrategy = p.data.tags && p.data.tags.some((tag: string) => tag.toLowerCase().includes('strategy') || tag.toLowerCase().includes('architecture') || tag.toLowerCase().includes('protocol'));
+  return hasStrategy ? pHasStrategy : !pHasStrategy;
+});
+const sidebarPillClass = hasStrategy ? 'nh-sidebar-pill pill-purple' : 'nh-sidebar-pill pill-orange';
+const sidebarTitle = hasStrategy ? 'STRATEGY & ARCHITECTURE' : 'ENGINEERING GUIDES';
 ---
 
 <BaseLayout
@@ -55,10 +62,10 @@ const pillClass = hasStrategy ? 'mag-pill pill-purple' : 'mag-pill pill-orange';
       <!-- LEFT SIDEBAR -->
       <aside class="nh-sidebar">
         <div>
-          <span class="nh-sidebar-pill pill-purple">STRATEGY & ARCHITECTURE</span>
+          <span class={sidebarPillClass}>{sidebarTitle}</span>
           <nav class="nh-sidebar-nav">
-            {[...allPosts].reverse().map(p => (
-              <a href={`/blog/${p.slug}/`} class="nh-sidebar-link">{p.data.title}</a>
+            {[...sidebarPosts].reverse().map(p => (
+              <a href={`/blog/${p.slug}/`} class="nh-sidebar-link" data-active={p.slug === post.slug ? "true" : undefined}>{p.data.title}</a>
             ))}
           </nav>
         </div>
