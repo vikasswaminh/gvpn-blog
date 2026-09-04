@@ -1,6 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../config';
+---
+
+<BaseLayout 
+  title="About MeshWG | The Engineering Team Behind the VPN" 
+  description="Meet the core networking team specializing in zero-trust architecture, multi-cloud SD-WANs, and high-performance kernel VPNs."
+  seoKeywords={["about meshwg", "meshwg team", "wireguard experts", "network engineers", "zero trust architecture"]}
+>
+  <div class="wrap about-page">
+    <article class="post">
+      <h1 class="post-title">About MeshWG</h1>
+      <div class="prose">
+        <p>Welcome to the {SITE.brand} blog — {SITE.description}</p>
+        <p>
           Looking for the product itself? Head to
           <a href={SITE.marketingUrl}>{SITE.marketingLabel}</a>.
         </p>
