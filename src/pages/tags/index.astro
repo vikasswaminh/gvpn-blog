@@ -17,12 +17,12 @@ const categories = {
 
 for (const tag of allTags) {
   const t = tag[0].toLowerCase();
-  if (t.includes('guide') || t.includes('playbook') || t.includes('deep-dive')) {
+  if (t.includes('guide') || t.includes('playbook') || t.includes('deep-dive') || t.includes('strategy') || t.includes('setup') || t.includes('architecture')) {
     categories.guides.tags.push(tag);
-  } else if (t.includes('wireguard') || t.includes('vpn') || t.includes('ipsec') || t.includes('sd-wan') || t.includes('nat') || t.includes('cgnat') || t.includes('firewall') || t.includes('security')) {
-    categories.tech.tags.push(tag);
-  } else if (t.includes('router') || t.includes('hardware') || t.includes('cloud') || t.includes('smb') || t.includes('enterprise') || t.includes('site-to-site') || t.includes('infrastructure') || t.includes('multi-location') || t.includes('branch') || t.includes('setup') || t.includes('management') || t.includes('architecture')) {
+  } else if (t.includes('router') || t.includes('hardware') || t.includes('cloud') || t.includes('smb') || t.includes('enterprise') || t.includes('site-to-site') || t.includes('infrastructure') || t.includes('multi-location') || t.includes('branch') || t.includes('management')) {
     categories.infra.tags.push(tag);
+  } else if (t.includes('wireguard') || t.includes('vpn') || t.includes('ipsec') || t.includes('sd-wan') || t.includes('nat') || t.includes('cgnat') || t.includes('firewall') || t.includes('security') || t.includes('protocol')) {
+    categories.tech.tags.push(tag);
   } else {
     categories.general.tags.push(tag);
   }
@@ -176,6 +176,13 @@ const activeCategories = Object.entries(categories).filter(([_, cat]) => cat.tag
   @media (max-width: 600px) {
     .bento-grid {
       grid-template-columns: 1fr;
+    }
+  }
+  
+  /* Make the last card span full width if it's an orphan to prevent empty space */
+  @media (min-width: 850px) {
+    .bento-card:last-child:nth-child(4) {
+      grid-column: 1 / -1;
     }
   }
 
