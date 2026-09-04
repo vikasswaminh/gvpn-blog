@@ -20,7 +20,7 @@ let finalPillText = 'ENGINEERING GUIDE';
 let finalPillColor = 'orange';
 
 if (tags && tags.length > 0) {
-  const hasStrategy = tags.some(tag => tag.toLowerCase().includes('strategy') || tag.toLowerCase().includes('architecture') || tag.toLowerCase().includes('protocol'));
+  const hasStrategy = tags.some(tag => tag.toLowerCase() === 'strategy guide' || tag.toLowerCase() === 'protocol deep-dive');
   if (hasStrategy) {
     finalPillText = 'STRATEGY & ARCHITECTURE';
     finalPillColor = 'purple';

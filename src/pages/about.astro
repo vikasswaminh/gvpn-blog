@@ -1,16 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../config';
-const seoKeywords = ["about meshwg", "meshwg team", "wireguard mesh vpn", "zero trust networking platform"];
----
-
-<BaseLayout title="About MeshWG | The Mesh VPN Platform" description={`About the ${SITE.brand} blog. Learn about our mission to simplify enterprise networking.`} seoKeywords={seoKeywords}>
-  <div class="wrap about-page">
-    <article class="post">
-      <h1 class="post-title">About</h1>
-      <div class="prose">
-        <p>Welcome to the {SITE.brand} blog — {SITE.description}</p>
-        <p>
           Looking for the product itself? Head to
           <a href={SITE.marketingUrl}>{SITE.marketingLabel}</a>.
         </p>

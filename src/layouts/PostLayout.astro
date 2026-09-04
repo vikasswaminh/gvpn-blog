@@ -28,16 +28,12 @@ const jsonLd = {
 
 const allPosts = await getPublishedPosts();
 
-const hasStrategy = tags && tags.some((tag: string) => tag.toLowerCase().includes('strategy') || tag.toLowerCase().includes('architecture') || tag.toLowerCase().includes('protocol'));
+const strategyPosts = allPosts.filter(p => p.data.tags && p.data.tags.some(tag => tag.toLowerCase() === 'strategy guide' || tag.toLowerCase() === 'protocol deep-dive'));
+const engineeringPosts = allPosts.filter(p => !strategyPosts.includes(p));
+
+const hasStrategy = tags && tags.some((tag: string) => tag.toLowerCase() === 'strategy guide' || tag.toLowerCase() === 'protocol deep-dive');
 const pillText = hasStrategy ? 'STRATEGY & ARCHITECTURE' : 'ENGINEERING GUIDE';
 const pillClass = hasStrategy ? 'mag-pill pill-purple' : 'mag-pill pill-orange';
-
-const sidebarPosts = allPosts.filter(p => {
-  const pHasStrategy = p.data.tags && p.data.tags.some((tag: string) => tag.toLowerCase().includes('strategy') || tag.toLowerCase().includes('architecture') || tag.toLowerCase().includes('protocol'));
-  return hasStrategy ? pHasStrategy : !pHasStrategy;
-});
-const sidebarPillClass = hasStrategy ? 'nh-sidebar-pill pill-purple' : 'nh-sidebar-pill pill-orange';
-const sidebarTitle = hasStrategy ? 'STRATEGY & ARCHITECTURE' : 'ENGINEERING GUIDES';
 ---
 
 <BaseLayout
@@ -62,10 +58,10 @@ const sidebarTitle = hasStrategy ? 'STRATEGY & ARCHITECTURE' : 'ENGINEERING GUID
       <!-- LEFT SIDEBAR -->
       <aside class="nh-sidebar">
         <div>
-          <span class={sidebarPillClass}>{sidebarTitle}</span>
+          <span class="nh-sidebar-pill pill-purple">STRATEGY & ARCHITECTURE</span>
           <nav class="nh-sidebar-nav">
-            {[...sidebarPosts].reverse().map(p => (
-              <a href={`/blog/${p.slug}/`} class="nh-sidebar-link" data-active={p.slug === post.slug ? "true" : undefined}>{p.data.title}</a>
+            {[...strategyPosts].reverse().map(p => (
+              <a href={`/blog/${p.slug}/`} class="nh-sidebar-link">{p.data.title}</a>
             ))}
           </nav>
         </div>
@@ -126,7 +122,7 @@ const sidebarTitle = hasStrategy ? 'STRATEGY & ARCHITECTURE' : 'ENGINEERING GUID
         <div>
           <span class="nh-sidebar-pill pill-orange">ENGINEERING GUIDES</span>
           <nav class="nh-sidebar-nav">
-            {allPosts.map(p => (
+            {engineeringPosts.map(p => (
               <a href={`/blog/${p.slug}/`} class="nh-sidebar-link">{p.data.title}</a>
             ))}
           </nav>

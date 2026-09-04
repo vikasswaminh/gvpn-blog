@@ -4,7 +4,7 @@ description: 'How WireGuard site-to-site VPN works at the protocol level, in 202
 pubDate: 2026-05-16
 updatedDate: 2026-05-16
 author: 'MeshWG editorial team'
-tags: ['protocol deep-dive', 'wireguard', 'vpn', 'security', 'architecture', 'enterprise wireguard setup', 'mesh vpn architecture 2026', 'zero trust network access', 'wireguard routing guide']
+tags: ['strategy guide', 'wireguard', 'vpn', 'security', 'architecture', 'enterprise wireguard setup', 'mesh vpn architecture 2026', 'zero trust network access', 'wireguard routing guide']
 seoKeywords: ["wireguard site to site vpn","how wireguard works","site to site vpn guide"]
 cover: '../../assets/images/how_it_works.png'
 ---

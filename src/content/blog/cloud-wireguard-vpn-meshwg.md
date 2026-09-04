@@ -4,7 +4,7 @@ description: 'Complete technical blueprint for designing, deploying, securing, a
 pubDate: 2026-08-31
 updatedDate: 2026-08-31
 author: 'Senior Infrastructure & Network Systems Architect'
-tags: ['engineering guide', 'cloud', 'wireguard', 'mesh vpn', 'infrastructure', 'enterprise wireguard setup', 'mesh vpn architecture 2026', 'zero trust network access', 'wireguard routing guide']
+tags: ['strategy guide', 'cloud', 'wireguard', 'mesh vpn', 'infrastructure', 'enterprise wireguard setup', 'mesh vpn architecture 2026', 'zero trust network access', 'wireguard routing guide']
 seoKeywords: ["Cloud WireGuard VPN", "hybrid cloud-to-branch network", "MeshWG", "WireGuard cloud servers", "AWS VPC WireGuard", "GCP WireGuard"]
 cover: '../../assets/images/cloud_wireguard_vpn.png'
 ---

@@ -4,7 +4,7 @@ description: 'Master multi-location site-to-site WireGuard networks across route
 pubDate: 2026-08-27T00:00:00Z
 author: 'MeshWG editorial team'
 authorRole: 'Network Architecture'
-tags: ['engineering guide', 'wireguard', 'multi-location', 'routers', 'networking', 'enterprise wireguard setup', 'mesh vpn architecture 2026', 'zero trust network access', 'wireguard routing guide']
+tags: ['strategy guide', 'wireguard', 'multi-location', 'routers', 'networking', 'enterprise wireguard setup', 'mesh vpn architecture 2026', 'zero trust network access', 'wireguard routing guide']
 seoKeywords: ["vpn", "wireguard", "meshwg", "network"]
 cover: '../../assets/images/multiple_locations.png'
 ---

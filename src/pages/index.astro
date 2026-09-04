@@ -27,10 +27,10 @@ const gridSlugs = [
 ];
 const gridPosts = gridSlugs.map(getPost).filter(Boolean);
 
-// Dynamically distribute based on tags
-const strategyPosts = allPosts.filter(p => p.data.tags.some(tag => tag.toLowerCase().includes('strategy') || tag.toLowerCase().includes('architecture') || tag.toLowerCase().includes('protocol')));
+// Dynamically distribute based on exact tags to prevent SEO keywords from breaking categorization
+const strategyPosts = allPosts.filter(p => p.data.tags.some(tag => tag.toLowerCase() === 'strategy guide' || tag.toLowerCase() === 'protocol deep-dive'));
 
-const engineeringPosts = allPosts.filter(p => p.data.tags.some(tag => tag.toLowerCase().includes('engineering')));
+const engineeringPosts = allPosts.filter(p => !strategyPosts.includes(p));
 
 const title = "MeshWG Engineering & Strategy Blog | WireGuard Mesh VPN Guides";
 const description = "Expert articles, technical guides, and architectural blueprints for deploying and managing enterprise WireGuard mesh networks and zero-trust remote access.";

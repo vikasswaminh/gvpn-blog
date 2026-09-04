@@ -9,6 +9,9 @@ seoKeywords: ["wireguard mesh vpn without agent", "agentless wireguard mesh", "w
 cover: '../../assets/images/agentless_wireguard_mesh.png'
 ---
 
+> **Related Reading:** [How to Set Up a WireGuard Mesh VPN: Step-by-Step Tutorial (2026)](/blog/how-to-set-up-a-wireguard-mesh-vpn/)
+> **Related Reading:** [Cloud WireGuard VPN: How to Connect Cloud Servers and Branch Networks with MeshWG](/blog/cloud-wireguard-vpn-meshwg/)
+
 <div class="bp-intro">
     <div class="tldr-box">
       <h3 id="tl-dr">TL;DR</h3>

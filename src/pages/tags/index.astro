@@ -31,7 +31,11 @@ for (const tag of allTags) {
 const activeCategories = Object.entries(categories).filter(([_, cat]) => cat.tags.length > 0);
 ---
 
-<BaseLayout title="Topics Taxonomy | MeshWG Blog" description="Explore our network architecture, VPN, and engineering guides by topic.">
+<BaseLayout 
+  title="Topics Taxonomy | MeshWG Blog" 
+  description="Explore our network architecture, VPN, and engineering guides by topic."
+  seoKeywords={["wireguard topics", "vpn categories", "network architecture tags", "meshwg taxonomy", "engineering guides"]}
+>
   <div class="taxonomy-page-wrapper">
     <div class="wrap">
       
@@ -86,7 +90,12 @@ const activeCategories = Object.entries(categories).filter(([_, cat]) => cat.tag
   .mono { font-family: var(--font-mono); }
   
   .taxonomy-page-wrapper {
-    background: #f8fafc;
+    background-color: transparent;
+    background-image: 
+      linear-gradient(to right, var(--border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+    background-size: 48px 48px;
+    background-position: center top;
     min-height: 100vh;
     padding-top: 60px;
     padding-bottom: 100px;
