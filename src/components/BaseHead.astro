@@ -76,6 +76,14 @@ const fullTitle = title === SITE.title ? title : `${title} · ${SITE.brand} Blog
   href="/rss.xml"
 />
 
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": SITE.brand,
+  "url": SITE.marketingUrl,
+  "logo": `${Astro.site}favicon.svg`
+})} />
+
 {
   article && (
     <script type="application/ld+json" set:html={JSON.stringify({
