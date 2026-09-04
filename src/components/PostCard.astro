@@ -12,9 +12,10 @@ interface Props {
   pillText?: string;
   pillColor?: 'orange' | 'red' | 'purple';
   cover?: ImageMetadata;
+  coverAlt?: string;
 }
 
-const { url, title, description, pubDate, tags, minutes, cover } = Astro.props;
+const { url, title, description, pubDate, tags, minutes, cover, coverAlt } = Astro.props;
 
 let finalPillText = 'ENGINEERING GUIDE';
 let finalPillColor = 'orange';
@@ -31,7 +32,7 @@ if (tags && tags.length > 0) {
 <a href={url} class="mag-card hover-card" data-tilt>
   {cover && (
     <div class="card-img-container">
-      <Image src={cover} alt={title} class="card-img" width={800} height={400} loading="lazy" decoding="async" />
+      <Image src={cover} alt={coverAlt || title} class="card-img" width={800} height={400} loading="lazy" decoding="async" />
     </div>
   )}
   <div class="card-content">

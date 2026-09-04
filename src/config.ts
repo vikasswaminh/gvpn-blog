@@ -9,7 +9,7 @@ export const SITE = {
   url: 'https://blogs.meshwg.com',
   marketingUrl: 'https://meshwg.com',
   marketingLabel: 'meshwg.com',
-  author: 'MeshWG Team',
+  author: 'Vikas Swaminathan',
   accent: '#14b8a6',
   tagline: 'Mesh networking, simplified.',
   locale: 'en',
