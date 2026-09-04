@@ -215,8 +215,8 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); color: var(--text); m
 .prose { font-size: 1.125rem; line-height: 1.8; color: var(--text-2); max-width: 100%; letter-spacing: -0.01em; }
 .prose > * + * { margin-top: 1.5em; }
 .prose h2, .prose h3, .prose h4 { color: var(--text); font-weight: 800; font-family: var(--font-heading); margin-bottom: 0.5em; }
-.prose a { color: var(--accent); }
-.prose a:hover { color: var(--accent-strong); }
+.prose a:not(.btn) { color: var(--accent); }
+.prose a:not(.btn):hover { color: var(--accent-strong); }
 .prose strong { font-weight: 700; color: var(--text); }
 .prose img { border-radius: var(--radius-lg); margin: 2rem 0; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border: 1px solid var(--border); }
 .prose hr { border: 0; border-top: 1px solid var(--border); margin: 3rem 0; }
@@ -257,6 +257,9 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); color: var(--text); m
 .post-cta .btn-primary:hover { background: #ea580c; box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3); }
 .post-cta a:not(.btn-primary) { color: #60a5fa; font-weight: 600; text-decoration: none; }
 .post-cta a:not(.btn-primary):hover { color: #93c5fd; text-decoration: underline; }
+
+.prose .cta-box .btn-primary { background: #0B257A; color: #ffffff !important; }
+.prose .cta-box .btn-primary:hover { background: #1E3A8A; color: #ffffff !important; }
 
 .cta-strip { margin-top: 3rem; padding: 2.5rem; background: #f8fafc; border-radius: var(--radius-xl); border: 1px solid var(--border-strong); text-align: center; box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05); }
 .cta-strip h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text); font-weight: 800; }
