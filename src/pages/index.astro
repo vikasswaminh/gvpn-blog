@@ -26,9 +26,9 @@ const gridSlugs = [
 const gridPosts = gridSlugs.map(getPost).filter(Boolean);
 
 // Dynamically distribute based on tags
-const strategyPosts = allPosts.filter(p => p.data.tags.some(tag => tag.toLowerCase().includes('strategy') || tag.toLowerCase().includes('architecture') || tag.toLowerCase().includes('protocol'))).slice(0, 5);
+const strategyPosts = allPosts.filter(p => p.data.tags.some(tag => tag.toLowerCase().includes('strategy') || tag.toLowerCase().includes('architecture') || tag.toLowerCase().includes('protocol')));
 
-const engineeringPosts = allPosts.filter(p => p.data.tags.some(tag => tag.toLowerCase().includes('engineering'))).slice(0, 5);
+const engineeringPosts = allPosts.filter(p => p.data.tags.some(tag => tag.toLowerCase().includes('engineering')));
 ---
 
 <BaseLayout>

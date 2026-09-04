@@ -250,6 +250,15 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); color: var(--text); m
 .post-cta a:not(.btn-primary) { color: #60a5fa; font-weight: 600; text-decoration: none; }
 .post-cta a:not(.btn-primary):hover { color: #93c5fd; text-decoration: underline; }
 
+.cta-strip { margin-top: 3rem; padding: 2.5rem; background: #f8fafc; border-radius: var(--radius-xl); border: 1px solid var(--border-strong); text-align: center; box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05); }
+.cta-strip h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text); font-weight: 800; }
+.cta-strip p { font-size: 1.125rem; color: var(--text-2); margin-bottom: 2rem; max-width: 600px; margin-inline: auto; }
+.cta-row { display: flex; justify-content: center; align-items: center; gap: 16px; flex-wrap: wrap; }
+.cta-strip .btn-primary { background: #0B257A !important; color: #ffffff !important; padding: 14px 28px; border-radius: var(--radius); font-size: 16px; font-weight: 600; text-decoration: none !important; border: none; box-shadow: 0 4px 12px rgba(11, 37, 122, 0.2); }
+.cta-strip .btn-primary:hover { background: #1E3A8A !important; box-shadow: 0 6px 16px rgba(11, 37, 122, 0.3); transform: translateY(-2px); }
+.cta-strip .btn-line { color: #0B257A !important; font-weight: 700; text-decoration: none !important; padding: 14px 28px; font-size: 16px; }
+.cta-strip .btn-line:hover { text-decoration: underline !important; }
+
 .site-footer { border-top: 1px solid #dbeafe; background: #f0f7ff; color: var(--text-2); padding: 4rem 0 2rem 0; margin-top: auto; }
 .footer-top { display: flex; flex-wrap: wrap; gap: 4rem; justify-content: space-between; margin-bottom: 4rem; }
 .footer-brand-col { max-width: 320px; }
