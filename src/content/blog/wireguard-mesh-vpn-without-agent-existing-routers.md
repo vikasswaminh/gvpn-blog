@@ -1,11 +1,11 @@
 ---
-title: 'WireGuard Mesh VPN Without an Agent: How It Works on Existing Routers'
-description: 'Run a WireGuard mesh VPN directly on existing routers (TP-Link, MikroTik, Ubiquiti) with a cloud control plane. Two-minute onboarding, CGNAT-native, encrypted peer-to-peer.'
+title: 'Agentless WireGuard Mesh VPN on Existing Routers'
+description: 'Deploy a WireGuard mesh VPN directly on existing TP-Link, MikroTik, or Ubiquiti routers without installing agents. Fast, CGNAT-native networking.'
 pubDate: 2026-09-04
 updatedDate: 2026-09-04
 author: 'MeshWG editorial team'
 tags: ['engineering guide', 'wireguard mesh', 'agentless vpn', 'router firmware', 'nat traversal', 'zero trust', 'network hardware', 'cloud vpn', 'enterprise routing', 'router configuration', 'network management', 'mesh infrastructure', 'hardware deployment']
-seoKeywords: ["wireguard mesh vpn without agent", "agentless wireguard mesh", "wireguard mesh vpn on existing routers", "wireguard on router firmware", "mesh vpn no agent", "wireguard mesh vs sd-wan", "wireguard mesh vs ipsec", "wireguard nat traversal cgnat", "wireguard control plane data plane", "site to site wireguard mesh"]
+seoKeywords: ["Agentless WireGuard mesh", "WireGuard on router", "mesh VPN no agent"]
 cover: '../../assets/images/agentless_wireguard_mesh.png'
 ---
 
@@ -384,3 +384,7 @@ WireGuard doesn't have native NAT traversal, which is why MeshWG provides a clou
   <p style="color: var(--text-3); margin-bottom: 24px;">Deploy a high-performance WireGuard mesh network in minutes. No new hardware, no complex CLI configurations, and completely agentless.</p>
   <a href="https://meshwg.com" class="btn btn-primary" style="text-decoration: none; padding: 12px 24px; font-size: 16px;">Try MeshWG Free</a>
 </div>
+
+
+### Related Read
+For more on this topic, read our guide on [build a multi-location network](/blog/how-to-build-a-multi-location-wireguard-network-with-routers/).
