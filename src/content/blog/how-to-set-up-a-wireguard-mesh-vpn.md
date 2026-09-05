@@ -9,8 +9,17 @@ seoKeywords: ["WireGuard mesh VPN", "WireGuard setup", "full mesh VPN"]
 cover: '../../assets/images/wireguard_mesh_tutorial.png'
 ---
 
-> **Related Reading:** [WireGuard Mesh VPN Without an Agent: How It Works on Existing Routers](/blog/wireguard-mesh-vpn-without-agent-existing-routers/)
-> **Related Reading:** [How to Build a Multi-Location WireGuard Network with Routers: Enterprise Guide](/blog/how-to-build-a-multi-location-wireguard-network-with-routers/)
+<div class="cluster-nav" style="background: var(--bg-2); padding: 16px; border-radius: 8px; margin-bottom: 24px; border: 1px solid var(--border);">
+  <strong>MeshWG Architecture Guides (Cluster):</strong>
+  <ul style="margin: 8px 0 0 16px;">
+    <li><a href="/blog/wireguard-site-to-site-vpn-how-it-works-2026/">Site-to-Site VPN Architecture</a></li>
+    <li><a href="/blog/how-to-build-a-multi-location-wireguard-network-with-routers/">Multi-Location Router Networks</a></li>
+    <li><a href="/blog/wireguard-nat-traversal-behind-cgnat-2026/">NAT Traversal & CGNAT Guide</a></li>
+    <li><a href="/blog/managed-vs-self-hosted-wireguard-vpn-2026/">Enterprise Branch Networking</a></li>
+    <li><a href="/blog/cloud-wireguard-vpn-meshwg/">Cloud-to-Branch Connectivity</a></li>
+    <li><a href="/blog/sd-wan-alternatives-2026/">SD-WAN Alternatives</a></li>
+  </ul>
+</div>
 
 <div class="bp-intro">
     <div class="tldr-box">

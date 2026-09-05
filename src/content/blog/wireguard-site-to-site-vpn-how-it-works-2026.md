@@ -468,8 +468,8 @@ Two machines are free, forever.
 ## Frequently Asked Questions (FAQ)
 
 <details>
-<summary>How does a mesh VPN differ from a traditional VPN?</summary>
-A traditional VPN routes all traffic through a central gateway, creating a bottleneck. A mesh VPN establishes direct, peer-to-peer connections between all devices (like branch offices or cloud servers), reducing latency and eliminating a single point of failure.
+<summary>How does a [mesh VPN](/blog/how-to-set-up-a-wireguard-mesh-vpn/) differ from a traditional VPN?</summary>
+A traditional VPN routes all traffic through a central gateway, creating a bottleneck. A [mesh VPN](/blog/how-to-set-up-a-wireguard-mesh-vpn/) establishes direct, peer-to-peer connections between all devices (like branch offices or cloud servers), reducing latency and eliminating a single point of failure.
 </details>
 
 <details>
@@ -478,8 +478,8 @@ No. MeshWG can be deployed directly on your existing edge routers (like TP-Link,
 </details>
 
 <details>
-<summary>How does WireGuard NAT Traversal work?</summary>
-WireGuard doesn't have native NAT traversal, which is why MeshWG provides a cloud coordination plane. It handles UDP hole punching, PersistentKeepalives, and automatic endpoint discovery to seamlessly connect peers behind CGNAT or strict enterprise firewalls.
+<summary>How does WireGuard [NAT Traversal](/blog/wireguard-nat-traversal-behind-cgnat-2026/) work?</summary>
+WireGuard doesn't have native [NAT traversal](/blog/wireguard-nat-traversal-behind-cgnat-2026/), which is why MeshWG provides a cloud coordination plane. It handles UDP hole punching, PersistentKeepalives, and automatic endpoint discovery to seamlessly connect peers behind CGNAT or strict enterprise firewalls.
 </details>
 
 ---
@@ -488,7 +488,3 @@ WireGuard doesn't have native NAT traversal, which is why MeshWG provides a clou
   <p style="color: var(--text-3); margin-bottom: 24px;">Deploy a high-performance WireGuard mesh network in minutes. No new hardware, no complex CLI configurations, and completely agentless.</p>
   <a href="https://meshwg.com" class="btn btn-primary" style="text-decoration: none; padding: 12px 24px; font-size: 16px;">Try MeshWG Free</a>
 </div>
-
-
-### Related Read
-For more on this topic, read our guide on [connecting multiple locations](/blog/wireguard-site-to-site-vpn-multiple-locations/).

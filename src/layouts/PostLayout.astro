@@ -16,18 +16,6 @@ const canonical = new URL(`/blog/${post.slug}/`, Astro.site).href;
 const jsonLd = [
   {
     '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: title,
-    description,
-    datePublished: pubDate.toISOString(),
-    dateModified: (updatedDate ?? pubDate).toISOString(),
-    author: { '@type': 'Organization', name: author ?? SITE.author },
-    publisher: { '@type': 'Organization', name: SITE.brand },
-    mainEntityOfPage: canonical,
-    ...(cover ? { image: new URL(cover.src, Astro.site).href } : {}),
-  },
-  {
-    '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: Astro.site?.href },
@@ -80,6 +68,11 @@ const pillClass = hasStrategy ? 'mag-pill pill-purple' : 'mag-pill pill-orange';
 
       <!-- MAIN CONTENT -->
       <article class="post-content">
+        <nav aria-label="Breadcrumb" class="breadcrumbs" style="font-size: 13px; color: #64748b; margin-bottom: 24px;">
+          <a href="/" style="color: #64748b; text-decoration: none;">Home</a> <span style="margin: 0 8px;">/</span>
+          <a href="/blog/" style="color: #64748b; text-decoration: none;">Blog</a> <span style="margin: 0 8px;">/</span>
+          <span style="color: #1e293b; font-weight: 500;">{title}</span>
+        </nav>
         <header class="post-header">
           <div class="post-meta-top">
             {tags && tags.length > 0 && (
@@ -129,7 +122,7 @@ const pillClass = hasStrategy ? 'mag-pill pill-purple' : 'mag-pill pill-orange';
       </article>
 
       <!-- RIGHT SIDEBAR -->
-      <aside class="nh-sidebar">
+      <aside class="nh-sidebar nh-sidebar-right">
         <div>
           <span class="nh-sidebar-pill pill-orange">ENGINEERING GUIDES</span>
           <nav class="nh-sidebar-nav">

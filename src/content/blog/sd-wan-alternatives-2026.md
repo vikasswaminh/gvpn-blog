@@ -14,7 +14,7 @@ cover: '../../assets/images/sdwan_alternatives.png'
           replacement story was clean: MPLS circuits cost ₹40,000–80,000
           per site per month; SD-WAN over commodity broadband cost a
 
-> **Related Reading:** [Learn more about mesh vpn vs ipsec vs sdwan 2026](/blog/mesh-vpn-vs-ipsec-vs-sdwan-2026/)
+> **Related Reading:** [Learn more about [mesh vpn](/blog/how-to-set-up-a-wireguard-mesh-vpn/) vs ipsec vs sdwan 2026](/blog/mesh-vpn-vs-ipsec-vs-sdwan-2026/)
 
 > **Related Reading:** [Learn more about branch office vpn smb rollout playbook 2026](/blog/branch-office-vpn-smb-rollout-playbook-2026/)
 
@@ -51,7 +51,7 @@ That gap between "what SD-WAN sells" and "what most SMB
 Box-based SD-WAN was the right answer in 2018. In 2026, most
           SMB and mid-market teams looking for branch-office connectivity
           are quietly evaluating something else — usually a cloud-managed
-          mesh VPN running on the routers they already own, sometimes a
+          [mesh VPN](/blog/how-to-set-up-a-wireguard-mesh-vpn/) running on the routers they already own, sometimes a
           full ZTNA stack, occasionally a SDWAN-as-a-service platform
           that drops the appliance. The wave is real. A 20-branch
           deployment on [MeshWG](/blog/cloud-wireguard-vpn-meshwg/) — the BYO-router pattern this post leads
@@ -60,7 +60,7 @@ Box-based SD-WAN was the right answer in 2018. In 2026, most
           Cisco/Fortinet/Aryaka rollout would cost. Setup is under two
           minutes per site. Two machines are free, forever. The other
           six options in this guide each have their own legitimate
-          place. The point isn't that mesh VPN beats SD-WAN — it's that
+          place. The point isn't that [mesh VPN](/blog/how-to-set-up-a-wireguard-mesh-vpn/) beats SD-WAN — it's that
           in 2026 you have at least seven serious choices, each with a
           different sweet spot. Pick by the constraints your environment
           actually has.
@@ -116,7 +116,7 @@ Before reading the seven options, pin down what your
 Keep those five answers in mind as you read the seven options
           below. By the time you reach the comparison table, the right
           row should be obvious.
-</p>  <header class="opt-head"> <div> <h2>MeshWG <span class="us-badge">us</span></h2> <p class="opt-blurb">BYO-router cloud mesh VPN. Hosted in India, billed in INR. Built for the SMB and mid-market branch pattern.</p> </div> </header> <p>
+</p>  <header class="opt-head"> <div> <h2>MeshWG <span class="us-badge">us</span></h2> <p class="opt-blurb">BYO-router cloud [mesh VPN](/blog/how-to-set-up-a-wireguard-mesh-vpn/). Hosted in India, billed in INR. Built for the SMB and mid-market branch pattern.</p> </div> </header> <p>
 MeshWG runs WireGuard on the routers you already own — TP-Link
           Archer / Deco / ER / Omada, MikroTik RouterOS 7+, OpenWrt
           19.07+, Ubiquiti UDM and EdgeRouter, OPNsense and pfSense — and
@@ -181,7 +181,7 @@ The operational pattern that consistently delivers
 </p> <header class="opt-head"> <div> <h2>Tailscale Business</h2> <p class="opt-blurb">Per-device WireGuard mesh with strong developer ergonomics. Tailscale popularised the modern mesh-VPN category.</p> </div> </header> <p>
 Tailscale runs an agent on every device — Linux, macOS,
           Windows, iOS, Android, plus container sidecars. The agent
-          handles key generation, NAT traversal, and registration with
+          handles key generation, [NAT traversal](/blog/wireguard-nat-traversal-behind-cgnat-2026/), and registration with
           Tailscale's coordination server. ACL rules are written in a
           declarative file and pushed to every device. The developer
           experience is excellent: <code>tailscale up</code> on a fresh
@@ -414,7 +414,7 @@ The honest summary: there is no universally correct pick.
           team prefers INR billing. The other six options each have
           their own legitimate home turf. Pick by the constraints, not
           by the marketing.
-</p>  <h2>Common questions</h2> <details> <summary>What is better than SD-WAN?</summary> <p>It depends on what &#39;better&#39; means for your environment. For mid-market and SMB teams connecting branch offices, cloud-managed mesh VPN running on existing routers (the BYO-router pattern) typically costs about one-tenth of a comparable box-based SD-WAN deployment and ships in minutes rather than weeks. For large enterprises needing global anycast, WAN optimisation, and carrier-grade SLAs, modern SDWAN-as-a-service platforms or ZTNA stacks like Cloudflare One are usually a better fit. There is no single answer; section nine has the decision matrix.</p> </details><details> <summary>What is SD-WAN replacing?</summary> <p>Traditional MPLS-based WANs and per-site IPsec VPN concentrators. SD-WAN was designed for the era when each branch had a dedicated MPLS circuit terminating on a CPE appliance. The replacement story made sense when MPLS was the cost villain. In 2026, the SD-WAN appliance itself has become the cost villain for SMB and mid-market deployments, and the wave of replacements is now SDWAN being replaced — by cloud-managed mesh VPN on existing routers, by ZTNA stacks, and by SDWAN-as-a-service platforms that don&#39;t ship hardware.</p> </details><details> <summary>Has SD-WAN become obsolete?</summary> <p>No — not for the use cases it was built for. SD-WAN remains the right answer for enterprises with hundreds of sites needing WAN optimisation (dedup, app-aware QoS), MPLS replacement at scale, or strict carrier-managed SLAs. What&#39;s changed is that the SMB and mid-market segment now has lower-cost alternatives that didn&#39;t exist in 2018. For 5 to 50 sites running on ISP fibre, the alternatives in this post are usually a better fit on cost, setup time, and operational simplicity.</p> </details><details> <summary>Is SD-WAN just a VPN?</summary> <p>SD-WAN is more than a VPN, but the encrypted-tunnel layer is its biggest single component. Beyond tunnels, SD-WAN typically adds WAN optimisation (deduplication, caching), application-aware path selection, centralised orchestration, and zero-touch provisioning. For most SMB branch-networking needs, the tunnel layer is the only piece that actually gets used — which is why mesh VPN alternatives have become viable. If you do need WAN optimisation or carrier-grade traffic engineering, SD-WAN is still the right tool.</p> </details><details> <summary>Which SD-WAN alternative is best for a small business in India?</summary> <p>For Indian SMBs with 5 to 50 branches on ISP fibre (typically Jio, Airtel, or ACT with CGNAT), the cost-effective answer in 2026 is BYO-router mesh VPN with an India-resident control plane and INR billing. MeshWG is purpose-built for this segment (₹349 per machine per month, two machines free forever, no new hardware). Tailscale Business and NetBird also work technically but bill in USD with control planes outside India. Section three through nine of this post detail the trade-offs.</p> </details><details> <summary>Can I keep my existing routers when switching from SD-WAN?</summary> <p>Yes, in most cases. If your existing routers support WireGuard or IPsec (most TP-Link, MikroTik, OpenWrt, Ubiquiti, and OPNsense gear from 2022 onward does), a cloud-managed mesh VPN like MeshWG configures them as peers without firmware replacement or agent install. If your branch routers are running proprietary SDWAN firmware locked to the appliance, you&#39;ll either keep that appliance until refresh or swap to a generic router during the transition. Most SMB SD-WAN deployments use routers that have a viable open-firmware path.</p> </details> <aside class="cta-strip"> <p>
+</p>  <h2>Common questions</h2> <details> <summary>What is better than SD-WAN?</summary> <p>It depends on what &#39;better&#39; means for your environment. For mid-market and SMB teams connecting branch offices, cloud-managed [mesh VPN](/blog/how-to-set-up-a-wireguard-mesh-vpn/) running on existing routers (the BYO-router pattern) typically costs about one-tenth of a comparable box-based SD-WAN deployment and ships in minutes rather than weeks. For large enterprises needing global anycast, WAN optimisation, and carrier-grade SLAs, modern SDWAN-as-a-service platforms or ZTNA stacks like Cloudflare One are usually a better fit. There is no single answer; section nine has the decision matrix.</p> </details><details> <summary>What is SD-WAN replacing?</summary> <p>Traditional MPLS-based WANs and per-site IPsec VPN concentrators. SD-WAN was designed for the era when each branch had a dedicated MPLS circuit terminating on a CPE appliance. The replacement story made sense when MPLS was the cost villain. In 2026, the SD-WAN appliance itself has become the cost villain for SMB and mid-market deployments, and the wave of replacements is now SDWAN being replaced — by cloud-managed [mesh VPN](/blog/how-to-set-up-a-wireguard-mesh-vpn/) on existing routers, by ZTNA stacks, and by SDWAN-as-a-service platforms that don&#39;t ship hardware.</p> </details><details> <summary>Has SD-WAN become obsolete?</summary> <p>No — not for the use cases it was built for. SD-WAN remains the right answer for enterprises with hundreds of sites needing WAN optimisation (dedup, app-aware QoS), MPLS replacement at scale, or strict carrier-managed SLAs. What&#39;s changed is that the SMB and mid-market segment now has lower-cost alternatives that didn&#39;t exist in 2018. For 5 to 50 sites running on ISP fibre, the alternatives in this post are usually a better fit on cost, setup time, and operational simplicity.</p> </details><details> <summary>Is SD-WAN just a VPN?</summary> <p>SD-WAN is more than a VPN, but the encrypted-tunnel layer is its biggest single component. Beyond tunnels, SD-WAN typically adds WAN optimisation (deduplication, caching), application-aware path selection, centralised orchestration, and zero-touch provisioning. For most SMB branch-networking needs, the tunnel layer is the only piece that actually gets used — which is why [mesh VPN](/blog/how-to-set-up-a-wireguard-mesh-vpn/) alternatives have become viable. If you do need WAN optimisation or carrier-grade traffic engineering, SD-WAN is still the right tool.</p> </details><details> <summary>Which SD-WAN alternative is best for a small business in India?</summary> <p>For Indian SMBs with 5 to 50 branches on ISP fibre (typically Jio, Airtel, or ACT with CGNAT), the cost-effective answer in 2026 is BYO-router mesh VPN with an India-resident control plane and INR billing. MeshWG is purpose-built for this segment (₹349 per machine per month, two machines free forever, no new hardware). Tailscale Business and NetBird also work technically but bill in USD with control planes outside India. Section three through nine of this post detail the trade-offs.</p> </details><details> <summary>Can I keep my existing routers when switching from SD-WAN?</summary> <p>Yes, in most cases. If your existing routers support WireGuard or IPsec (most TP-Link, MikroTik, OpenWrt, Ubiquiti, and OPNsense gear from 2022 onward does), a cloud-managed mesh VPN like MeshWG configures them as peers without firmware replacement or agent install. If your branch routers are running proprietary SDWAN firmware locked to the appliance, you&#39;ll either keep that appliance until refresh or swap to a generic router during the transition. Most SMB SD-WAN deployments use routers that have a viable open-firmware path.</p> </details> <aside class="cta-strip"> <p>
 If your environment matches the BYO-router, mesh-VPN-on-existing-gear
           shape this post leads with —
 <a class="cta-link" href="https://vpn.meshwg.com/signup">start free →</a>
@@ -435,8 +435,8 @@ No. MeshWG can be deployed directly on your existing edge routers (like TP-Link,
 </details>
 
 <details>
-<summary>How does WireGuard NAT Traversal work?</summary>
-WireGuard doesn't have native NAT traversal, which is why MeshWG provides a cloud coordination plane. It handles UDP hole punching, PersistentKeepalives, and automatic endpoint discovery to seamlessly connect peers behind CGNAT or strict enterprise firewalls.
+<summary>How does WireGuard [NAT Traversal](/blog/wireguard-nat-traversal-behind-cgnat-2026/) work?</summary>
+WireGuard doesn't have native [NAT traversal](/blog/wireguard-nat-traversal-behind-cgnat-2026/), which is why MeshWG provides a cloud coordination plane. It handles UDP hole punching, PersistentKeepalives, and automatic endpoint discovery to seamlessly connect peers behind CGNAT or strict enterprise firewalls.
 </details>
 
 ---
@@ -445,7 +445,3 @@ WireGuard doesn't have native NAT traversal, which is why MeshWG provides a clou
   <p style="color: var(--text-3); margin-bottom: 24px;">Deploy a high-performance WireGuard mesh network in minutes. No new hardware, no complex CLI configurations, and completely agentless.</p>
   <a href="https://meshwg.com" class="btn btn-primary" style="text-decoration: none; padding: 12px 24px; font-size: 16px;">Try MeshWG Free</a>
 </div>
-
-
-### Related Read
-For more on this topic, read our guide on [branch office VPN rollout](/blog/branch-office-vpn-smb-rollout-playbook-2026/).

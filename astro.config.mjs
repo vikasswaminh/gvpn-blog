@@ -11,4 +11,10 @@ export default defineConfig({
   markdown: {
     shikiConfig: { theme: 'github-light', wrap: true },
   },
+  redirects: {
+    '/blog/wireguard-nat-traversal-cgnat-firewalls-2026': {
+      status: 301,
+      destination: '/blog/wireguard-nat-traversal-behind-cgnat-2026/'
+    }
+  }
 });

@@ -9,14 +9,14 @@ seoKeywords: ["Agentless WireGuard mesh", "WireGuard on router", "mesh VPN no ag
 cover: '../../assets/images/agentless_wireguard_mesh.png'
 ---
 
-> **Related Reading:** [How to Set Up a WireGuard Mesh VPN: Step-by-Step Tutorial (2026)](/blog/how-to-set-up-a-wireguard-mesh-vpn/)
+> **Related Reading:** [How to Set Up a WireGuard [Mesh VPN](/blog/how-to-set-up-a-wireguard-mesh-vpn/): Step-by-Step Tutorial (2026)](/blog/how-to-set-up-a-wireguard-mesh-vpn/)
 > **Related Reading:** [Cloud WireGuard VPN: How to Connect Cloud Servers and Branch Networks with MeshWG](/blog/cloud-wireguard-vpn-meshwg/)
 
 <div class="bp-intro">
     <div class="tldr-box">
       <h3 id="tl-dr">TL;DR</h3>
       <ul>
-        <li><strong>No Agent Needed:</strong> The most common objection to a mesh VPN is that it sounds like another piece of software to roll out. Modern WireGuard mesh VPNs run directly on the routers most businesses already own, using native WireGuard support. The router is the endpoint.</li>
+        <li><strong>No Agent Needed:</strong> The most common objection to a [mesh VPN](/blog/how-to-set-up-a-wireguard-mesh-vpn/) is that it sounds like another piece of software to roll out. Modern WireGuard [mesh VPNs](/blog/how-to-set-up-a-wireguard-mesh-vpn/) run directly on the routers most businesses already own, using native WireGuard support. The router is the endpoint.</li>
         <li><strong>Cloud Control Plane:</strong> The coordination problem — who to trust, where to send traffic, how to rotate keys — is handled by a cloud control plane. Each branch dials outbound to the coordination service, receives its peer list and keys, and then talks peer-to-peer over encrypted tunnels.</li>
         <li><strong>Fast Deployment:</strong> A 20-site deployment comes online in under two minutes per site, on hardware that was already in the building, with no new appliance and no licensing line.</li>
         <li><strong>Purpose Built:</strong> This model suits 5-to-50-branch businesses with mixed router fleets and generalist IT teams. It replaces the hand-edited `wg0.conf` with automated coordination.</li>
@@ -31,7 +31,7 @@ cover: '../../assets/images/agentless_wireguard_mesh.png'
 
 - **Agentless means the router is the endpoint.** WireGuard runs natively in router firmware; the mesh platform only supplies coordination, not software.
 - **The control plane replaces the config file.** Key distribution, peer state, and revocation move from a hand-edited `wg0.conf` to a cloud service each branch dials outbound.
-- **NAT traversal is solved by dialing out.** Every branch initiates an outbound connection, which makes carrier-grade NAT and dynamic IPs a non-issue.
+- **[NAT traversal](/blog/wireguard-nat-traversal-behind-cgnat-2026/) is solved by dialing out.** Every branch initiates an outbound connection, which makes carrier-grade NAT and dynamic IPs a non-issue.
 - **Onboarding is a two-minute step, not a project.** No hardware to ship, no firmware to flash, no installer to schedule.
 - **The model suits 5-to-50-branch businesses** with mixed router fleets and generalist IT teams; it is not built for packet-level WAN optimisation.
 - **Security is inherited from WireGuard's audited crypto** — X25519, ChaCha20-Poly1305, Poly1305 — with the control plane adding per-org isolation and fast policy revocation.
@@ -74,7 +74,7 @@ The honest caveat: agentless mesh is the right model for site-to-site connectivi
 
 ## Architecture: the control plane and the data plane
 
-Every mesh VPN, agentless or not, separates two planes of operation. Understanding this separation is the key to understanding how the whole thing works.
+Every [mesh VPN](/blog/how-to-set-up-a-wireguard-mesh-vpn/), agentless or not, separates two planes of operation. Understanding this separation is the key to understanding how the whole thing works.
 
 **The data plane** is the encrypted traffic path between branches. In an agentless WireGuard mesh, the data plane runs entirely on the routers. Branch A encrypts traffic with WireGuard and sends it directly to Branch B over UDP. The mesh platform is not in this path — it does not see the traffic, it does not relay it (except in the fallback cases described below), and it does not add latency. The data plane is peer-to-peer.
 
@@ -255,7 +255,7 @@ The failures in agentless mesh deployments are usually the same few, and they ar
 - **Treating the control plane as a data plane.** Expecting the platform to inspect or filter traffic. It does not — it coordinates. If you need traffic inspection, that is a different tool.
 - **Skipping keepalive.** Assuming the tunnel will stay up on its own. On consumer connections, it will not.
 - **Forgetting to revoke.** Leaving a closed branch's key active. This is both a security and a hygiene problem.
-- **Over-buying the model.** Expecting packet-level WAN optimisation or application-aware QoS from a mesh VPN. Those are SD-WAN features; the mesh does not pretend to be SD-WAN.
+- **Over-buying the model.** Expecting packet-level WAN optimisation or application-aware QoS from a [mesh VPN](/blog/how-to-set-up-a-wireguard-mesh-vpn/). Those are SD-WAN features; the mesh does not pretend to be SD-WAN.
 - **Under-buying the model.** Choosing a DIY WireGuard setup with hand-edited configs and no control plane, then discovering the operational tax of maintaining forty configs by hand. The control plane is the point.
 - **Ignoring the relay.** Not accounting for the branch pairs that will need the relay, then being surprised by latency on those paths.
 
@@ -265,7 +265,7 @@ The agentless WireGuard mesh is not the only answer, and it is not the right ans
 
 **Agent-based mesh (zero-trust access).** This installs a client on each device. It is the right tool for securing individual remote workers and for device-level policy enforcement. It is the wrong tool for site-to-site connectivity, because it only protects devices you install it on. The best deployments use both: the router mesh for sites, the agent for remote work.
 
-**[IPsec](/blog/mesh-vpn-vs-ipsec-vs-sdwan-2026/).** The mature foundation. It remains the right choice for interoperating with non-WireGuard endpoints — partner networks, vendor firewalls, cloud gateways that mandate IPsec. Its configuration surface is substantial, and NAT traversal through CGNAT adds complexity that the agentless mesh handles natively. For organisations with deep IPsec muscle memory and stable site counts, it remains a legitimate choice.
+**[IPsec](/blog/mesh-vpn-vs-ipsec-vs-sdwan-2026/).** The mature foundation. It remains the right choice for interoperating with non-WireGuard endpoints — partner networks, vendor firewalls, cloud gateways that mandate IPsec. Its configuration surface is substantial, and [NAT traversal](/blog/wireguard-nat-traversal-behind-cgnat-2026/) through CGNAT adds complexity that the agentless mesh handles natively. For organisations with deep IPsec muscle memory and stable site counts, it remains a legitimate choice.
 
 **[SD-WAN](/blog/sd-wan-alternatives-2026/).** The enterprise platform. It delivers application-aware routing, packet deduplication, and carrier-managed SLAs — capabilities the mesh does not attempt. It carries appliance-per-site capital cost and a procurement cycle measured in months. For large enterprises with hundreds of sites and dedicated network operations teams, it earns its place. For the 5-to-50-branch segment, the gap between what SD-WAN provides and what the deployment actually exercises is where budget could go further elsewhere.
 
@@ -281,7 +281,7 @@ The productive framing: the agentless mesh is the modern abstraction on top of W
 | **Software to deploy** | None | Agent on every device | Config on each endpoint | Appliance + licensing |
 | **Site-to-site** | Native | Weak (device-scoped) | Strong | Strong |
 | **Remote workers** | Not covered | Native | Possible | Possible |
-| **NAT traversal** | Native (dial-out) | Native | Complex | Varies |
+| **[NAT traversal](/blog/wireguard-nat-traversal-behind-cgnat-2026/)** | Native (dial-out) | Native | Complex | Varies |
 | **Operational fit** | Generalist IT | Generalist IT | Specialist | Specialist |
 | **Traffic inspection** | No (encrypted P2P) | Varies | Varies | Yes (app-aware) |
 | **Capital cost** | None | None | None | Appliance per site |
@@ -364,8 +364,8 @@ The most informative way to evaluate the model is to run it on real branches. Tw
 ## Frequently Asked Questions (FAQ)
 
 <details>
-<summary>How does a mesh VPN differ from a traditional VPN?</summary>
-A traditional VPN routes all traffic through a central gateway, creating a bottleneck. A mesh VPN establishes direct, peer-to-peer connections between all devices (like branch offices or cloud servers), reducing latency and eliminating a single point of failure.
+<summary>How does a [mesh VPN](/blog/how-to-set-up-a-wireguard-mesh-vpn/) differ from a traditional VPN?</summary>
+A traditional VPN routes all traffic through a central gateway, creating a bottleneck. A [mesh VPN](/blog/how-to-set-up-a-wireguard-mesh-vpn/) establishes direct, peer-to-peer connections between all devices (like branch offices or cloud servers), reducing latency and eliminating a single point of failure.
 </details>
 
 <details>
@@ -374,8 +374,8 @@ No. MeshWG can be deployed directly on your existing edge routers (like TP-Link,
 </details>
 
 <details>
-<summary>How does WireGuard NAT Traversal work?</summary>
-WireGuard doesn't have native NAT traversal, which is why MeshWG provides a cloud coordination plane. It handles UDP hole punching, PersistentKeepalives, and automatic endpoint discovery to seamlessly connect peers behind CGNAT or strict enterprise firewalls.
+<summary>How does WireGuard [NAT Traversal](/blog/wireguard-nat-traversal-behind-cgnat-2026/) work?</summary>
+WireGuard doesn't have native [NAT traversal](/blog/wireguard-nat-traversal-behind-cgnat-2026/), which is why MeshWG provides a cloud coordination plane. It handles UDP hole punching, PersistentKeepalives, and automatic endpoint discovery to seamlessly connect peers behind CGNAT or strict enterprise firewalls.
 </details>
 
 ---
@@ -384,7 +384,3 @@ WireGuard doesn't have native NAT traversal, which is why MeshWG provides a clou
   <p style="color: var(--text-3); margin-bottom: 24px;">Deploy a high-performance WireGuard mesh network in minutes. No new hardware, no complex CLI configurations, and completely agentless.</p>
   <a href="https://meshwg.com" class="btn btn-primary" style="text-decoration: none; padding: 12px 24px; font-size: 16px;">Try MeshWG Free</a>
 </div>
-
-
-### Related Read
-For more on this topic, read our guide on [build a multi-location network](/blog/how-to-build-a-multi-location-wireguard-network-with-routers/).
