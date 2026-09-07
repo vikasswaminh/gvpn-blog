@@ -10,13 +10,13 @@ const searchData = posts.map(post => ({
 }));
 ---
 
-<div id="search-modal" class="search-overlay" aria-hidden="true" inert>
+<div id="search-modal" class="search-overlay" role="dialog" aria-modal="true" aria-label="Search articles" hidden inert>
   <div class="search-container">
     <div class="search-header">
       <label for="search-input" class="sr-only">Search articles</label>
       <input type="search" id="search-input" placeholder="Search articles..." autocomplete="off" />
       <button id="search-close" class="close-btn" aria-label="Close search">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
       </button>
     </div>
     <div class="search-results-wrapper">
@@ -39,14 +39,14 @@ const searchData = posts.map(post => ({
 
     const openSearch = () => {
       triggerElement = document.activeElement;
+      modal.removeAttribute('hidden');
       modal.removeAttribute('inert');
-      modal.setAttribute('aria-hidden', 'false');
       input.focus();
       document.body.style.overflow = 'hidden';
     };
 
     const closeSearch = () => {
-      modal.setAttribute('aria-hidden', 'true');
+      modal.setAttribute('hidden', '');
       modal.setAttribute('inert', '');
       input.value = '';
       resultsList.innerHTML = '';
@@ -62,13 +62,17 @@ const searchData = posts.map(post => ({
     
     // Close on escape
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') {
+      if (e.key === 'Escape' && !modal.hasAttribute('hidden')) {
         closeSearch();
       }
-      // Ctrl+K to open
+      // Ctrl+K / Cmd+K to open
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
-        openSearch();
+        if (modal.hasAttribute('hidden')) {
+          openSearch();
+        } else {
+          closeSearch();
+        }
       }
     });
 
@@ -134,7 +138,7 @@ const searchData = posts.map(post => ({
     opacity: 1;
     transition: opacity 0.2s;
   }
-  .search-overlay[aria-hidden="true"],
+  .search-overlay[hidden],
   .search-overlay[inert] {
     opacity: 0;
     pointer-events: none;
