@@ -27,6 +27,12 @@ if (tags && tags.length > 0) {
     finalPillColor = 'purple';
   }
 }
+
+const formattedDate = pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric'
+});
 ---
 
 <a href={url} class="mag-card hover-card" data-tilt>
@@ -39,12 +45,16 @@ if (tags && tags.length > 0) {
     <div class={`mag-pill pill-${finalPillColor}`}>{finalPillText}</div>
     <h3 class="card-t">{title}</h3>
     <p class="card-d">{description}</p>
-    {minutes && (
-      <div class="card-meta">
-        <span>{minutes} min read</span>
-        <span class="dot">·</span>
-        <span class="read-link">Read article &rarr;</span>
-      </div>
-    )}
+    <div class="card-meta">
+      <span>{formattedDate}</span>
+      <span class="dot">·</span>
+      {minutes && (
+        <>
+          <span>{minutes} min read</span>
+          <span class="dot">·</span>
+        </>
+      )}
+      <span class="read-link">Read article &rarr;</span>
+    </div>
   </div>
 </a>

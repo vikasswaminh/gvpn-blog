@@ -426,7 +426,7 @@ two machines stay free forever; the meter starts at machine three.
 
 <details>
 <summary>How does a mesh VPN differ from a traditional VPN?</summary>
-A traditional VPN routes all traffic through a central gateway, creating a bottleneck. A mesh VPN establishes direct, peer-to-peer connections between all devices (like branch offices or cloud servers), reducing latency and eliminating a single point of failure.
+A traditional VPN routes all traffic through a central gateway, creating a bottleneck. A mesh VPN establishes direct, peer-to-peer connections between all devices (like [connecting cloud servers to branch networks](/blog/cloud-wireguard-vpn-meshwg/)), reducing latency and eliminating a single point of failure.
 </details>
 
 <details>

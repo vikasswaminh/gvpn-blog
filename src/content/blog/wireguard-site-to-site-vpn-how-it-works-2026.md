@@ -253,7 +253,7 @@ The honest summary: this is not a religious choice. Both
           to migrate just to chase a protocol fashion.
 </p> <!-- § 5 Multi-site WireGuard --> <h2>Multi-site WireGuard: 3, 5, 30 peers</h2> <p>
 Almost every public-web guide to "WireGuard site-to-site" stops
-          at two routers. The textbook patterns when you add a third are
+          at two routers. When [scaling to multiple locations](/blog/wireguard-site-to-site-vpn-multiple-locations/), the textbook patterns for adding a third are
           where the manual-configuration approach starts paying its bill.
 </p> <h3>The full-mesh option</h3> <p>
 A full mesh of N peers means every peer has direct tunnels to

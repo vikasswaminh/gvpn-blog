@@ -110,7 +110,7 @@ The audit also flags one more useful piece of data: which
           but most still go the same route for consistency.
 </p>  <header class="ph-head"> <span class="ph-num">phase 02</span> <h2>Pick the right approach</h2> </header> <p>
 The audit tells you what your routers can do; the choice in
-          this phase is what you'll run on them. Three approaches fit
+          this phase is what you'll run on them. When [evaluating managed vs self-hosted infrastructure](/blog/managed-vs-self-hosted-wireguard-vpn-2026/), three approaches fit
           the SMB pattern:
 </p> <p> <strong>Approach A — Cloud-managed [mesh VPN](/blog/how-to-set-up-a-wireguard-mesh-vpn/) (BYO-router).</strong>
 A third-party control plane handles key distribution and

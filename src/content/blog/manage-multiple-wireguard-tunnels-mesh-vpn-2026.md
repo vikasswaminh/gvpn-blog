@@ -14,7 +14,7 @@ WireGuard has redefined point-to-point network encryption by delivering lightwei
 
 Because standard WireGuard relies on static configuration files (`wg0.conf`) containing hardcoded public keys, IP endpoints, and allowed IP subnets, manual mesh maintenance quickly degenerates into operational chaos. Connecting 5 sites requires managing 10 distinct peer relationships. Connecting 20 sites requires 190 relationships. Connecting 50 sites requires 1,225 separate peer definitions. A single public IP change or key rotation at one location can trigger network-wide configuration drift and service outages.
 
-This comprehensive engineering guide addresses the challenges of scaling WireGuard overlays. It covers the architectural patterns, routing mechanisms, automation toolchains, and control-plane strategies required to manage multiple WireGuard tunnels and build robust, high-performance mesh networks.
+This comprehensive engineering guide addresses the challenges of scaling WireGuard overlays. If you are just getting started, read our guide on [setting up a WireGuard mesh](/blog/how-to-set-up-a-wireguard-mesh-vpn/) first. This guide covers the architectural patterns, routing mechanisms, automation toolchains, and control-plane strategies required to manage multiple WireGuard tunnels and build robust, high-performance mesh networks.
 
 Whether you are connecting distributed cloud regions, linking dozens of retail branch offices, or building a peer-to-peer zero-trust enterprise overlay, this guide provides production-ready configuration templates, BGP dynamic routing patterns, Ansible automation scripts, and practical troubleshooting frameworks designed for modern enterprise infrastructure.
 
