@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
 import { getPublishedPosts, readingTime } from '../utils/posts';
@@ -10,6 +10,18 @@ const allPosts = await getPublishedPosts();
 const getPost = (slug: string) => allPosts.find(p => p.slug === slug);
 
 const featured = getPost('how-wireguard-mesh-control-plane-manages-keys-peers-routes');
+
+let optimizedFeaturedCover;
+if (featured && featured.data.cover) {
+  optimizedFeaturedCover = await getImage({
+    src: featured.data.cover,
+    width: 1200,
+    height: 630,
+    widths: [400, 600, 800, 1200],
+    format: 'webp'
+  });
+}
+
 const featuredDate = featured ? featured.data.pubDate.toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'short',
@@ -49,6 +61,16 @@ const seoKeywords = ["wireguard mesh vpn", "meshwg", "mesh vpn setup", "enterpri
 ---
 
 <BaseLayout title={title} description={description} seoKeywords={seoKeywords}>
+  {optimizedFeaturedCover && (
+    <link 
+      slot="head"
+      rel="preload" 
+      as="image" 
+      href={optimizedFeaturedCover.src} 
+      imagesrcset={optimizedFeaturedCover.srcSet?.attribute || optimizedFeaturedCover.srcSet} 
+      imagesizes="(max-width: 768px) 100vw, 600px" 
+    />
+  )}
   <section class="mag-section">
     <div class="mag-wrap">
       
@@ -80,7 +102,7 @@ const seoKeywords = ["wireguard mesh vpn", "meshwg", "mesh vpn setup", "enterpri
         {featured && (
           <a href={`/blog/${featured.slug}/`} class="mag-featured hover-card" data-tilt>
             <div class="feat-img">
-              {featured.data.cover && <Image src={featured.data.cover} alt={featured.data.title} width={1200} height={630} widths={[400, 600, 800, 1200]} sizes="(max-width: 768px) 100vw, 600px" loading="eager" fetchpriority="high" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;" />}
+              {featured.data.cover && <Image src={featured.data.cover} alt={featured.data.title} width={1200} height={630} widths={[400, 600, 800, 1200]} sizes="(max-width: 768px) 100vw, 600px" loading="eager" fetchpriority="high" decoding="sync" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;" />}
               <div class="mesh-bg" style="opacity: 0.2;"></div>
             </div>
             <div class="feat-content">

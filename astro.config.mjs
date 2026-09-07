@@ -8,6 +8,9 @@ export default defineConfig({
   site: SITE.url,
   trailingSlash: 'ignore',
   integrations: [sitemap()],
+  build: {
+    inlineStylesheets: 'always'
+  },
   markdown: {
     shikiConfig: { theme: 'github-light', wrap: true },
   },

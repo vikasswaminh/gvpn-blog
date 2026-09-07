@@ -27,6 +27,7 @@ const { title = SITE.title, description, image, seoKeywords, article, bodyClass,
 <html lang={SITE.locale} style={`--accent:${SITE.accent}`}>
   <head>
     <BaseHead title={title} description={description} image={image} seoKeywords={seoKeywords} article={article} noindex={noindex} />
+    <slot name="head" />
   </head>
   <body class={bodyClass}>
     <Header />
