@@ -38,7 +38,7 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
 <a href={url} class="mag-card hover-card" data-tilt>
   {cover && (
     <div class="card-img-container">
-      <Image src={cover} alt={coverAlt || title} class="card-img" width={800} height={400} widths={[360, 480, 720, 800]} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 440px" loading="lazy" decoding="async" />
+      <Image src={cover} alt={coverAlt || title} class="card-img" width={800} height={400} widths={[360, 480, 720, 800]} quality={60} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 440px" loading="lazy" decoding="async" />
     </div>
   )}
   <div class="card-content">
