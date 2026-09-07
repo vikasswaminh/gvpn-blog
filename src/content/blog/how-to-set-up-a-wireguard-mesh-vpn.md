@@ -51,6 +51,24 @@ It is worth pausing on topology, because the word "mesh" gets used loosely and t
 
 **Hub-and-spoke.** Every site connects to a single central hub, and the hub routes traffic between them. This is the model MeshWG uses. Each router maintains exactly one tunnel — to the coordination server — and the server coordinates the mesh. This scales linearly: fifty sites means fifty tunnels, each identical in structure. The trade-off is that inter-site traffic traverses the hub, which adds a small amount of latency but dramatically simplifies management.
 
+```mermaid
+flowchart LR
+    subgraph Full Mesh
+      direction LR
+      A((Site A)) <--> B((Site B))
+      A <--> C((Site C))
+      B <--> C
+    end
+    
+    subgraph Hub-and-Spoke
+      direction LR
+      Hub((Coordination\nServer))
+      S1((Site A)) <--> Hub
+      S2((Site B)) <--> Hub
+      S3((Site C)) <--> Hub
+    end
+```
+
 The practical implication for this tutorial is simple: you never configure a direct peer link between your branches. Each router only needs to know about the coordination server. The mesh layer handles the rest. That is why adding site number twenty is no harder than adding site number two — and it is the architectural reason a mesh VPN is viable for the 5-to-50-branch business that a full-mesh DIY setup would crush under its own complexity.
 
 ### Why the coordination layer changes everything
@@ -72,7 +90,7 @@ The conditions that made WireGuard mesh VPNs practical for ordinary businesses h
 
 - **Fibre got cheap and reliable.** The broadband connections most small and mid-market businesses use today are fast enough to carry production traffic between branches. The old argument that you needed expensive MPLS or a dedicated SD-WAN appliance to get usable inter-site performance no longer holds for the 5-to-50-branch segment.
 - **WireGuard became a commodity.** WireGuard shipped in the Linux kernel in 2020 and has since proliferated into the firmware of the routers most businesses already own. TP-Link, MikroTik, OpenWrt, Ubiquiti, OPNsense, and pfSense all support it natively. The encryption technology that used to require specialist hardware is now built into the box on your shelf.
-- **Carrier-grade NAT became the default.** Most consumer and small-business internet connections now sit behind CGNAT, which breaks the old assumption that every site has a reachable public IP. A mesh VPN handles this natively — every branch dials outbound to the coordination server, so [NAT traversal](/blog/wireguard-nat-traversal-cgnat-firewalls-2026) stops being a configuration problem.
+- **Carrier-grade NAT became the default.** Most consumer and small-business internet connections now sit behind CGNAT, which breaks the old assumption that every site has a reachable public IP. A mesh VPN handles this natively — every branch dials outbound to the coordination server, so [NAT traversal](/blog/wireguard-nat-traversal-behind-cgnat-2026/) stops being a configuration problem.
 
 The result is that the question is no longer "can we afford a private network?" It is "how do we set one up without a specialist team?" That is precisely the question this tutorial answers.
 
@@ -217,6 +235,21 @@ If the mesh is working, you will get replies. You can also check the WireGuard i
 wg show
 ```
 
+*(Illustrative output)*
+```text
+interface: wg0
+  public key: aBcDeFgHiJkLmNoPqRsTuVwXyZ123456789=
+  private key: (hidden)
+  listening port: 51820
+
+peer: ZyxWvUtSrQpOnMlKjIhGfEdCbA987654321=
+  endpoint: 198.51.100.1:51820
+  allowed ips: 10.100.0.0/16
+  latest handshake: 1 minute, 12 seconds ago
+  transfer: 1.45 MiB received, 3.20 MiB sent
+  persistent keepalive: every 25 seconds
+```
+
 This shows the interface's public key, the peer it is connected to, the latest handshake time, and the transfer counters. A recent handshake and rising transfer counters confirm the tunnel is live and passing traffic.
 
 ## Step 7 — Apply zero-trust access policies
@@ -234,9 +267,14 @@ For example, a typical policy might say: "`branch-02` may reach the database ser
 
 ## Step 8 — Scale to more sites
 
-The final step is the one that makes the whole exercise worthwhile: adding more sites. Because the mesh handles coordination, scaling is a repeat of Steps 2 through 4 for each new location.
+The final step is the one that makes the whole exercise worthwhile: adding more sites. Because the mesh handles coordination, scaling is a repeat of Steps 2 through 4 for each new location. If you are planning a large rollout, you may also find our guide on [multi-location WireGuard networks](/blog/wireguard-site-to-site-vpn-multiple-locations/) helpful.
 
-For a business opening a new branch, the on-site step is genuinely simple — a local manager (not a network engineer) can paste the generated config into the router. There is no hardware to ship, no firmware to flash, and no specialist installer to schedule. A new site comes online in under two minutes.
+For a business opening a new branch, the on-site step is genuinely simple:
+- A local manager (not a network engineer) can paste the generated config into the router.
+- There is no hardware to ship or firmware to flash.
+- There is no specialist installer to schedule.
+
+A new site comes online in under two minutes.
 
 This is the operational reality that makes mesh VPN attractive for growing businesses. Retail chains opening seasonal locations, clinic groups expanding into new neighbourhoods, distributor networks reshuffling their footprint, and professional-services firms acquiring smaller offices all benefit from a network that grows at the pace of the business, not the pace of the IT project.
 
@@ -308,23 +346,6 @@ Different sectors arrive at this setup from different starting points, and the p
 - **Manufacturing and industrial operations.** These often run a hybrid — a mesh for corporate-to-branch connectivity, with IPsec retained for specific partner integrations where the protocol is mandated.
 - **Professional services and consulting firms.** The priority is connecting regional offices to central case-management systems and supporting remote work. 
 
-## Common questions
-
-**Q1. What is a WireGuard mesh VPN?**
-A WireGuard mesh VPN is a private, encrypted network where every participating site can reach every other site directly over the WireGuard protocol, coordinated by a central layer that manages keys, IPs, and peer relationships.
-
-**Q2. How long does it take to set up a WireGuard mesh VPN?**
-With a managed platform like MeshWG, the first site comes online in under two minutes. A complete two-site mesh, including verification and policies, fits in a single working session.
-
-**Q3. Is a WireGuard mesh VPN secure?**
-Yes, when configured correctly. WireGuard is a modern, audited, kernel-level protocol, and MeshWG adds zero-trust access policies that are enforced before traffic reaches its destination, plus server-side keys encrypted at rest.
-
-**Q4. How much does it cost?**
-The first two machines are free forever. A 20-site deployment runs around ₹7,000 a month — roughly one-tenth of a comparable SD-WAN deployment.
-
-**Q5. Can I add sites later?**
-Yes. Adding a site is a self-service step that takes under two minutes, and the mesh propagates the change automatically. Scaling from 2 to 50 sites uses the same process.
-
 ## Conclusion
 
 Setting up a WireGuard mesh VPN is no longer a specialist project. The protocol is a commodity, the routers you already own support it, and a coordination layer removes the operational tax that used to make multi-site WireGuard a full-time job. What remains is a genuinely simple process: create an account, add a machine, generate a standard wg-quick config, paste it into a router, and repeat.
@@ -344,6 +365,31 @@ The most honest way to evaluate any of this is to run it on real branches. Two m
 
 
 ## Frequently Asked Questions (FAQ)
+
+<details>
+<summary>What is a WireGuard mesh VPN?</summary>
+A WireGuard mesh VPN is a private, encrypted network where every participating site can reach every other site directly over the WireGuard protocol, coordinated by a central layer that manages keys, IPs, and peer relationships.
+</details>
+
+<details>
+<summary>How long does it take to set up a WireGuard mesh VPN?</summary>
+With a managed platform like MeshWG, the first site comes online in under two minutes. A complete two-site mesh, including verification and policies, fits in a single working session.
+</details>
+
+<details>
+<summary>Is a WireGuard mesh VPN secure?</summary>
+Yes, when configured correctly. WireGuard is a modern, audited, kernel-level protocol, and MeshWG adds zero-trust access policies that are enforced before traffic reaches its destination, plus server-side keys encrypted at rest.
+</details>
+
+<details>
+<summary>How much does it cost?</summary>
+The first two machines are free forever. A 20-site deployment runs around ₹7,000 a month — roughly one-tenth of a comparable SD-WAN deployment.
+</details>
+
+<details>
+<summary>Can I add sites later?</summary>
+Yes. Adding a site is a self-service step that takes under two minutes, and the mesh propagates the change automatically. Scaling from 2 to 50 sites uses the same process.
+</details>
 
 <details>
 <summary>How does a mesh VPN differ from a traditional VPN?</summary>
