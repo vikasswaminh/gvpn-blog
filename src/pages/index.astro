@@ -48,7 +48,7 @@ const seoKeywords = ["wireguard mesh vpn", "meshwg", "mesh vpn setup", "enterpri
     <div class="mag-wrap">
       
       <!-- LEFT SIDEBAR -->
-      <aside class="mag-sidebar mag-left">
+      <aside class="mag-sidebar mag-left" aria-label="Strategy & Architecture articles">
         <div class="mag-pill pill-purple">STRATEGY & ARCHITECTURE</div>
         <ul class="mag-list">
            {strategyPosts.map(p => (
@@ -75,7 +75,7 @@ const seoKeywords = ["wireguard mesh vpn", "meshwg", "mesh vpn setup", "enterpri
         {featured && (
           <a href={`/blog/${featured.slug}/`} class="mag-featured hover-card" data-tilt>
             <div class="feat-img">
-              {featured.data.cover && <Image src={featured.data.cover} alt={featured.data.title} width={1200} height={630} style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;" />}
+              {featured.data.cover && <Image src={featured.data.cover} alt={featured.data.title} width={1200} height={630} widths={[400, 600, 800, 1200]} sizes="(max-width: 768px) 100vw, 600px" loading="eager" fetchpriority="high" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;" />}
               <div class="mesh-bg" style="opacity: 0.2;"></div>
             </div>
             <div class="feat-content">
@@ -113,7 +113,7 @@ const seoKeywords = ["wireguard mesh vpn", "meshwg", "mesh vpn setup", "enterpri
       </main>
 
       <!-- RIGHT SIDEBAR -->
-      <aside class="mag-sidebar mag-right">
+      <aside class="mag-sidebar mag-right" aria-label="Engineering Guides articles">
         <div class="mag-pill pill-orange">ENGINEERING GUIDES</div>
         <ul class="mag-list">
           {engineeringPosts.map(p => (

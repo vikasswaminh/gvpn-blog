@@ -10,9 +10,10 @@ const searchData = posts.map(post => ({
 }));
 ---
 
-<div id="search-modal" class="search-overlay" aria-hidden="true">
+<div id="search-modal" class="search-overlay" aria-hidden="true" inert>
   <div class="search-container">
     <div class="search-header">
+      <label for="search-input" class="sr-only">Search articles</label>
       <input type="search" id="search-input" placeholder="Search articles..." autocomplete="off" />
       <button id="search-close" class="close-btn" aria-label="Close search">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -32,10 +33,13 @@ const searchData = posts.map(post => ({
     const closeBtn = document.getElementById('search-close');
     const resultsList = document.getElementById('search-results');
     const emptyState = document.getElementById('search-empty');
+    let triggerElement = null;
     
     if (!modal || !input) return;
 
     const openSearch = () => {
+      triggerElement = document.activeElement;
+      modal.removeAttribute('inert');
       modal.setAttribute('aria-hidden', 'false');
       input.focus();
       document.body.style.overflow = 'hidden';
@@ -43,10 +47,14 @@ const searchData = posts.map(post => ({
 
     const closeSearch = () => {
       modal.setAttribute('aria-hidden', 'true');
+      modal.setAttribute('inert', '');
       input.value = '';
       resultsList.innerHTML = '';
       emptyState.style.display = 'none';
       document.body.style.overflow = '';
+      if (triggerElement && typeof triggerElement.focus === 'function') {
+        triggerElement.focus();
+      }
     };
 
     window.addEventListener('open-search', openSearch);
@@ -126,9 +134,11 @@ const searchData = posts.map(post => ({
     opacity: 1;
     transition: opacity 0.2s;
   }
-  .search-overlay[aria-hidden="true"] {
+  .search-overlay[aria-hidden="true"],
+  .search-overlay[inert] {
     opacity: 0;
     pointer-events: none;
+    display: none;
   }
   .search-container {
     background: var(--surface);

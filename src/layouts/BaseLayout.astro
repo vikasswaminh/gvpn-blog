@@ -60,27 +60,29 @@ const { title = SITE.title, description, image, seoKeywords, article, bodyClass,
           }
 
           // 3D Tilt Animation Logic
-          document.querySelectorAll('[data-tilt]').forEach(el => {
-            el.addEventListener('mousemove', (e) => {
-              const rect = el.getBoundingClientRect();
-              const x = e.clientX - rect.left;
-              const y = e.clientY - rect.top;
+          if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.querySelectorAll('[data-tilt]').forEach(el => {
+              el.addEventListener('mousemove', (e) => {
+                const rect = el.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -6; 
+                const rotateY = ((x - centerX) / centerX) * 6;
+                
+                el.style.setProperty('--rotateX', `${rotateX}deg`);
+                el.style.setProperty('--rotateY', `${rotateY}deg`);
+              });
               
-              const centerX = rect.width / 2;
-              const centerY = rect.height / 2;
-              
-              const rotateX = ((y - centerY) / centerY) * -6; 
-              const rotateY = ((x - centerX) / centerX) * 6;
-              
-              el.style.setProperty('--rotateX', `${rotateX}deg`);
-              el.style.setProperty('--rotateY', `${rotateY}deg`);
+              el.addEventListener('mouseleave', () => {
+                el.style.setProperty('--rotateX', '0deg');
+                el.style.setProperty('--rotateY', '0deg');
+              });
             });
-            
-            el.addEventListener('mouseleave', () => {
-              el.style.setProperty('--rotateX', '0deg');
-              el.style.setProperty('--rotateY', '0deg');
-            });
-          });
+          }
 
           // Frosted nav on scroll
           var nav = document.querySelector('.nav');

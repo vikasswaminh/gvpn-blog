@@ -300,58 +300,6 @@ The productive framing: the agentless mesh is the modern abstraction on top of W
 
 The agentless model scales to enterprise use, but the deployment pattern changes. At enterprise scale, the questions shift from "how do I connect a branch" to "how do I govern, audit, and integrate."
 
-- **Governance.** Enterprise deployments need the control plane to support role-based access, so that only authorised staff can add or revoke branches. They need policy that can be applied consistently across the fleet, and they need the ability to segment the mesh — finance sites, operations sites, and partner sites should not all be in one flat network.
-- **Audit.** The control plane's logging becomes the audit trail. Enterprise compliance reviews want to see who changed what, when, and why. The platform should produce logs that demonstrate measured, considered choices — which is a practical benefit when the next external review happens.
-- **Integration.** Enterprise networks rarely start from zero. The mesh needs to interoperate with existing IPsec tunnels to partner networks, with cloud VPCs, and with the organisation's identity provider. The standard-protocol foundation — WireGuard — makes this integration tractable, because the mesh sits at a well-understood abstraction layer.
-- **Scale.** The model's sub-linear scaling is its enterprise advantage. A 50-branch deployment costs roughly ten times a 5-branch deployment, with no refresh-cycle spikes and no surprise hardware end-of-life events. Five-year TCO becomes a forecast rather than a hope.
-
-## Cloud deployment
-
-The agentless mesh is a natural fit for hybrid and cloud-connected networks, because the same router-based model that connects branches also connects cloud environments.
-
-- **Cloud VPCs as branches.** A cloud VPC — AWS, Azure, GCP — can be treated as just another site on the mesh. The cloud gateway runs WireGuard, dials out to the control plane, and joins the mesh. Branch routers then reach cloud resources over the encrypted tunnel, without a separate cloud VPN configuration per branch.
-- **Subnet routes.** The mesh supports advertising and accepting CIDR routes. A branch can advertise its LAN subnet, and a cloud VPC can advertise its private ranges. This bridges on-premises and cloud networks into one logical mesh, with the routing handled by the control plane.
-- **The control plane's location.** For organisations with data-residency requirements, the control plane's region matters. An in-region control plane satisfies residency for the coordination metadata, while the data plane — the actual traffic — stays peer-to-peer and never leaves the organisation's own paths.
-- **The hybrid pattern.** The most common cloud deployment is hybrid: the router mesh carries site-to-site and site-to-cloud traffic, while an agent-based zero-trust client covers remote workers. The two models complement each other, and the mesh provides the backbone.
-
-## Common questions
-
-**Q1. What does "without an agent" actually mean?**
-It means no software is installed on the router. The router's native WireGuard support is the endpoint; the mesh platform provides only the coordination layer — keys, peers, and policy. The router does the encryption and forwarding; the platform does the orchestration.
-
-**Q2. Does the mesh work behind carrier-grade NAT?**
-Yes. Every branch dials outbound to the control plane, so CGNAT and dynamic IPs are non-issues. The router initiates the connection, which works from behind any NAT that allows outbound UDP.
-
-**Q3. Is the control plane in the traffic path?**
-No. Traffic between branches is peer-to-peer and encrypted end-to-end. The control plane coordinates but does not relay, except in the fallback case where two branches cannot connect peer-to-peer due to symmetric NAT.
-
-**Q4. Can the mesh read my traffic?**
-No. Traffic is encrypted end-to-end with WireGuard's crypto (X25519, ChaCha20-Poly1305, Poly1305). The control plane can see coordination metadata — who is talking to whom — but not the content of the traffic.
-
-**Q5. Which routers are supported?**
-Any router with native WireGuard support — OpenWrt, MikroTik RouterOS 7, TP-Link business/Omada, Ubiquiti, OPNsense, and others. The coordination lives in the control plane, so the router fleet can be mixed and routers can be replaced without reconfiguring the mesh.
-
-**Q6. How long does onboarding take?**
-Under two minutes per site. The human step is entering the coordination endpoint and key on the router — or scanning a QR code on supported firmware. The control plane delivers the peer list automatically.
-
-**Q7. Is agentless mesh the same as SD-WAN?**
-No. Agentless mesh delivers encrypted site-to-site connectivity with central policy and a dashboard. SD-WAN adds application-aware routing, packet deduplication, and carrier-managed SLAs — capabilities the mesh does not attempt. They are built for different shapes of organisation.
-
-**Q8. Does agentless mesh cover remote workers?**
-No. It covers sites. For individual remote workers on arbitrary laptops, an agent-based zero-trust client is the appropriate tool. The two models are complementary.
-
-## References
-- **WireGuard protocol documentation** — the cryptographic design and kernel implementation
-- **OpenWrt WireGuard package documentation**
-- **MikroTik RouterOS 7 WireGuard documentation**
-- **OPNsense WireGuard plugin documentation**
-- **Ubiquiti WireGuard support documentation**
-- **RFC 8446** and related TLS/DTLS context for the broader encrypted-transport landscape
-
-## Conclusion
-The agentless WireGuard mesh is the answer to a question that has quietly changed. For years, the assumption was that a private multi-branch network required either a specialist's time, a dedicated appliance, or a fleet of software agents. The agentless model removes the last of those, and in doing so changes the economics and the operational reality of the whole decision.
-
-The routers most businesses already own speak WireGuard. The coordination problem — who to trust, where to send traffic, how to rotate keys — is solved by a cloud control plane that each branch dials outbound. The result is a private network that comes online in minutes per site, on hardware that was already in the building, operated by the generalist IT team the business actually has.
 
 It is not the right answer for every organisation. Enterprises that need packet-level WAN optimisation and carrier-managed SLAs have a legitimate home in SD-WAN. Organisations that must interoperate with non-WireGuard endpoints have a legitimate home in IPsec. But for the 5-to-50-branch businesses that drive most growth — retail chains, clinic groups, distributors, professional services — the agentless mesh delivers the outcomes that matter at a fraction of the cost and a fraction of the operational burden.
 
@@ -360,6 +308,48 @@ The most informative way to evaluate the model is to run it on real branches. Tw
 ---
 *MeshWG — hosted WireGuard mesh + zero-trust access. Strict per-org isolation, fast-acting policies, works with the routers you already own.*
 
+
+## Common questions
+
+<details>
+<summary>Q1. What does "without an agent" actually mean?</summary>
+It means no software is installed on the router. The router's native WireGuard support is the endpoint; the mesh platform provides only the coordination layer — keys, peers, and policy. The router does the encryption and forwarding; the platform does the orchestration.
+</details>
+
+<details>
+<summary>Q2. Does the mesh work behind carrier-grade NAT?</summary>
+Yes. Every branch dials outbound to the control plane, so CGNAT and dynamic IPs are non-issues. The router initiates the connection, which works from behind any NAT that allows outbound UDP.
+</details>
+
+<details>
+<summary>Q3. Is the control plane in the traffic path?</summary>
+No. Traffic between branches is peer-to-peer and encrypted end-to-end. The control plane coordinates but does not relay, except in the fallback case where two branches cannot connect peer-to-peer due to symmetric NAT.
+</details>
+
+<details>
+<summary>Q4. Can the mesh read my traffic?</summary>
+No. Traffic is encrypted end-to-end with WireGuard's crypto (X25519, ChaCha20-Poly1305, Poly1305). The control plane can see coordination metadata — who is talking to whom — but not the content of the traffic.
+</details>
+
+<details>
+<summary>Q5. Which routers are supported?</summary>
+Any router with native WireGuard support — OpenWrt, MikroTik RouterOS 7, TP-Link business/Omada, Ubiquiti, OPNsense, and others. The coordination lives in the control plane, so the router fleet can be mixed and routers can be replaced without reconfiguring the mesh.
+</details>
+
+<details>
+<summary>Q6. How long does onboarding take?</summary>
+Under two minutes per site. The human step is entering the coordination endpoint and key on the router — or scanning a QR code on supported firmware. The control plane delivers the peer list automatically.
+</details>
+
+<details>
+<summary>Q7. Is agentless mesh the same as SD-WAN?</summary>
+No. Agentless mesh delivers encrypted site-to-site connectivity with central policy and a dashboard. SD-WAN adds application-aware routing, packet deduplication, and carrier-managed SLAs — capabilities the mesh does not attempt. They are built for different shapes of organisation.
+</details>
+
+<details>
+<summary>Q8. Does agentless mesh cover remote workers?</summary>
+No. It covers sites. For individual remote workers on arbitrary laptops, an agent-based zero-trust client is the appropriate tool. The two models are complementary.
+</details>
 
 ## Frequently Asked Questions (FAQ)
 
