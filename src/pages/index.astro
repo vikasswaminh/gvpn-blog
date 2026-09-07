@@ -9,14 +9,19 @@ const allPosts = await getPublishedPosts();
 // Helper to find a post by slug
 const getPost = (slug: string) => allPosts.find(p => p.slug === slug);
 
-const featured = getPost('wireguard-mesh-vpn-without-agent-existing-routers');
+const featured = getPost('how-wireguard-mesh-control-plane-manages-keys-peers-routes');
 const featuredDate = featured ? featured.data.pubDate.toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'short',
   day: 'numeric'
 }) : null;
 
+const hasFeaturedStrategy = featured?.data.tags?.some(tag => tag.toLowerCase() === 'strategy guide' || tag.toLowerCase() === 'protocol deep-dive');
+const featuredPillText = hasFeaturedStrategy ? 'STRATEGY & ARCHITECTURE' : 'ENGINEERING GUIDE';
+const featuredPillClass = hasFeaturedStrategy ? 'mag-pill pill-purple' : 'mag-pill pill-orange';
+
 const gridSlugs = [
+  'wireguard-mesh-vpn-without-agent-existing-routers',
   'how-to-set-up-a-wireguard-mesh-vpn',
   'cloud-wireguard-vpn-meshwg',
   'how-to-build-a-multi-location-wireguard-network-with-routers',
@@ -80,7 +85,7 @@ const seoKeywords = ["wireguard mesh vpn", "meshwg", "mesh vpn setup", "enterpri
             </div>
             <div class="feat-content">
               <div class="mag-pill-row" style="border-bottom: 0; padding-bottom: 0; margin-bottom: 12px;">
-                <div class="mag-pill pill-orange">engineering guide</div>
+                <div class={featuredPillClass}>{featuredPillText}</div>
                 <div class="mag-pill pill-red">NEW</div>
               </div>
               <h2 class="feat-t">{featured.data.title}</h2>
