@@ -10,7 +10,7 @@ const searchData = posts.map(post => ({
 }));
 ---
 
-<div id="search-modal" class="search-overlay" role="dialog" aria-modal="true" aria-label="Search articles" hidden inert>
+<dialog id="search-modal" class="search-modal" aria-label="Search articles">
   <div class="search-container">
     <div class="search-header">
       <label for="search-input" class="sr-only">Search articles</label>
@@ -24,7 +24,7 @@ const searchData = posts.map(post => ({
       <div id="search-empty" class="search-empty" style="display: none;">No results found.</div>
     </div>
   </div>
-</div>
+</dialog>
 
 <script define:vars={{ searchData }}>
   document.addEventListener('astro:page-load', () => {
@@ -39,15 +39,12 @@ const searchData = posts.map(post => ({
 
     const openSearch = () => {
       triggerElement = document.activeElement;
-      modal.removeAttribute('hidden');
-      modal.removeAttribute('inert');
-      input.focus();
+      modal.showModal();
       document.body.style.overflow = 'hidden';
     };
 
     const closeSearch = () => {
-      modal.setAttribute('hidden', '');
-      modal.setAttribute('inert', '');
+      modal.close();
       input.value = '';
       resultsList.innerHTML = '';
       emptyState.style.display = 'none';
@@ -60,15 +57,23 @@ const searchData = posts.map(post => ({
     window.addEventListener('open-search', openSearch);
     closeBtn.addEventListener('click', closeSearch);
     
-    // Close on escape
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !modal.hasAttribute('hidden')) {
-        closeSearch();
+    // Close on escape is handled natively by <dialog>, but we need to reset the body overflow
+    modal.addEventListener('close', () => {
+      input.value = '';
+      resultsList.innerHTML = '';
+      emptyState.style.display = 'none';
+      document.body.style.overflow = '';
+      if (triggerElement && typeof triggerElement.focus === 'function') {
+        triggerElement.focus();
       }
+    });
+
+    // Close on escape / open on Ctrl+K
+    window.addEventListener('keydown', (e) => {
       // Ctrl+K / Cmd+K to open
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
-        if (modal.hasAttribute('hidden')) {
+        if (!modal.open) {
           openSearch();
         } else {
           closeSearch();
@@ -78,7 +83,15 @@ const searchData = posts.map(post => ({
 
     // Close on click outside
     modal.addEventListener('click', (e) => {
-      if (e.target === modal) closeSearch();
+      const dialogDimensions = modal.getBoundingClientRect()
+      if (
+        e.clientX < dialogDimensions.left ||
+        e.clientX > dialogDimensions.right ||
+        e.clientY < dialogDimensions.top ||
+        e.clientY > dialogDimensions.bottom
+      ) {
+        closeSearch();
+      }
     });
 
     input.addEventListener('input', (e) => {
@@ -125,38 +138,26 @@ const searchData = posts.map(post => ({
 </script>
 
 <style>
-  .search-overlay {
-    position: fixed;
-    inset: 0;
+  .search-modal {
+    margin: 10vh auto auto;
+    padding: 0;
+    width: 100%;
+    max-width: 600px;
+    background: transparent;
+    border: none;
+    overflow: visible;
+  }
+  .search-modal::backdrop {
     background: rgba(11, 18, 32, 0.75);
     backdrop-filter: blur(8px);
-    z-index: 100000;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding-top: 10vh;
-    opacity: 1;
-    transition: opacity 0.2s;
-  }
-  .search-overlay[hidden],
-  .search-overlay[inert] {
-    opacity: 0;
-    pointer-events: none;
-    display: none;
   }
   .search-container {
     background: var(--surface);
     width: 100%;
-    max-width: 600px;
     border-radius: var(--radius-lg);
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     border: 1px solid var(--border-strong);
     overflow: hidden;
-    transform: translateY(0);
-    transition: transform 0.2s;
-  }
-  .search-overlay[aria-hidden="true"] .search-container {
-    transform: translateY(-20px);
   }
   .search-header {
     display: flex;
@@ -181,13 +182,19 @@ const searchData = posts.map(post => ({
     color: var(--text-3);
     cursor: pointer;
     padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
   }
   .close-btn:hover {
     color: var(--text);
+    background: var(--bg-2);
   }
   .search-results-wrapper {
     max-height: 60vh;
     overflow-y: auto;
+    background: var(--surface);
   }
   .search-results-list {
     list-style: none;
