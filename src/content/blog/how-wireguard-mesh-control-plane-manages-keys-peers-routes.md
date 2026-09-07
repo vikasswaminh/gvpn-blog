@@ -9,16 +9,6 @@ seoKeywords: ["WireGuard mesh VPN control plane", "WireGuard key distribution", 
 cover: '../../assets/images/mesh_control_plane_keys_peers_routes.png'
 ---
 
-<div class="bp-intro"> 
-<p class="lede-p">
-A **WireGuard mesh VPN control plane** is the distributed software-defined networking layer that automates cryptographic key exchange, NAT traversal, peer state distribution, and IP routing across an arbitrary collection of nodes without participating in the data forwarding path. WireGuard by itself is an extraordinarily fast, cryptographically opinionated, and intentionally minimal VPN protocol implemented directly inside the operating system kernel. However, WireGuard’s core implementation possesses zero native concept of dynamic peer discovery, central directory services, automated key rotation, or dynamic mesh routing. In standard vanilla WireGuard, every single tunnel requires hand-crafted static configuration files, hard-coded public IP endpoints, and manual mapping between public keys and IP subnets.
-</p>
-
-> **Related Reading:** [Learn more about managed vs self hosted wireguard vpn 2026](/blog/managed-vs-self-hosted-wireguard-vpn-2026/)
-> 
-> **Related Reading:** [Learn more about wireguard site to site vpn how it works 2026](/blog/wireguard-site-to-site-vpn-how-it-works-2026/)
-</div>
-
 <div class="tldr-box">
 <h3>TL;DR</h3>
 <ul>
@@ -29,6 +19,18 @@ A **WireGuard mesh VPN control plane** is the distributed software-defined netwo
   <li><strong>Agentless Appliance and Router Support:</strong> Because the control plane delivers standard WireGuard configuration primitives, physical routers (MikroTik RouterOS 7, OpenWrt, OPNsense, Ubiquiti UniFi, TP-Link Omada) act as enterprise mesh gateways without requiring custom host binaries.</li>
   <li><strong>High-Availability Fault Tolerance:</strong> If the control plane goes down entirely, active data plane tunnels stay up indefinitely. The mesh degrades gracefully to a static state: existing traffic continues flowing at hardware wire speed.</li>
 </ul>
+</div>
+
+<div class="bp-intro"> 
+
+> **Related Reading:** [Learn more about managed vs self hosted wireguard vpn 2026](/blog/managed-vs-self-hosted-wireguard-vpn-2026/)
+> 
+> **Related Reading:** [Learn more about wireguard site to site vpn how it works 2026](/blog/wireguard-site-to-site-vpn-how-it-works-2026/)
+
+
+<p class="lede-p">
+A **WireGuard mesh VPN control plane** is the distributed software-defined networking layer that automates cryptographic key exchange, NAT traversal, peer state distribution, and IP routing across an arbitrary collection of nodes without participating in the data forwarding path. WireGuard by itself is an extraordinarily fast, cryptographically opinionated, and intentionally minimal VPN protocol implemented directly inside the operating system kernel. However, WireGuard’s core implementation possesses zero native concept of dynamic peer discovery, central directory services, automated key rotation, or dynamic mesh routing. In standard vanilla WireGuard, every single tunnel requires hand-crafted static configuration files, hard-coded public IP endpoints, and manual mapping between public keys and IP subnets.
+</p>
 </div>
 
 <p class="lede-p">
