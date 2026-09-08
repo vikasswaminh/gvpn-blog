@@ -9,14 +9,16 @@ seoKeywords: ["WireGuard site-to-site VPN", "how WireGuard works", "VPN protocol
 cover: '../../assets/images/how_it_works.png'
 ---
 
+> **Related Reading:** [Learn more about wireguard site to site vpn multiple locations](/blog/wireguard-site-to-site-vpn-multiple-locations/)
+
+> **Related Reading:** [Learn more about tp link site to site vpn wireguard 2026](/blog/tp-link-site-to-site-vpn-wireguard-2026/)
+
 <div class="bp-intro"> <!-- Intro / UVP --> <p class="lede-p">
 Yes — WireGuard works beautifully for site-to-site VPN. It works
           between two routers, between thirty routers, and between routers
           sitting behind ISP CGNAT with no static public IP at either end.
 
-> **Related Reading:** [Learn more about wireguard site to site vpn multiple locations](/blog/wireguard-site-to-site-vpn-multiple-locations/)
 
-> **Related Reading:** [Learn more about tp link site to site vpn wireguard 2026](/blog/tp-link-site-to-site-vpn-wireguard-2026/)
 
           What you do not get out of the box is a control plane: someone has
           to generate the keypairs, distribute the configurations, keep the

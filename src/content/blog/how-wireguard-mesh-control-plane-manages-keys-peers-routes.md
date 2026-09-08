@@ -9,6 +9,11 @@ seoKeywords: ["WireGuard mesh VPN control plane", "WireGuard key distribution", 
 cover: '../../assets/images/mesh_control_plane_keys_peers_routes.png'
 ---
 
+> **Related Reading:** [Learn more about managed vs self hosted wireguard vpn 2026](/blog/managed-vs-self-hosted-wireguard-vpn-2026/)
+
+> **Related Reading:** [Learn more about wireguard site to site vpn how it works 2026](/blog/wireguard-site-to-site-vpn-how-it-works-2026/)
+
+
 <div class="tldr-box">
 <h3>TL;DR</h3>
 <ul>
@@ -22,10 +27,6 @@ cover: '../../assets/images/mesh_control_plane_keys_peers_routes.png'
 </div>
 
 <div class="bp-intro"> 
-
-> **Related Reading:** [Learn more about managed vs self hosted wireguard vpn 2026](/blog/managed-vs-self-hosted-wireguard-vpn-2026/)
-> 
-> **Related Reading:** [Learn more about wireguard site to site vpn how it works 2026](/blog/wireguard-site-to-site-vpn-how-it-works-2026/)
 
 
 <p class="lede-p">

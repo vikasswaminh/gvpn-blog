@@ -10,6 +10,7 @@ cover: '../../assets/images/agentless_wireguard_mesh.png'
 ---
 
 > **Related Reading:** [How to Set Up a WireGuard [Mesh VPN](/blog/how-to-set-up-a-wireguard-mesh-vpn/): Step-by-Step Tutorial (2026)](/blog/how-to-set-up-a-wireguard-mesh-vpn/)
+
 > **Related Reading:** [Cloud WireGuard VPN: How to Connect Cloud Servers and Branch Networks with MeshWG](/blog/cloud-wireguard-vpn-meshwg/)
 
 <div class="bp-intro">

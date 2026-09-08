@@ -9,6 +9,10 @@ seoKeywords: ["Branch office VPN", "SMB VPN", "multi-site network", "retail VPN"
 cover: '../../assets/images/branch_office_vpn.png'
 ---
 
+> **Related Reading:** [Learn more about how to set up a [router vpn](/blog/how-to-set-up-a-router-vpn-without-installing-vpn-software/) without installing vpn software](/blog/how-to-set-up-a-router-vpn-without-installing-vpn-software/)
+
+> **Related Reading:** [Learn more about managed vs self hosted wireguard vpn 2026](/blog/managed-vs-self-hosted-wireguard-vpn-2026/)
+
 <div class="bp-intro"> <p>
 Most SMB branch-office VPN rollouts in 2026 share the same
 shape: 5 to 50 sites, each running an existing TP-Link,
@@ -32,9 +36,6 @@ scale — that consistently produce successful multi-branch
 deployments.
 </p> 
 
-> **Related Reading:** [Learn more about how to set up a [router vpn](/blog/how-to-set-up-a-router-vpn-without-installing-vpn-software/) without installing vpn software](/blog/how-to-set-up-a-router-vpn-without-installing-vpn-software/)
-> 
-> **Related Reading:** [Learn more about managed vs self hosted wireguard vpn 2026](/blog/managed-vs-self-hosted-wireguard-vpn-2026/)
 
 <!-- What is branch office VPN --> <div class="bp-tldr"> <h3>TL;DR</h3> <p>
 A branch office VPN is an encrypted private network that

@@ -9,6 +9,10 @@ seoKeywords: ["TP-Link site-to-site VPN", "WireGuard on TP-Link", "router VPN se
 cover: '../../assets/images/tp_link_vpn_new.png'
 ---
 
+> **Related Reading:** [Learn more about how to set up a [router vpn](/blog/how-to-set-up-a-router-vpn-without-installing-vpn-software/) without installing vpn software](/blog/how-to-set-up-a-router-vpn-without-installing-vpn-software/)
+
+> **Related Reading:** [Learn more about wireguard site to site vpn how it works 2026](/blog/wireguard-site-to-site-vpn-how-it-works-2026/)
+
 <article class="post-block intro"> 
 <p class="lede-p">
 Yes — you can connect two, three, or thirty TP-Link branches with a single
@@ -19,9 +23,6 @@ nodes on a cloud-managed mesh, using the WireGuard support already in
 your firmware. 
 </p>
 
-> **Related Reading:** [Learn more about how to set up a [router vpn](/blog/how-to-set-up-a-router-vpn-without-installing-vpn-software/) without installing vpn software](/blog/how-to-set-up-a-router-vpn-without-installing-vpn-software/)
-> 
-> **Related Reading:** [Learn more about wireguard site to site vpn how it works 2026](/blog/wireguard-site-to-site-vpn-how-it-works-2026/)
 
 <p class="lede-p">
 A 20-branch deployment runs around ₹7,000 per month
