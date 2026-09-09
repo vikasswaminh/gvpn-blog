@@ -9,7 +9,7 @@ const allPosts = await getPublishedPosts();
 // Helper to find a post by slug
 const getPost = (slug: string) => allPosts.find(p => p.slug === slug);
 
-const featured = getPost('wireguard-mesh-vpn-key-management-key-rotation-best-practices');
+const featured = getPost('wireguard-mesh-vpn-home-network-secure-remote-access-without-port-forwarding');
 
 let optimizedFeaturedCover;
 if (featured && featured.data.cover) {
@@ -34,6 +34,7 @@ const featuredPillText = hasFeaturedStrategy ? 'STRATEGY & ARCHITECTURE' : 'ENGI
 const featuredPillClass = hasFeaturedStrategy ? 'mag-pill pill-purple' : 'mag-pill pill-orange';
 
 const gridSlugs = [
+  'wireguard-mesh-vpn-key-management-key-rotation-best-practices',
   'how-wireguard-mesh-control-plane-manages-keys-peers-routes',
   'wireguard-mesh-vpn-without-agent-existing-routers',
   'how-to-set-up-a-wireguard-mesh-vpn',

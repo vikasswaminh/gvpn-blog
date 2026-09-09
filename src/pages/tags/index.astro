@@ -96,9 +96,8 @@ const activeCategories = Object.entries(categories).filter(([_, cat]) => cat.tag
       linear-gradient(to bottom, var(--border) 1px, transparent 1px);
     background-size: 48px 48px;
     background-position: center top;
-    min-height: 100vh;
     padding-top: 60px;
-    padding-bottom: 100px;
+    padding-bottom: 60px;
   }
   
   .seo-hero {
@@ -168,25 +167,13 @@ const activeCategories = Object.entries(categories).filter(([_, cat]) => cat.tag
 
   /* Bento Grid */
   .bento-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 24px;
-    align-items: stretch;
-  }
-  @media (max-width: 600px) {
-    .bento-grid {
-      grid-template-columns: 1fr;
-    }
+    column-width: 400px;
+    column-gap: 24px;
   }
   
-  /* Make the last card span full width if it's an orphan to prevent empty space */
-  @media (min-width: 850px) {
-    .bento-card:last-child:nth-child(4) {
-      grid-column: 1 / -1;
-    }
-  }
-
   .bento-card {
+    break-inside: avoid;
+    margin-bottom: 24px;
     background: #ffffff;
     border: 1px solid var(--border);
     border-radius: var(--radius-xl);
