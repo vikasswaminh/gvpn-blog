@@ -10,7 +10,7 @@ cover: '../../assets/images/branch_office_vpn.png'
 ---
 
 > **Related Reading:** [Learn more about how to set up a [router vpn](/blog/how-to-set-up-a-router-vpn-without-installing-vpn-software/) without installing vpn software](/blog/how-to-set-up-a-router-vpn-without-installing-vpn-software/)
-
+>
 > **Related Reading:** [Learn more about managed vs self hosted wireguard vpn 2026](/blog/managed-vs-self-hosted-wireguard-vpn-2026/)
 
 <div class="bp-intro"> <p>

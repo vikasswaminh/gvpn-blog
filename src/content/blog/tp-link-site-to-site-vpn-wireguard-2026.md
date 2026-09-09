@@ -10,7 +10,7 @@ cover: '../../assets/images/tp_link_vpn_new.png'
 ---
 
 > **Related Reading:** [Learn more about how to set up a [router vpn](/blog/how-to-set-up-a-router-vpn-without-installing-vpn-software/) without installing vpn software](/blog/how-to-set-up-a-router-vpn-without-installing-vpn-software/)
-
+>
 > **Related Reading:** [Learn more about wireguard site to site vpn how it works 2026](/blog/wireguard-site-to-site-vpn-how-it-works-2026/)
 
 <article class="post-block intro"> 

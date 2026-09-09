@@ -10,7 +10,7 @@ cover: '../../assets/images/sdwan_alternatives.png'
 ---
 
 > **Related Reading:** [Learn more about [mesh vpn](/blog/how-to-set-up-a-wireguard-mesh-vpn/) vs ipsec vs sdwan 2026](/blog/mesh-vpn-vs-ipsec-vs-sdwan-2026/)
-
+>
 > **Related Reading:** [Learn more about branch office vpn smb rollout playbook 2026](/blog/branch-office-vpn-smb-rollout-playbook-2026/)
 
 <div class="bp-intro"> <!-- § Why look for alternatives --> <div class="tldr-box"> <h3>TL;DR</h3> <p>

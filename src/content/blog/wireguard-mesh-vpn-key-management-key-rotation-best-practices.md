@@ -10,7 +10,7 @@ cover: '../../assets/images/wireguard_key_rotation_cover.png'
 ---
 
 > **Related Reading:** [How WireGuard Mesh Control Planes Manage Keys, Peers & Routes](/blog/how-wireguard-mesh-control-plane-manages-keys-peers-routes/)
-
+>
 > **Related Reading:** [Agentless WireGuard Mesh VPN on Existing Routers](/blog/wireguard-mesh-vpn-without-agent-existing-routers/)
 
 

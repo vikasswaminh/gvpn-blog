@@ -10,7 +10,7 @@ cover: '../../assets/images/how_it_works.png'
 ---
 
 > **Related Reading:** [Learn more about wireguard site to site vpn multiple locations](/blog/wireguard-site-to-site-vpn-multiple-locations/)
-
+>
 > **Related Reading:** [Learn more about tp link site to site vpn wireguard 2026](/blog/tp-link-site-to-site-vpn-wireguard-2026/)
 
 <div class="bp-intro"> <!-- Intro / UVP --> <p class="lede-p">

@@ -10,7 +10,7 @@ cover: '../../assets/images/wireguard_home_network_vpn.png'
 ---
 
 > **Related Reading:** [Learn more about how to set up a wireguard mesh vpn](/blog/how-to-set-up-a-wireguard-mesh-vpn/)
-
+>
 > **Related Reading:** [Wireguard NAT Traversal Behind CGNAT (2026)](/blog/wireguard-nat-traversal-behind-cgnat-2026/)
 
 <article class="tldr-box">
