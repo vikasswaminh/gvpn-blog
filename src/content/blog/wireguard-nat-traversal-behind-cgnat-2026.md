@@ -9,6 +9,10 @@ seoKeywords: ["wireguard nat traversal", "wireguard cgnat", "udp hole punching w
 cover: '../../assets/images/nat_traversal_cgnat.png'
 ---
 
+> **Related Reading:** [How WireGuard Site-to-Site VPN Works (2026 Protocol Guide)](/blog/wireguard-site-to-site-vpn-how-it-works-2026/)
+
+> **Related Reading:** [WireGuard Site-to-Site VPN: Multi-Location Setup Guide (2026)](/blog/wireguard-site-to-site-vpn-multiple-locations/)
+
 ## Executive Summary
 
 As IPv4 address exhaustion has accelerated worldwide, Internet Service Providers (ISPs), cellular operators, and enterprise network teams have overwhelmingly deployed Carrier-Grade NAT (CGNAT, defined in RFC 6598 under `100.64.0.0/10`). While CGNAT extends the operational lifespan of legacy IPv4 infrastructure, it breaks traditional peer-to-peer (P2P) networking paradigms. When two gateway routers or remote endpoints both reside behind stateful NAT firewalls or double-NAT carrier environments, neither node possesses a publicly reachable IP address.

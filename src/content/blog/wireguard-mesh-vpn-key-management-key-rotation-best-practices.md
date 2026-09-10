@@ -9,10 +9,9 @@ seoKeywords: ["WireGuard mesh VPN key management", "WireGuard key rotation", "ze
 cover: '../../assets/images/wireguard_key_rotation_cover.png'
 ---
 
-> **Related Reading:** [How WireGuard Mesh Control Planes Manage Keys, Peers & Routes](/blog/how-wireguard-mesh-control-plane-manages-keys-peers-routes/)
->
 > **Related Reading:** [Agentless WireGuard Mesh VPN on Existing Routers](/blog/wireguard-mesh-vpn-without-agent-existing-routers/)
 
+> **Related Reading:** [WireGuard NAT Traversal: Connecting Peers Behind CGNAT & Firewalls (2026)](/blog/wireguard-nat-traversal-behind-cgnat-2026/)
 
 <article class="tldr-box">
 <h3>TL;DR</h3>

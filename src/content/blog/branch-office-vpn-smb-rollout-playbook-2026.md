@@ -9,9 +9,9 @@ seoKeywords: ["Branch office VPN", "SMB VPN", "multi-site network", "retail VPN"
 cover: '../../assets/images/branch_office_vpn.png'
 ---
 
-> **Related Reading:** [Learn more about how to set up a [router vpn](/blog/how-to-set-up-a-router-vpn-without-installing-vpn-software/) without installing vpn software](/blog/how-to-set-up-a-router-vpn-without-installing-vpn-software/)
->
-> **Related Reading:** [Learn more about managed vs self hosted wireguard vpn 2026](/blog/managed-vs-self-hosted-wireguard-vpn-2026/)
+> **Related Reading:** [Cloud WireGuard VPN: How to Connect Cloud Servers and Branch Networks with MeshWG](/blog/cloud-wireguard-vpn-meshwg/)
+
+> **Related Reading:** [How to Build a Multi-Location WireGuard Network with Routers: Enterprise Guide](/blog/how-to-build-a-multi-location-wireguard-network-with-routers/)
 
 <div class="bp-intro"> <p>
 Most SMB branch-office VPN rollouts in 2026 share the same
@@ -35,7 +35,6 @@ through the five phases — audit, choose, pilot, rollout,
 scale — that consistently produce successful multi-branch
 deployments.
 </p> 
-
 
 <!-- What is branch office VPN --> <div class="bp-tldr"> <h3>TL;DR</h3> <p>
 A branch office VPN is an encrypted private network that
@@ -451,7 +450,6 @@ Ready to run the audit, pilot, and rollout against your own
 The first two machines stay free forever; the meter starts
           at machine three.
 </p> </aside>
-
 
 ## Frequently Asked Questions (FAQ)
 

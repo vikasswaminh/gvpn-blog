@@ -14,9 +14,10 @@ export async function getStaticPaths() {
 }
 
 const { posts, tag } = Astro.props;
+const shouldNoindex = posts.length < 2;
 ---
 
-<BaseLayout title={`#${tag}`} description={`Posts tagged ${tag}.`}>
+<BaseLayout title={`#${tag}`} description={`Posts tagged ${tag}.`} noindex={shouldNoindex}>
   <p class="post-eyebrow"><a href="/tags/">← All tags</a></p>
   <h1 class="page-title">#{tag}</h1>
   <div class="post-list">

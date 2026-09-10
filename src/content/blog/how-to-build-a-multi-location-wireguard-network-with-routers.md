@@ -10,6 +10,10 @@ seoKeywords: ["multi location wireguard network", "wireguard router site to site
 cover: '../../assets/images/multiple_locations.png'
 ---
 
+> **Related Reading:** [How to Set Up a Router VPN Without Installing VPN Software (2026 MeshWG Guide)](/blog/how-to-set-up-a-router-vpn-without-installing-vpn-software/)
+
+> **Related Reading:** [How to Set Up a WireGuard Mesh VPN (Full Guide)](/blog/how-to-set-up-a-wireguard-mesh-vpn/)
+
 <div class="bp-intro">
     <div class="tldr-box">
       <h3 id="tl-dr">TL;DR</h3>

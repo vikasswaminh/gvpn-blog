@@ -9,9 +9,9 @@ seoKeywords: ["WireGuard mesh VPN for home networks", "secure remote access with
 cover: '../../assets/images/wireguard_home_network_vpn.png'
 ---
 
-> **Related Reading:** [Learn more about how to set up a wireguard mesh vpn](/blog/how-to-set-up-a-wireguard-mesh-vpn/)
->
-> **Related Reading:** [Wireguard NAT Traversal Behind CGNAT (2026)](/blog/wireguard-nat-traversal-behind-cgnat-2026/)
+> **Related Reading:** [WireGuard Mesh VPN Key Management & Rotation: 2026 Best Practices](/blog/wireguard-mesh-vpn-key-management-key-rotation-best-practices/)
+
+> **Related Reading:** [Agentless WireGuard Mesh VPN on Existing Routers](/blog/wireguard-mesh-vpn-without-agent-existing-routers/)
 
 <article class="tldr-box">
 <h3>TL;DR</h3>

@@ -9,6 +9,10 @@ seoKeywords: ["Cloud WireGuard VPN", "connect cloud servers", "branch networks",
 cover: '../../assets/images/cloud_wireguard_vpn.png'
 ---
 
+> **Related Reading:** [How to Build a Multi-Location WireGuard Network with Routers: Enterprise Guide](/blog/how-to-build-a-multi-location-wireguard-network-with-routers/)
+
+> **Related Reading:** [How to Set Up a Router VPN Without Installing VPN Software (2026 MeshWG Guide)](/blog/how-to-set-up-a-router-vpn-without-installing-vpn-software/)
+
 <div class="bp-intro">
     <div class="tldr-box">
       <h3 id="tl-dr">TL;DR</h3>

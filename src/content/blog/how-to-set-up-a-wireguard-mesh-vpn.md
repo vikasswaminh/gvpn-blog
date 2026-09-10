@@ -9,6 +9,10 @@ seoKeywords: ["WireGuard mesh VPN", "WireGuard setup", "full mesh VPN"]
 cover: '../../assets/images/wireguard_mesh_tutorial.png'
 ---
 
+> **Related Reading:** [How WireGuard Mesh Control Planes Manage Keys, Peers & Routes](/blog/how-wireguard-mesh-control-plane-manages-keys-peers-routes/)
+
+> **Related Reading:** [Managing Multiple WireGuard Tunnels & Mesh VPN Guide (2026)](/blog/manage-multiple-wireguard-tunnels-mesh-vpn-2026/)
+
 <div class="cluster-nav" style="background: var(--bg-2); padding: 16px; border-radius: 8px; margin-bottom: 24px; border: 1px solid var(--border);">
   <strong>MeshWG Architecture Guides (Cluster):</strong>
   <ul style="margin: 8px 0 0 16px;">
