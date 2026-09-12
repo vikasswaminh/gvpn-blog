@@ -318,7 +318,7 @@ To visualize how a WireGuard mesh control plane operates in the real world, exam
 ### Scenario 2: 50-Site Distributed Retail Fleet Behind CGNAT
 - **The Environment:** A national pharmacy operator with 50 branch locations. Every clinic operates an on-premise inventory server, local POS terminals, and diagnostic equipment over commercial fiber or 5G cellular uplinks behind CGNAT.
 - **The Challenge:** Upgrading 50 locations to static public IPs would cost over $60,000 annually in ISP surcharge fees.
-- **The Mesh Solution:** The clinics deploy standard MikroTik hEX or TP-Link Omada routers. (See <a href="/blog/tp-link-site-to-site-vpn-wireguard-2026/">[TP-Link WireGuard Setup Guide]](/blog/tp-link-site-to-site-vpn-wireguard-2026/)</a>). The router dials outbound to the control plane, discovers its reflexive public NAT socket, and exchanges keys with neighboring clinics. Tunnels establish peer-to-peer without opening a single inbound port on local firewalls.
+- **The Mesh Solution:** The clinics deploy standard MikroTik hEX or TP-Link Omada routers. (See <a href="/blog/tp-link-site-to-site-vpn-wireguard-2026/">TP-Link WireGuard Setup Guide</a>). The router dials outbound to the control plane, discovers its reflexive public NAT socket, and exchanges keys with neighboring clinics. Tunnels establish peer-to-peer without opening a single inbound port on local firewalls.
 
 ---
 

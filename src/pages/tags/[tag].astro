@@ -14,7 +14,8 @@ export async function getStaticPaths() {
 }
 
 const { posts, tag } = Astro.props;
-const shouldNoindex = posts.length < 2;
+// Do not index tags with fewer than 3 posts as they provide little standalone value
+const shouldNoindex = posts.length < 3;
 ---
 
 <BaseLayout title={`#${tag}`} description={`Posts tagged ${tag}.`} noindex={shouldNoindex}>

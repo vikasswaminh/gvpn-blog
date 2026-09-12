@@ -194,7 +194,7 @@ This is a deliberate architectural choice, and it is worth understanding because
 This is the step where the setup becomes concrete, because the exact click-path depends on your router's firmware. The good news is that the underlying config is identical — only the interface differs. Here is how to apply it on the most common platforms.
 
 **TP-Link (Omada / business routers)**
-In the TP-Link web interface, navigate to VPN → WireGuard. Create a new tunnel, paste the config, and save. TP-Link's business routers (ER605, ER7206, ER8411) and many Deco models support WireGuard natively. [Read our dedicated TP-Link guide.](/blog/tp-link-site-to-site-vpn-wireguard-2026)
+In the TP-Link web interface, navigate to VPN → WireGuard. Create a new tunnel, paste the config, and save. TP-Link's business routers (ER605, ER7206, ER8411) and many Deco models support WireGuard natively. [Read our dedicated TP-Link guide.](/blog/tp-link-site-to-site-vpn-wireguard-2026/)
 
 **MikroTik (RouterOS)**
 In Winbox or the web interface, open Interfaces → WireGuard. Add a new interface, then add a peer. Paste the PrivateKey into the interface and the peer details (public key, endpoint, allowed IPs, keepalive) into the peer. RouterOS 7.x has first-class WireGuard support.

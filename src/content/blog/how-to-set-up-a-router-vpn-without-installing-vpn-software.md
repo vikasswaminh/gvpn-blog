@@ -11,6 +11,8 @@ cover: '../../assets/images/router_vpn_setup.png'
 
 > **Related Reading:** [How to Set Up a WireGuard Mesh VPN (Full Guide)](/blog/how-to-set-up-a-wireguard-mesh-vpn/)
 
+> **Related Reading:** [TP-Link WireGuard Site-to-Site VPN Setup Guide](/blog/tp-link-site-to-site-vpn-wireguard-2026/)
+
 > **Related Reading:** [How WireGuard Mesh Control Planes Manage Keys, Peers & Routes](/blog/how-wireguard-mesh-control-plane-manages-keys-peers-routes/)
 
 ## Executive Summary
