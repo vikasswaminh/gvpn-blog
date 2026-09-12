@@ -41,24 +41,6 @@ The introduction of modern kernel-level peer-to-peer mesh networking—pioneered
 *   **Latency Sensitivity and Input Lag:** RDP user experience degrades precipitously when round-trip latency exceeds 80 ms or packet loss exceeds 2%, manifesting as sluggish cursor tracking and typing delay. Modern WireGuard mesh VPNs like MeshWG maintain sub-millisecond crypto overhead and recover seamlessly from packet reordering, allowing local applications to feel instant.
 *   **Data Governance vs. Developer Velocity:** RDP guarantees data residency by preventing files and raw database records from resting on client hard drives, making it appealing for compliance-restricted contractor access. VPNs maximize developer productivity by enabling engineers to run native compilers, modern IDEs, Docker containers, and command-line toolchains locally.
 
-## Table of Contents
-
-1.  The Remote Connectivity Dilemma in 2026
-2.  Historical Evolution: How Remote Access VPN and RDP Diverged
-3.  Formal Definitions & Core Operating Philosophy
-4.  Deep Architectural Breakdown: Remote Access Virtual Private Network
-5.  Deep Architectural Breakdown: Remote Desktop Protocol
-6.  Protocol Internals & Transport Mechanics
-7.  Comprehensive Head-to-Head Technical Comparison
-8.  Security Threat Modeling & Attack Surface Analysis
-9.  Performance, Latency, and Bandwidth Benchmarks
-10. The Hybrid Convergence: Tunneling RDP Inside a WireGuard Mesh
-11. Production Configuration Blueprints & Hardening
-12. 8 Critical Implementation Pitfalls to Avoid
-13. Decision Matrix: Step-by-Step Selection Framework
-14. Frequently Asked Questions (FAQs)
-15. Standards, RFCs, and Industry References
-16. Conclusion: Modernizing Your Remote Access with MeshWG
 
 ## The Remote Connectivity Dilemma in 2026
 

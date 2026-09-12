@@ -35,65 +35,73 @@ const { title = SITE.title, description, image, seoKeywords, article, bodyClass,
     <Footer />
     <SearchModal />
     
-    <script is:inline>
+    <script type="module" is:inline>
       document.addEventListener('astro:page-load', function () {
         try {
           document.documentElement.classList.add('js-reveal');
 
-          // Scroll-reveal sections
-          if ('IntersectionObserver' in window) {
-            var io = new IntersectionObserver(function (entries) {
-              entries.forEach(function (e) {
-                if (e.isIntersecting) {
-                  e.target.classList.add('in-view');
-                  io.unobserve(e.target);
-                }
-              });
-            }, { threshold: 0.08, rootMargin: '0px 0px -8% 0px' });
-            
-            document.querySelectorAll('section').forEach(function (s) { io.observe(s); });
-            document.querySelectorAll('[data-reveal]').forEach((el) => {
-              io.observe(el);
-            });
-          } else {
-            // No IO fallback
-            document.querySelectorAll('section').forEach(function (s) { s.classList.add('in-view'); });
-          }
-
-          // 3D Tilt Animation Logic
-          if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            document.querySelectorAll('[data-tilt]').forEach(el => {
-              el.addEventListener('mousemove', (e) => {
-                const rect = el.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                const rotateX = ((y - centerY) / centerY) * -6; 
-                const rotateY = ((x - centerX) / centerX) * 6;
-                
-                el.style.setProperty('--rotateX', `${rotateX}deg`);
-                el.style.setProperty('--rotateY', `${rotateY}deg`);
-              });
+          const initNonCritical = function() {
+            // Scroll-reveal sections
+            if ('IntersectionObserver' in window) {
+              var io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) {
+                  if (e.isIntersecting) {
+                    e.target.classList.add('in-view');
+                    io.unobserve(e.target);
+                  }
+                });
+              }, { threshold: 0.08, rootMargin: '0px 0px -8% 0px' });
               
-              el.addEventListener('mouseleave', () => {
-                el.style.setProperty('--rotateX', '0deg');
-                el.style.setProperty('--rotateY', '0deg');
+              document.querySelectorAll('section').forEach(function (s) { io.observe(s); });
+              document.querySelectorAll('[data-reveal]').forEach((el) => {
+                io.observe(el);
               });
-            });
-          }
+            } else {
+              // No IO fallback
+              document.querySelectorAll('section').forEach(function (s) { s.classList.add('in-view'); });
+            }
 
-          // Frosted nav on scroll
-          var nav = document.querySelector('.nav');
-          if (nav) {
-            var onScroll = function () {
-              if (window.scrollY > 60) nav.classList.add('nav--scrolled');
-              else nav.classList.remove('nav--scrolled');
-            };
-            window.addEventListener('scroll', onScroll, { passive: true });
-            onScroll();
+            // 3D Tilt Animation Logic
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+              document.querySelectorAll('[data-tilt]').forEach(el => {
+                el.addEventListener('mousemove', (e) => {
+                  const rect = el.getBoundingClientRect();
+                  const x = e.clientX - rect.left;
+                  const y = e.clientY - rect.top;
+                  
+                  const centerX = rect.width / 2;
+                  const centerY = rect.height / 2;
+                  
+                  const rotateX = ((y - centerY) / centerY) * -6; 
+                  const rotateY = ((x - centerX) / centerX) * 6;
+                  
+                  el.style.setProperty('--rotateX', `${rotateX}deg`);
+                  el.style.setProperty('--rotateY', `${rotateY}deg`);
+                });
+                
+                el.addEventListener('mouseleave', () => {
+                  el.style.setProperty('--rotateX', '0deg');
+                  el.style.setProperty('--rotateY', '0deg');
+                });
+              });
+            }
+
+            // Frosted nav on scroll
+            var nav = document.querySelector('.nav');
+            if (nav) {
+              var onScroll = function () {
+                if (window.scrollY > 60) nav.classList.add('nav--scrolled');
+                else nav.classList.remove('nav--scrolled');
+              };
+              window.addEventListener('scroll', onScroll, { passive: true });
+              onScroll();
+            }
+          };
+
+          if ('requestIdleCallback' in window) {
+            window.requestIdleCallback(initNonCritical);
+          } else {
+            setTimeout(initNonCritical, 50);
           }
         } catch (_) {}
       });

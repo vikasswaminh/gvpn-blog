@@ -1,13 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
-
-const posts = await getCollection('blog');
-const searchData = posts.map(post => ({
-  title: post.data.title,
-  slug: post.slug,
-  description: post.data.description,
-  keywords: (post.data.seoKeywords || []).join(' ')
-}));
+// Search data is now fetched asynchronously from /search.json
 ---
 
 <dialog id="search-modal" class="search-modal" aria-label="Search articles">
@@ -26,7 +18,7 @@ const searchData = posts.map(post => ({
   </div>
 </dialog>
 
-<script define:vars={{ searchData }}>
+<script is:inline>
   document.addEventListener('astro:page-load', () => {
     const modal = document.getElementById('search-modal');
     const input = document.getElementById('search-input');
@@ -34,13 +26,31 @@ const searchData = posts.map(post => ({
     const resultsList = document.getElementById('search-results');
     const emptyState = document.getElementById('search-empty');
     let triggerElement = null;
+    let searchData = null;
+    let isFetching = false;
     
     if (!modal || !input) return;
+
+    const fetchSearchData = async () => {
+      if (searchData || isFetching) return;
+      isFetching = true;
+      try {
+        const response = await fetch('/search.json');
+        if (response.ok) {
+          searchData = await response.json();
+        }
+      } catch (e) {
+        console.error("Failed to load search index", e);
+      } finally {
+        isFetching = false;
+      }
+    };
 
     const openSearch = () => {
       triggerElement = document.activeElement;
       modal.showModal();
       document.body.style.overflow = 'hidden';
+      fetchSearchData();
     };
 
     const closeSearch = () => {
@@ -102,11 +112,16 @@ const searchData = posts.map(post => ({
         emptyState.style.display = 'none';
         return;
       }
+      
+      if (!searchData) {
+        // If data isn't loaded yet, show empty or wait
+        return;
+      }
 
       const results = searchData.filter(post => {
-        return post.title.toLowerCase().includes(query) || 
-               post.description.toLowerCase().includes(query) ||
-               post.keywords.toLowerCase().includes(query);
+        return (post.title && post.title.toLowerCase().includes(query)) || 
+               (post.description && post.description.toLowerCase().includes(query)) ||
+               (post.keywords && post.keywords.toLowerCase().includes(query));
       });
 
       if (results.length === 0) {
