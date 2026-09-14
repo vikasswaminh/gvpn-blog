@@ -13,6 +13,18 @@ cover: '../../assets/images/nat_traversal_cgnat.png'
 
 > **Related Reading:** [WireGuard Site-to-Site VPN: Multi-Location Setup Guide (2026)](/blog/wireguard-site-to-site-vpn-multiple-locations/)
 
+<article class="tldr-box">
+  <h3>TL;DR</h3>
+  <ul>
+    <li><strong>Stateful UDP Translation Expirations</strong>: Stateful firewalls and CGNAT routers clear inactive UDP translation table entries after brief idle periods (typically 20 to 60 seconds). Without continuous outbound keepalive traffic, incoming WireGuard frames are dropped at the external perimeter.</li>
+    <li><strong>PersistentKeepalive Is Mandatory Behind NAT</strong>: Setting <code>PersistentKeepalive = 25</code> (or 15 on aggressive 4G/5G mobile carrier networks) forces WireGuard to transmit silent, 32-byte authenticated heartbeat packets. This maintains stateful mapping entries in intermediate firewalls indefinitely.</li>
+    <li><strong>Cryptokey Endpoint Roaming</strong>: WireGuard endpoints dynamically update peer IP and port mappings in system memory upon receiving an authenticated inbound packet. This allows active tunnels to survive dynamic WAN IP updates, Wi-Fi to cellular roaming, and ISP re-leases without session drops.</li>
+    <li><strong>Symmetric NAT Limitations</strong>: Simple UDP hole punching succeeds across Full Cone, Address-Restricted Cone, and Port-Restricted Cone NATs. However, Symmetric NAT allocates a unique external port for every distinct destination IP:port pair, requiring out-of-band coordination or public relay nodes to establish transit.</li>
+    <li><strong>Decoupling Data and Control Planes</strong>: Native kernel WireGuard lacks built-in STUN or relay coordination protocols. Scaling multi-site environments behind double NAT requires an external control plane (such as MeshWG) to dynamically map public endpoints and orchestrate peer handshakes out-of-band.</li>
+    <li><strong>Mandatory Encapsulation Clamping</strong>: Double NAT, cellular GTP encapsulation, and PPPoE headers add variable network overhead. Lowering interface MTU to 1420 (or 1380 over mobile links) and enforcing TCP MSS clamping prevents packet fragmentation black holes.</li>
+  </ul>
+</article>
+
 ## Executive Summary
 
 As IPv4 address exhaustion has accelerated worldwide, Internet Service Providers (ISPs), cellular operators, and enterprise network teams have overwhelmingly deployed Carrier-Grade NAT (CGNAT, defined in RFC 6598 under `100.64.0.0/10`). While CGNAT extends the operational lifespan of legacy IPv4 infrastructure, it breaks traditional peer-to-peer (P2P) networking paradigms. When two gateway routers or remote endpoints both reside behind stateful NAT firewalls or double-NAT carrier environments, neither node possesses a publicly reachable IP address.
@@ -20,18 +32,6 @@ As IPv4 address exhaustion has accelerated worldwide, Internet Service Providers
 Standard point-to-point VPN protocols fail under CGNAT because neither endpoint can listen for unprompted incoming connection requests from an unroutable network segment. WireGuard addresses this challenge through its lightweight architecture, high-efficiency UDP transport, and dynamic endpoint tracking primitives. However, successfully traversing restrictive enterprise firewalls, symmetric NATs, and carrier-grade barriers requires a deep understanding of UDP hole punching mechanics, stateful mapping timeouts, keepalive intervals, out-of-band discovery engines, and fallback relay architectures.
 
 This comprehensive guide provides an engineering reference for planning, configuring, securing, and maintaining WireGuard NAT Traversal in production environments. It explains the underlying socket state transitions, middlebox translation tables, key keepalive parameters, dynamic roaming behaviors, and enterprise automation patterns necessary to achieve reliable, low-latency overlay connectivity across complex public infrastructure.
-
-<details class="tldr-box" open>
-<summary>Key Takeaways (TL;DR)</summary>
-<ul>
-<li><strong>Stateful UDP Translation Expirations</strong>: Stateful firewalls and CGNAT routers clear inactive UDP translation table entries after brief idle periods (typically 20 to 60 seconds). Without continuous outbound keepalive traffic, incoming WireGuard frames are dropped at the external perimeter.</li>
-<li><strong>PersistentKeepalive Is Mandatory Behind NAT</strong>: Setting <code>PersistentKeepalive = 25</code> (or 15 on aggressive 4G/5G mobile carrier networks) forces WireGuard to transmit silent, 32-byte authenticated heartbeat packets. This maintains stateful mapping entries in intermediate firewalls indefinitely.</li>
-<li><strong>Cryptokey Endpoint Roaming</strong>: WireGuard endpoints dynamically update peer IP and port mappings in system memory upon receiving an authenticated inbound packet. This allows active tunnels to survive dynamic WAN IP updates, Wi-Fi to cellular roaming, and ISP re-leases without session drops.</li>
-<li><strong>Symmetric NAT Limitations</strong>: Simple UDP hole punching succeeds across Full Cone, Address-Restricted Cone, and Port-Restricted Cone NATs. However, Symmetric NAT allocates a unique external port for every distinct destination IP:port pair, requiring out-of-band coordination or public relay nodes to establish transit.</li>
-<li><strong>Decoupling Data and Control Planes</strong>: Native kernel WireGuard lacks built-in STUN or relay coordination protocols. Scaling multi-site environments behind double NAT requires an external control plane (such as MeshWG) to dynamically map public endpoints and orchestrate peer handshakes out-of-band.</li>
-<li><strong>Mandatory Encapsulation Clamping</strong>: Double NAT, cellular GTP encapsulation, and PPPoE headers add variable network overhead. Lowering interface MTU to 1420 (or 1380 over mobile links) and enforcing TCP MSS clamping prevents packet fragmentation black holes.</li>
-</ul>
-</details>
 
 ## Problem Statement: The Stateful Firewall & CGNAT Barrier
 To understand why NAT traversal is critical for modern private networks, engineers must evaluate how stateful firewalls and NAT middleboxes process connection traffic.

@@ -13,6 +13,16 @@ cover: '../../assets/images/branch_office_vpn.png'
 
 > **Related Reading:** [How to Build a Multi-Location WireGuard Network with Routers: Enterprise Guide](/blog/how-to-build-a-multi-location-wireguard-network-with-routers/)
 
+<article class="tldr-box">
+  <h3>TL;DR</h3>
+  <ul>
+    <li><strong>Secure LAN-to-LAN Connectivity:</strong> A branch office VPN connects multiple business locations over the public internet, encrypting traffic end-to-end so sites can securely access central resources like POS systems, inventory databases, and NAS drives.</li>
+    <li><strong>The 2026 Shift:</strong> The industry has moved away from expensive MPLS circuits and dedicated vendor hardware (like Cisco or Fortinet). The modern SMB default is running a cloud-managed mesh VPN on existing standard router firmware.</li>
+    <li><strong>Simplified Rollout:</strong> Deploying a site-to-site network has compressed from shipping and configuring hardware appliances to simply pasting a WireGuard config into the admin UI of existing TP-Link or MikroTik routers.</li>
+    <li><strong>Five-Phase Playbook:</strong> Successful rollouts follow a proven framework: Audit existing routers, Choose the right platform, Pilot the setup, Roll out across all branches, and Scale securely.</li>
+  </ul>
+</article>
+
 <div class="bp-intro"> <p>
 Most SMB branch-office VPN rollouts in 2026 share the same
 shape: 5 to 50 sites, each running an existing TP-Link,
@@ -34,39 +44,7 @@ the platform rather than the team. This playbook walks
 through the five phases — audit, choose, pilot, rollout,
 scale — that consistently produce successful multi-branch
 deployments.
-</p> 
-
-<!-- What is branch office VPN --> <div class="bp-tldr"> <h3>TL;DR</h3> <p>
-A branch office VPN is an encrypted private network that
-          connects two or more business locations so the LAN at each
-          site can reach the LANs at the others as if everything were
-          on one network. The Mumbai branch's POS talks to the
-          inventory server at HQ in Bangalore. The Pune store syncs to
-          the central database. The Hyderabad clinic uploads its
-          imaging to the head-office NAS. The encrypted tunnel rides
-          ordinary public internet, but every packet inside it is
-          authenticated and encrypted end-to-end.
-</p> <p>
-What changed between 2018 and 2026 is the implementation.
-          The 2018 default was an MPLS circuit per branch terminating
-          on a vendor appliance — Cisco Meraki MX, Fortinet FortiGate,
-          Aryaka Smart Connect. The 2026 default for SMBs is a
-          cloud-managed [mesh VPN](/blog/how-to-set-up-a-wireguard-mesh-vpn/) running on standard router firmware
-          — WireGuard on the TP-Link Archer or MikroTik RouterOS that's
-          already in the rack. The encrypted-tunnel layer is the same
-          job; the way you get there has compressed from "ship an
-          appliance to every site" to "paste a config into the existing
-          router's admin UI."
-</p> <p>
-The five phases below assume the modern model — existing
-          routers, cloud control plane, [mesh VPN](/blog/how-to-set-up-a-wireguard-mesh-vpn/) — because that's the
-          pattern that fits the vast majority of SMB and mid-market
-          environments in 2026. If your environment needs WAN
-          optimisation (packet dedup, application-aware QoS) or
-          carrier-grade SLAs, SDWAN is still the right tool and the
-          rollout looks different. For everyone else, what follows is
-          the path of least resistance.
-</p> </div> </div>  <header class="ph-head"> <h2>Audit your existing routers</h2> </header> <p>
+</p> </div>  <header class="ph-head"> <h2>Audit your existing routers</h2> </header> <p>
 Before picking tools or signing contracts, find out what's
           at each branch today. The audit takes a couple of hours for
           a 20-branch business and answers the question every later

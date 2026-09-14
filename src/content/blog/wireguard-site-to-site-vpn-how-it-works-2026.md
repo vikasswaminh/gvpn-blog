@@ -13,66 +13,38 @@ cover: '../../assets/images/how_it_works.png'
 
 > **Related Reading:** [Branch Office VPN Guide for SMBs (2026)](/blog/branch-office-vpn-smb-rollout-playbook-2026/)
 
+<article class="tldr-box">
+  <h3>TL;DR</h3>
+  <ul>
+    <li><strong>Ideal for LANs:</strong> WireGuard is exceptionally well-suited for site-to-site VPNs due to its symmetric peers, connectionless nature, and explicit routing.</li>
+    <li><strong>Symmetric Peers:</strong> There is no client/server mode in WireGuard core—both sides of a tunnel maintain the same state and use identical configuration shapes.</li>
+    <li><strong>Connectionless Protocol:</strong> WireGuard uses UDP datagrams without TCP session state, so tunnels stay up seamlessly even if upstream IP addresses rotate.</li>
+    <li><strong>Explicit Routing:</strong> The `AllowedIPs` field securely handles both inbound filtering and outbound routing without requiring separate shadow routing tables or policy files.</li>
+    <li><strong>Minimal Setup:</strong> A two-peer site-to-site connection requires just ~16 lines of configuration across both ends, though scaling beyond three peers introduces complexity.</li>
+  </ul>
+</article>
+
 <div class="bp-intro"> <!-- Intro / UVP --> <p class="lede-p">
 Yes — WireGuard works beautifully for site-to-site VPN. It works
-          between two routers, between thirty routers, and between routers
-          sitting behind ISP CGNAT with no static public IP at either end.
+between two routers, between thirty routers, and between routers
+sitting behind ISP CGNAT with no static public IP at either end.
 
-          What you do not get out of the box is a control plane: someone has
-          to generate the keypairs, distribute the configurations, keep the
-          AllowedIPs in sync, and update everyone when a peer's overlay
-          address changes. [MeshWG](/blog/cloud-wireguard-vpn-meshwg/) is that control plane. It runs on top of
-          the WireGuard already in your TP-Link, MikroTik, OpenWrt, Ubuntu,
-          OPNsense, or Ubiquiti gear — and connects a 20-branch network for
-          around ₹7,000 a month against the ₹30 lakhs of hardware plus
-          ₹30,000 a month of licensing a comparable SDWAN deployment costs.
-          Setup takes under two minutes per site. Two machines are free,
-          forever. Below is exactly how WireGuard site-to-site works under
-          the hood in 2026, where the manual-configuration approach starts
-          to bite, and how to decide between hand-rolling and a cloud
-          control plane for your environment.
-</p> <!-- § 1 Can WireGuard be used for site-to-site VPN? --> <div class="tldr-box"> <h3>TL;DR</h3> <p>
-Yes — and it's arguably what WireGuard does best. Three properties
-          make the protocol well-suited for connecting LANs rather than
-          individual devices.
-</p> <p>
-First, every peer is symmetric. There is no client mode and no
-          server mode in the WireGuard core — both sides of any tunnel
-          maintain the same state, run the same handshake, and care only
-          about which public keys they have configured. The same wg-quick
-          configuration shape that works between two laptops works between
-          two routers, between a server and a router, or between thirty
-          routers in a mesh.
-</p> <p>
-Second, the configuration is connectionless from a TCP standpoint.
-          WireGuard packets are UDP datagrams. There is no TCP three-way
-          handshake to time out, no half-open connection state, and no
-          "session" that breaks when one end's upstream IP rotates. The
-          tunnel comes up on the next packet exchange and stays up as long
-          as either side is sending traffic or PersistentKeepalive heartbeats.
-</p> <p>
-Third, the routing is explicit and inspectable. The AllowedIPs
-          field on each peer declares both an inbound-filter (packets
-          arriving from this peer's tunnel must have a source IP in this
-          list) and an outbound-route (packets destined to these IP ranges
-          go down this peer's tunnel). One field, two jobs, exactly defined.
-          There is no shadow routing table or auxiliary IKE policy file
-          you might miss when troubleshooting.
-</p> <p>
-The minimum viable site-to-site setup is two peers, each with one
-<code>[Interface]</code> block and one <code>[Peer]</code> block
-          referencing the other. Each side's AllowedIPs declares the other
-          side's overlay IP <em>and</em> the other side's LAN subnet. That's
-          it — about sixteen lines of configuration across both ends, no
-          IKE policy to align, no certificate authority to operate. The
-          complexity arrives at three peers; we'll get there in section
-          five.
-</p> <p>
-Hold this thought: even this simple two-peer model has a quiet
-          assumption baked in — both peers know each other's endpoint
-          address up front. Section four returns to that assumption when it
-          starts to bite.
-</p> </div> <!-- § 2 How WireGuard handles peer discovery, keys, and handshakes --> <h2>How WireGuard handles peer discovery, keys, and handshakes</h2> <p>
+What you do not get out of the box is a control plane: someone has
+to generate the keypairs, distribute the configurations, keep the
+AllowedIPs in sync, and update everyone when a peer's overlay
+address changes. [MeshWG](/blog/cloud-wireguard-vpn-meshwg/) is that control plane. It runs on top of
+the WireGuard already in your TP-Link, MikroTik, OpenWrt, Ubuntu,
+OPNsense, or Ubiquiti gear — and connects a 20-branch network for
+around ₹7,000 a month against the ₹30 lakhs of hardware plus
+₹30,000 a month of licensing a comparable SDWAN deployment costs.
+Setup takes under two minutes per site. Two machines are free,
+forever. Below is exactly how WireGuard site-to-site works under
+the hood in 2026, where the manual-configuration approach starts
+to bite, and how to decide between hand-rolling and a cloud
+control plane for your environment.
+</p> </div>
+
+<!-- § 2 How WireGuard handles peer discovery, keys, and handshakes --> <h2>How WireGuard handles peer discovery, keys, and handshakes</h2> <p>
 Most guides on the public web cover WireGuard configuration. Few
           cover what the protocol is actually doing underneath. The
           mechanics are worth the ten minutes — they explain why certain
@@ -457,7 +429,49 @@ Even for organisations that will eventually hand-roll,
           of the same disciplined evaluation; the central value
           of the pilot is that it answers the architectural
           questions before either path becomes locked in.
-</p> <!-- FAQ --> <h2>Common questions</h2> <details> <summary>Can WireGuard be used for site-to-site VPN?</summary> <p>Yes. WireGuard is well-suited for site-to-site VPN because every peer is symmetric — there is no client/server asymmetry — and the same wg-quick configuration that works between two laptops works between two routers and between thirty. The minimum viable case is two peers, each with one Interface and one Peer block, where AllowedIPs declares the remote subnet. Section 1 covers the two-peer case in detail.</p> </details><details> <summary>Is IPsec better than WireGuard for site-to-site?</summary> <p>Neither protocol is universally better. IPsec is mature and the right pick when you need to interoperate with non-WireGuard endpoints (Cisco ASA, AWS Site-to-Site VPN gateway) or both sides have static public IPs and your team already runs IPsec confidently. WireGuard is the 2026 default for branches behind ISP CGNAT, mixed-vendor estates, and teams that want a configuration they can read in five minutes. Section 4 has the decision framework with each protocol&#39;s sweet spot.</p> </details><details> <summary>What are the disadvantages of WireGuard?</summary> <p>WireGuard has no built-in peer discovery (every public key is statically configured), no identity layer beyond the keypair, no QoS or traffic shaping in the protocol, and is UDP-only by default. None of these block branch-office or prosumer use — they are the design trade-offs that keep the protocol small enough to audit (around 4,000 lines of kernel code). Section 7 has the full honest list and how each disadvantage is addressed in practice.</p> </details><details> <summary>How to create a site-to-site VPN with WireGuard?</summary> <p>Five steps, platform-agnostic: (1) generate a keypair at each site with wg genkey | wg pubkey, (2) pick the overlay IP scheme — typically a /24 like 10.100.0.0/24, (3) decide which peer holds the static endpoint (or use a cloud peer if neither does), (4) set AllowedIPs to include both the remote overlay IP and the remote LAN subnet, (5) bring up the tunnel with wg-quick up wg0. Section 3 has the detailed walkthrough.</p> </details><details> <summary>Does WireGuard support multiple sites in one VPN?</summary> <p>Yes. Two topology options: full mesh, where every peer has direct tunnels to every other peer; or hub-and-spoke, where every peer has one tunnel to a central hub that forwards between peers. Full mesh has lower latency for direct peer-to-peer flows but requires N×(N-1)/2 tunnel pairs to maintain. Hub-and-spoke scales cleanly past ten sites and is what cloud control planes including MeshWG use. Section 5 walks through both options.</p> </details><details> <summary>How does WireGuard work behind CGNAT?</summary> <p>Every peer can be configured to dial outbound only, never accepting inbound connections. PersistentKeepalive = 25 sends a small encrypted heartbeat outbound every 25 seconds, which keeps the NAT mapping at the ISP edge alive so return packets find their way back. If both sides are behind CGNAT (the common case for retail branches on Indian fibre), you need a third peer with a stable public address — a cloud hub — for both branches to dial. Section 6 has the details with Indian-ISP verification.</p> </details><details> <summary>What&#39;s the simplest WireGuard site-to-site configuration?</summary> <p>Two wg-quick configuration files, one at each site, each with one Peer block referencing the other. Total is roughly sixteen lines of configuration across both ends. The catch every first-time setup hits is AllowedIPs: each peer must list both the other peer&#39;s overlay IP (typically a /32) AND the other peer&#39;s LAN subnet (typically a /24). Missing the LAN subnet is why people get a working tunnel but cannot ping the remote LAN. Section 3 step 4 spells out the exact pattern.</p> </details> <!-- CTA --> <aside class="cta-strip"> <p>
+</p> <!-- FAQ --> <h2>Common questions</h2> <details class="mesh-faq">
+  <summary>
+    <span class="faq-badge">FAQ</span>
+    Can WireGuard be used for site-to-site VPN?
+  </summary>
+  <p>Yes. WireGuard is well-suited for site-to-site VPN because every peer is symmetric — there is no client/server asymmetry — and the same wg-quick configuration that works between two laptops works between two routers and between thirty. The minimum viable case is two peers, each with one Interface and one Peer block, where AllowedIPs declares the remote subnet. Section 1 covers the two-peer case in detail.</p>
+</details><details class="mesh-faq">
+  <summary>
+    <span class="faq-badge">FAQ</span>
+    Is IPsec better than WireGuard for site-to-site?
+  </summary>
+  <p>Neither protocol is universally better. IPsec is mature and the right pick when you need to interoperate with non-WireGuard endpoints (Cisco ASA, AWS Site-to-Site VPN gateway) or both sides have static public IPs and your team already runs IPsec confidently. WireGuard is the 2026 default for branches behind ISP CGNAT, mixed-vendor estates, and teams that want a configuration they can read in five minutes. Section 4 has the decision framework with each protocol&#39;s sweet spot.</p>
+</details><details class="mesh-faq">
+  <summary>
+    <span class="faq-badge">FAQ</span>
+    What are the disadvantages of WireGuard?
+  </summary>
+  <p>WireGuard has no built-in peer discovery (every public key is statically configured), no identity layer beyond the keypair, no QoS or traffic shaping in the protocol, and is UDP-only by default. None of these block branch-office or prosumer use — they are the design trade-offs that keep the protocol small enough to audit (around 4,000 lines of kernel code). Section 7 has the full honest list and how each disadvantage is addressed in practice.</p>
+</details><details class="mesh-faq">
+  <summary>
+    <span class="faq-badge">FAQ</span>
+    How to create a site-to-site VPN with WireGuard?
+  </summary>
+  <p>Five steps, platform-agnostic: (1) generate a keypair at each site with wg genkey | wg pubkey, (2) pick the overlay IP scheme — typically a /24 like 10.100.0.0/24, (3) decide which peer holds the static endpoint (or use a cloud peer if neither does), (4) set AllowedIPs to include both the remote overlay IP and the remote LAN subnet, (5) bring up the tunnel with wg-quick up wg0. Section 3 has the detailed walkthrough.</p>
+</details><details class="mesh-faq">
+  <summary>
+    <span class="faq-badge">FAQ</span>
+    Does WireGuard support multiple sites in one VPN?
+  </summary>
+  <p>Yes. Two topology options: full mesh, where every peer has direct tunnels to every other peer; or hub-and-spoke, where every peer has one tunnel to a central hub that forwards between peers. Full mesh has lower latency for direct peer-to-peer flows but requires N×(N-1)/2 tunnel pairs to maintain. Hub-and-spoke scales cleanly past ten sites and is what cloud control planes including MeshWG use. Section 5 walks through both options.</p>
+</details><details class="mesh-faq">
+  <summary>
+    <span class="faq-badge">FAQ</span>
+    How does WireGuard work behind CGNAT?
+  </summary>
+  <p>Every peer can be configured to dial outbound only, never accepting inbound connections. PersistentKeepalive = 25 sends a small encrypted heartbeat outbound every 25 seconds, which keeps the NAT mapping at the ISP edge alive so return packets find their way back. If both sides are behind CGNAT (the common case for retail branches on Indian fibre), you need a third peer with a stable public address — a cloud hub — for both branches to dial. Section 6 has the details with Indian-ISP verification.</p>
+</details><details class="mesh-faq">
+  <summary>
+    <span class="faq-badge">FAQ</span>
+    What&#39;s the simplest WireGuard site-to-site configuration?
+  </summary>
+  <p>Two wg-quick configuration files, one at each site, each with one Peer block referencing the other. Total is roughly sixteen lines of configuration across both ends. The catch every first-time setup hits is AllowedIPs: each peer must list both the other peer&#39;s overlay IP (typically a /32) AND the other peer&#39;s LAN subnet (typically a /24). Missing the LAN subnet is why people get a working tunnel but cannot ping the remote LAN. Section 3 step 4 spells out the exact pattern.</p>
+</details> <!-- CTA --> <aside class="cta-strip"> <p>
 Want a WireGuard site-to-site mesh without hand-rolling a single
           wg-quick file?
 <a class="cta-link" href="https://vpn.meshwg.com/signup">Start free →</a>
@@ -466,19 +480,28 @@ Two machines are free, forever.
 
 ## Frequently Asked Questions (FAQ)
 
-<details>
-<summary>How does a [mesh VPN](/blog/how-to-set-up-a-wireguard-mesh-vpn/) differ from a traditional VPN?</summary>
-A traditional VPN routes all traffic through a central gateway, creating a bottleneck. A [mesh VPN](/blog/how-to-set-up-a-wireguard-mesh-vpn/) establishes direct, peer-to-peer connections between all devices (like branch offices or cloud servers), reducing latency and eliminating a single point of failure.
+<details class="mesh-faq">
+  <summary>
+    <span class="faq-badge">FAQ</span>
+    How does a [mesh VPN](/blog/how-to-set-up-a-wireguard-mesh-vpn/) differ from a traditional VPN?
+  </summary>
+  <p>A traditional VPN routes all traffic through a central gateway, creating a bottleneck. A [mesh VPN](/blog/how-to-set-up-a-wireguard-mesh-vpn/) establishes direct, peer-to-peer connections between all devices (like branch offices or cloud servers), reducing latency and eliminating a single point of failure.</p>
 </details>
 
-<details>
-<summary>Does MeshWG require installing software on every device?</summary>
-No. MeshWG can be deployed directly on your existing edge routers (like TP-Link, MikroTik, or OpenWrt). This provides agentless, site-wide protection for all devices behind the router without installing VPN clients on individual laptops or IoT devices.
+<details class="mesh-faq">
+  <summary>
+    <span class="faq-badge">FAQ</span>
+    Does MeshWG require installing software on every device?
+  </summary>
+  <p>No. MeshWG can be deployed directly on your existing edge routers (like TP-Link, MikroTik, or OpenWrt). This provides agentless, site-wide protection for all devices behind the router without installing VPN clients on individual laptops or IoT devices.</p>
 </details>
 
-<details>
-<summary>How does WireGuard [NAT Traversal](/blog/wireguard-nat-traversal-behind-cgnat-2026/) work?</summary>
-WireGuard doesn't have native [NAT traversal](/blog/wireguard-nat-traversal-behind-cgnat-2026/), which is why MeshWG provides a cloud coordination plane. It handles UDP hole punching, PersistentKeepalives, and automatic endpoint discovery to seamlessly connect peers behind CGNAT or strict enterprise firewalls.
+<details class="mesh-faq">
+  <summary>
+    <span class="faq-badge">FAQ</span>
+    How does WireGuard [NAT Traversal](/blog/wireguard-nat-traversal-behind-cgnat-2026/) work?
+  </summary>
+  <p>WireGuard doesn't have native [NAT traversal](/blog/wireguard-nat-traversal-behind-cgnat-2026/), which is why MeshWG provides a cloud coordination plane. It handles UDP hole punching, PersistentKeepalives, and automatic endpoint discovery to seamlessly connect peers behind CGNAT or strict enterprise firewalls.</p>
 </details>
 
 ---
@@ -487,3 +510,58 @@ WireGuard doesn't have native [NAT traversal](/blog/wireguard-nat-traversal-behi
   <p style="color: var(--text-3); margin-bottom: 24px;">Deploy a high-performance WireGuard mesh network in minutes. No new hardware, no complex CLI configurations, and completely agentless.</p>
   <a href="https://meshwg.com" class="btn btn-primary" style="text-decoration: none; padding: 12px 24px; font-size: 16px;">Try MeshWG Free</a>
 </div>
+
+
+<style>
+.mesh-faq {
+  border: 1px solid #ef4444;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  background-color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.mesh-faq summary {
+  list-style: none;
+  padding: 32px 16px 16px 16px;
+  font-weight: 600;
+  font-size: 1.125rem;
+  color: #111827;
+  cursor: pointer;
+}
+.mesh-faq summary::-webkit-details-marker {
+  display: none;
+}
+.mesh-faq summary::after {
+  content: "⌄";
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+  color: #4b5563;
+}
+.mesh-faq[open] summary::after {
+  content: "⌃";
+}
+.mesh-faq .faq-badge {
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  background-color: #fee2e2;
+  color: #ef4444;
+  border: 1px solid #fca5a5;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.mesh-faq p {
+  padding: 0 16px 16px 16px;
+  margin: 0;
+  color: #4b5563;
+  line-height: 1.6;
+}
+</style>

@@ -13,6 +13,18 @@ cover: '../../assets/images/manage_tunnels.png'
 
 > **Related Reading:** [Mesh VPN vs IPsec vs SD-WAN: Which is Best in 2026?](/blog/mesh-vpn-vs-ipsec-vs-sdwan-2026/)
 
+<article class="tldr-box">
+  <h3>TL;DR</h3>
+  <ul>
+    <li><strong>The N(N-1)/2 Scaling Challenge</strong>: Building a full-mesh topology manually scales exponentially. Network architects must choose between single-interface multi-peer setups, multi-interface point-to-point links, or automated control-plane orchestration platforms.</li>
+    <li><strong>Single-Interface vs Multi-Interface Architecture</strong>: A single WireGuard interface (<code>wg0</code>) can manage hundreds of peers simultaneously using Cryptokey Routing, saving system resources. Multi-interface configurations (<code>wg0</code>, <code>wg1</code>, <code>wg2</code>) are reserved for environments requiring isolated firewall zones or distinct interface routing policies.</li>
+    <li><strong>Dynamic Endpoint Resolution Limits</strong>: Native <code>wg-quick</code> resolves DNS domain names only once when an interface initializes. Operating multi-site meshes across dynamic public IPs or CGNAT connections requires explicit <code>PersistentKeepalive</code> settings combined with dynamic endpoint update scripts or control-plane agents.</li>
+    <li><strong>Dynamic Routing Integration (BGP over WireGuard)</strong>: Manually defining static routes across large meshes creates routing fragility. Combining WireGuard overlay tunnels with dynamic routing protocols like BGP (via FRRouting) enables automatic route discovery, failover, and multi-path routing across complex topologies.</li>
+    <li><strong>Decoupling Data and Control Planes</strong>: To eliminate manual configuration drift, modern enterprise architectures separate the data plane (kernel-level WireGuard encryption running locally on gateways) from the control plane (automated key distribution, IP allocation, and access policy management).</li>
+    <li><strong>Mandatory Traffic Conditioning</strong>: Overlapping subnets, unconfigured MSS clamping, and missing NAT keepalives are the primary causes of performance degradation in multi-tunnel environments. Enforcing strict network IP allocation and TCP MSS clamping is mandatory across all mesh nodes.</li>
+  </ul>
+</article>
+
 ## Executive Summary
 WireGuard has redefined point-to-point network encryption by delivering lightweight, kernel-space performance with a minimal cryptographic footprint. However, when enterprise infrastructure expands beyond a single static site-to-site link, administrators face a severe operational challenge: managing multiple WireGuard tunnels and building a scalable full-mesh topology.
 
@@ -21,18 +33,6 @@ Because standard WireGuard relies on static configuration files (`wg0.conf`) con
 This comprehensive engineering guide addresses the challenges of scaling WireGuard overlays. If you are just getting started, read our guide on [setting up a WireGuard mesh](/blog/how-to-set-up-a-wireguard-mesh-vpn/) first. This guide covers the architectural patterns, routing mechanisms, automation toolchains, and control-plane strategies required to manage multiple WireGuard tunnels and build robust, high-performance mesh networks.
 
 Whether you are connecting distributed cloud regions, linking dozens of retail branch offices, or building a peer-to-peer zero-trust enterprise overlay, this guide provides production-ready configuration templates, BGP dynamic routing patterns, Ansible automation scripts, and practical troubleshooting frameworks designed for modern enterprise infrastructure.
-
-<details class="tldr-box" open>
-<summary>Key Takeaways (TL;DR)</summary>
-<ul>
-<li><strong>The N(N-1)/2 Scaling Challenge</strong>: Building a full-mesh topology manually scales exponentially. Network architects must choose between single-interface multi-peer setups, multi-interface point-to-point links, or automated control-plane orchestration platforms.</li>
-<li><strong>Single-Interface vs Multi-Interface Architecture</strong>: A single WireGuard interface (<code>wg0</code>) can manage hundreds of peers simultaneously using Cryptokey Routing, saving system resources. Multi-interface configurations (<code>wg0</code>, <code>wg1</code>, <code>wg2</code>) are reserved for environments requiring isolated firewall zones or distinct interface routing policies.</li>
-<li><strong>Dynamic Endpoint Resolution Limits</strong>: Native <code>wg-quick</code> resolves DNS domain names only once when an interface initializes. Operating multi-site meshes across dynamic public IPs or CGNAT connections requires explicit <code>PersistentKeepalive</code> settings combined with dynamic endpoint update scripts or control-plane agents.</li>
-<li><strong>Dynamic Routing Integration (BGP over WireGuard)</strong>: Manually defining static routes across large meshes creates routing fragility. Combining WireGuard overlay tunnels with dynamic routing protocols like BGP (via FRRouting) enables automatic route discovery, failover, and multi-path routing across complex topologies.</li>
-<li><strong>Decoupling Data and Control Planes</strong>: To eliminate manual configuration drift, modern enterprise architectures separate the data plane (kernel-level WireGuard encryption running locally on gateways) from the control plane (automated key distribution, IP allocation, and access policy management).</li>
-<li><strong>Mandatory Traffic Conditioning</strong>: Overlapping subnets, unconfigured MSS clamping, and missing NAT keepalives are the primary causes of performance degradation in multi-tunnel environments. Enforcing strict network IP allocation and TCP MSS clamping is mandatory across all mesh nodes.</li>
-</ul>
-</details>
 
 ## Problem Statement: The Scaling Nightmare of Static WireGuard Configurations
 

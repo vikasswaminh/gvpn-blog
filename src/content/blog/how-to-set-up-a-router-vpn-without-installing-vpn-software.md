@@ -15,24 +15,24 @@ cover: '../../assets/images/router_vpn_setup.png'
 
 > **Related Reading:** [How WireGuard Mesh Control Planes Manage Keys, Peers & Routes](/blog/how-wireguard-mesh-control-plane-manages-keys-peers-routes/)
 
+<article class="tldr-box">
+  <h3>TL;DR</h3>
+  <ul>
+    <li><strong>Zero Client Software Footprint:</strong> End devices such as smartphones, PCs, smart TVs, and IoT hardware require zero installation, zero configuration, and zero client background applications to receive full encrypted network protection.</li>
+    <li><strong>Universal Device Support:</strong> Hardware platforms that cannot natively execute third-party client applications gain immediate access to encrypted overlay networks and zero-trust mesh endpoints.</li>
+    <li><strong>Kernel-Space Efficiency:</strong> Utilizing modern kernel-native protocols like WireGuard within open-source router firmwares (OpenWrt, Mikrotik RouterOS, OPNsense) achieves gigabit-per-second encryption throughput while maintaining low CPU utilization.</li>
+    <li><strong>Policy-Based Routing (PBR):</strong> Edge routers dynamically route traffic through the encrypted mesh based on source IP addresses, destination networks, port numbers, or device VLAN tags, preserving direct local internet access for latency-sensitive applications.</li>
+    <li><strong>Centralized Security Management:</strong> Network administrators control access permissions, kill-switches, DNS leak prevention, and cryptographic key generation from a single edge router interface rather than managing individual client apps.</li>
+    <li><strong>MeshWG Optimization:</strong> Connecting the router directly into a MeshWG network turns the entire local subnet into an active peer on a secure, self-healing mesh topology without exposing individual internal device IPs to public networks.</li>
+  </ul>
+</article>
+
 ## Executive Summary
 Deploying virtual private network (VPN) client applications across every endpoint within an organization or household introduces severe operational friction. Smart televisions, Internet of Things (IoT) sensors, game consoles, IP security cameras, and legacy industrial hardware run proprietary operating systems that completely lack support for native VPN software applications. Furthermore, managing individual software clients across dozens of mobile and desktop endpoints leads to frequent connection drops, high battery consumption, user misconfigurations, and software licensing overhead.
 
 The definitive architectural solution to this problem is offloading secure overlay networking directly to the primary network edge router. By configuring an edge router to establish a native, kernel-level WireGuard or MeshWG overlay tunnel, the router acts as a transparent VPN gateway for the entire local area network (LAN). Every device connected to the router—whether via physical Ethernet cables or Wi-Fi—automatically routes its network traffic through the secure encrypted mesh without requiring a single byte of VPN software to be installed on the client device itself.
 
 This technical guide provides an exhaustive, end-to-end blueprint for engineering a software-free router VPN gateway using modern kernel-space protocols, advanced policy-based routing, strict packet filtering, and MeshWG integration.
-
-<details class="tldr-box" open>
-<summary>Key Takeaways</summary>
-<ul>
-<li><strong>Zero Client Software Footprint:</strong> End devices such as smartphones, PCs, smart TVs, and IoT hardware require zero installation, zero configuration, and zero client background applications to receive full encrypted network protection.</li>
-<li><strong>Universal Device Support:</strong> Hardware platforms that cannot natively execute third-party client applications gain immediate access to encrypted overlay networks and zero-trust mesh endpoints.</li>
-<li><strong>Kernel-Space Efficiency:</strong> Utilizing modern kernel-native protocols like WireGuard within open-source router firmwares (OpenWrt, Mikrotik RouterOS, OPNsense) achieves gigabit-per-second encryption throughput while maintaining low CPU utilization.</li>
-<li><strong>Policy-Based Routing (PBR):</strong> Edge routers dynamically route traffic through the encrypted mesh based on source IP addresses, destination networks, port numbers, or device VLAN tags, preserving direct local internet access for latency-sensitive applications.</li>
-<li><strong>Centralized Security Management:</strong> Network administrators control access permissions, kill-switches, DNS leak prevention, and cryptographic key generation from a single edge router interface rather than managing individual client apps.</li>
-<li><strong>MeshWG Optimization:</strong> Connecting the router directly into a MeshWG network turns the entire local subnet into an active peer on a secure, self-healing mesh topology without exposing individual internal device IPs to public networks.</li>
-</ul>
-</details>
 
 ## Problem Statement
 Modern local networks suffer from device diversity and endpoint management fragmentation. The traditional approach to network privacy and remote infrastructure access relies on installing user-space client applications on every device. This client-centric model fails in real-world deployments due to four core engineering challenges.

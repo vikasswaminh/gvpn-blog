@@ -13,6 +13,17 @@ cover: '../../assets/images/tp_link_vpn_new.png'
 
 > **Related Reading:** [WireGuard Mesh VPN for Home Networks: Zero Port Forwarding Guide (2026)](/blog/wireguard-mesh-vpn-home-network-secure-remote-access-without-port-forwarding/)
 
+<article class="tldr-box">
+  <h3>TL;DR</h3>
+  <ul>
+    <li><strong>LAN-to-LAN Connectivity:</strong> A site-to-site VPN routes two local networks together so devices on both sides can reach each other as if they were on the same LAN, without exposing public ports.</li>
+    <li><strong>Not Just Remote Access:</strong> Unlike remote-access VPNs (one user to one network) or host-to-host VPNs, site-to-site VPNs handle routing for entire subnets talking to each other.</li>
+    <li><strong>Tunnels and Routing:</strong> Every setup requires both the encrypted tunnel (WireGuard, IPsec) and the routing decision ("send traffic for that subnet down the tunnel"). Both must be correct for pings to work.</li>
+    <li><strong>The AllowedIPs Fix:</strong> A common mistake is bringing the tunnel up but forgetting the routing. In WireGuard, configuring `AllowedIPs` correctly fixes this every time.</li>
+    <li><strong>The 2026 Default is WireGuard:</strong> While older guides used IPsec, WireGuard is now the standard for TP-Link due to fewer config knobs, superior NAT handling, and a much faster setup time.</li>
+  </ul>
+</article>
+
 <article class="post-block intro"> 
 <p class="lede-p">
 Yes — you can connect two, three, or thirty TP-Link branches with a single
@@ -34,46 +45,6 @@ is exactly how this works in 2026, with the WireGuard configuration
 paths for Archer, ER, and Omada gear, the multi-branch numbers
 from real rollouts, and the parts the vendor documentation tends
 to skip.
-</p>
-</article>
-
-<article class="tldr-box">
-<h3>TL;DR</h3>
-<p>
-A [site-to-site VPN](/blog/wireguard-site-to-site-vpn-how-it-works-2026/) is an encrypted tunnel that routes two local
-networks together. Devices on either side reach each other as if
-they were on one LAN. The branch in Mumbai pings the inventory
-server at head office in Bangalore at <code>10.10.40.5</code>, and
-the packet rides the encrypted tunnel without anyone setting up a
-single public-facing port.
-</p>
-<p>
-It's not the same as a remote-access VPN, which connects one user
-on one device to one network — the kind your laptop dials when you
-work from a café. And it's not host-to-host either, where a single
-server tunnels to another single server. Site-to-site is the
-LAN-to-LAN case. Whole subnets on both ends, talking to each
-other, routed through the tunnel.
-</p>
-<p>
-Every [site-to-site VPN](/blog/wireguard-site-to-site-vpn-how-it-works-2026/) has two parts: a tunnel and a routing
-decision. The tunnel is the encrypted pipe — IPsec, WireGuard,
-PPTP, GRE-over-IPsec, take your pick. The routing decision is
-where you tell each side: "if the destination IP is in the other
-side's subnet, send the packet down the tunnel." Both parts have
-to be right.
-</p>
-<p>
-People get the tunnel up and then forget the routing. Then they
-wonder why ping doesn't work. Common pattern. Old pattern. The
-fix is the same every time: AllowedIPs.
-</p>
-<p>
-Until 2022 most TP-Link site-to-site guides showed IPsec for
-this. The 2026 default is <a href="https://www.wireguard.com/" rel="noopener" target="_blank">WireGuard</a>
-— for reasons I'll walk through in section four. The short
-version: fewer config knobs, better behaviour through NAT, and
-a much shorter path to "first ping works."
 </p>
 </article>
 
