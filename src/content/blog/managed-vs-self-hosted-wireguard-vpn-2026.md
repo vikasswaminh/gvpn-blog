@@ -1,6 +1,6 @@
 ---
 title: 'Managed vs Self-Hosted WireGuard VPN: Enterprise Comparison'
-description: 'Comprehensive architectural comparison of self-hosted (Headscale, Netmaker, NetBird) versus managed WireGuard platforms (Tailscale, NetBird Cloud). Features kernel performance metrics, production configuration blocks, NAT traversal mechanics, and zero-trust security hardening blueprints.'
+description: 'Compare managed (Tailscale, NetBird Cloud) vs self-hosted WireGuard (Headscale, Netmaker). See architecture, performance benchmarks, and security differences.'
 pubDate: 2026-08-24
 updatedDate: 2026-08-24
 author: 'MeshWG editorial team'
