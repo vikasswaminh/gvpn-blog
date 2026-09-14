@@ -13,6 +13,17 @@ cover: '../../assets/images/self_hosted_wireguard.png'
 
 > **Related Reading:** [7 Modern SD-WAN Alternatives for Branch Offices (2026)](/blog/sd-wan-alternatives-2026/)
 
+<article class="tldr-box">
+  <h3>TL;DR</h3>
+  <ul>
+    <li><strong>Control Plane and Data Plane Decoupling:</strong> Managed and self-hosted platforms separate administrative policy management from network data transport. The control plane coordinates node registrations, identity checks, and public key maps out-of-band. The data plane transfers encrypted application payload traffic directly peer-to-peer between endpoints.</li>
+    <li><strong>Metadata Privacy and Compliance Sovereignty:</strong> Managed SaaS providers never decrypt raw application data payloads during direct peer connections. SaaS vendors retain full visibility over control plane metadata, including hostnames, IP mapping tables, user identities, and connection logs. Self-hosted platforms keep all network topology maps, user identities, and access logs strictly inside private infrastructure boundaries.</li>
+    <li><strong>Kernel Performance vs Userspace Overhead:</strong> Native Linux kernel-space execution (`wireguard.ko`) achieves up to nine gigabits per second throughput with minimal CPU utilization. Userspace drivers (`wireguard-go`) introduce heavy context-switching overhead, reducing throughput by over sixty percent and spiking CPU consumption.</li>
+    <li><strong>[NAT Traversal](/blog/wireguard-nat-traversal-behind-cgnat-2026/) and Dynamic Relaying Mechanics:</strong> Peer discovery relies on STUN protocols to discover public reflective IP addresses and dynamic socket ports. Restrictive symmetric firewalls drop direct UDP connections, forcing traffic through fallback encrypted relay servers (DERP nodes).</li>
+    <li><strong>Zero-Trust Identity Integration:</strong> Modern control planes use OpenID Connect (OIDC) protocols to tie ephemeral WireGuard key pairs to corporate Single Sign-On identities. Security teams enforce centralized Access Control Lists (ACLs), multi-factor authentication (MFA), and automated key lifecycles.</li>
+  </ul>
+</article>
+
 ## Executive summary
 Selecting between managed and self-hosted WireGuard control planes represents one of the most consequential decisions in modern cloud network engineering. At its foundation, raw WireGuard provides an exceptionally fast, cryptographically opinionated virtual interface implemented directly inside the Linux kernel. However, vanilla WireGuard was designed as a static point-to-point tunneling mechanism. When an enterprise attempts to connect hundreds of dynamic edge devices, cloud servers, and employee laptops, configuration complexity grows exponentially. Managing static IP mappings and public key distribution across a full mesh network quickly becomes impossible without an automated control plane framework.
 
@@ -21,17 +32,6 @@ Managed WireGuard platforms, such as Tailscale or NetBird Cloud, eliminate this 
 Conversely, self-hosted control planes, such as Headscale, Netmaker, or NetBird Self-Hosted, grant complete sovereignty over network metadata, cryptographic keys, and access policy databases. By hosting the coordination engine on private infrastructure, organizations retain absolute control to satisfy strict regulatory standards like GDPR, HIPAA, and SOC 2 Type II. However, self-hosting shifts the full operational responsibility back to internal engineering teams, requiring them to manage database availability, control plane uptime, dynamic relay nodes, and identity proxy configurations.
 
 This architectural guide provides infrastructure architects, security teams, and DevOps engineers with the quantitative benchmarks, structural analysis, and deployment code necessary to evaluate both deployment models under real-world engineering constraints.
-
-<details class="tldr-box" open>
-<summary>Key takeaways</summary>
-<ul>
-<li><strong>Control Plane and Data Plane Decoupling:</strong> Managed and self-hosted platforms separate administrative policy management from network data transport. The control plane coordinates node registrations, identity checks, and public key maps out-of-band. The data plane transfers encrypted application payload traffic directly peer-to-peer between endpoints.</li>
-<li><strong>Metadata Privacy and Compliance Sovereignty:</strong> Managed SaaS providers never decrypt raw application data payloads during direct peer connections. SaaS vendors retain full visibility over control plane metadata, including hostnames, IP mapping tables, user identities, and connection logs. Self-hosted platforms keep all network topology maps, user identities, and access logs strictly inside private infrastructure boundaries.</li>
-<li><strong>Kernel Performance vs Userspace Overhead:</strong> Native Linux kernel-space execution (`wireguard.ko`) achieves up to nine gigabits per second throughput with minimal CPU utilization. Userspace drivers (`wireguard-go`) introduce heavy context-switching overhead, reducing throughput by over sixty percent and spiking CPU consumption.</li>
-<li><strong>[NAT Traversal](/blog/wireguard-nat-traversal-behind-cgnat-2026/) and Dynamic Relaying Mechanics:</strong> Peer discovery relies on STUN protocols to discover public reflective IP addresses and dynamic socket ports. Restrictive symmetric firewalls drop direct UDP connections, forcing traffic through fallback encrypted relay servers (DERP nodes).</li>
-<li><strong>Zero-Trust Identity Integration:</strong> Modern control planes use OpenID Connect (OIDC) protocols to tie ephemeral WireGuard key pairs to corporate Single Sign-On identities. Security teams enforce centralized Access Control Lists (ACLs), multi-factor authentication (MFA), and automated key lifecycles.</li>
-</ul>
-</details>
 
 ## Problem statement
 Legacy enterprise remote access solutions, such as traditional IPsec and OpenVPN deployments, suffer from structural limitations that fail to meet modern cloud-native connectivity requirements.
