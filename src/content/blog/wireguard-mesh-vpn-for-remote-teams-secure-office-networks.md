@@ -13,6 +13,8 @@ cover: '../../assets/images/wireguard_remote_mesh_vpn.png'
 
 > **Related Reading:** [WireGuard Mesh VPN Key Management & Rotation: 2026 Best Practices](/blog/wireguard-mesh-vpn-key-management-key-rotation-best-practices/)
 
+> **Related Reading:** [Remote Access VPN for Developers: Secure SSH, Git & Dev Environments with WireGuard](/blog/remote-access-vpn-for-developers-wireguard-ssh-git-dev-environments/)
+
 <article class="tldr-box">
   <h3>TL;DR</h3>
   <ul>
