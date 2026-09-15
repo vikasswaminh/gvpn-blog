@@ -9,7 +9,7 @@ const allPosts = await getPublishedPosts();
 // Helper to find a post by slug
 const getPost = (slug: string) => allPosts.find(p => p.slug === slug);
 
-const featured = getPost('remote-access-vpn-for-developers-wireguard-ssh-git-dev-environments');
+const featured = allPosts[0];
 
 let optimizedFeaturedCover;
 if (featured && featured.data.cover) {
@@ -54,7 +54,7 @@ const gridSlugs = [
   'sd-wan-alternatives-2026',
   'wireguard-site-to-site-vpn-how-it-works-2026'
 ];
-const gridPosts = gridSlugs.map(getPost).filter(Boolean);
+const gridPosts = gridSlugs.map(getPost).filter(Boolean).filter(p => p.slug !== featured?.slug);
 
 // Dynamically distribute based on exact tags to prevent SEO keywords from breaking categorization
 const strategyPosts = allPosts.filter(p => p.data.tags.some(tag => tag.toLowerCase() === 'strategy guide' || tag.toLowerCase() === 'protocol deep-dive'));
