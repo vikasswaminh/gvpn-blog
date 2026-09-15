@@ -1,6 +1,6 @@
 ---
 title: 'Agentless WireGuard Mesh VPN on Existing Routers'
-description: 'Deploy a WireGuard mesh VPN directly on existing TP-Link, MikroTik, or Ubiquiti routers without installing agents. Fast, CGNAT-native networking.'
+description: 'Agentless WireGuard mesh: Deploy a WireGuard mesh VPN directly on existing TP-Link, MikroTik, or Ubiquiti routers without installing agents. Fast, CGNAT-native networking.'
 pubDate: 2026-09-04
 updatedDate: 2026-09-04
 author: 'MeshWG editorial team'

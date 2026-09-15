@@ -1,6 +1,6 @@
 ---
-title: 'TP-Link WireGuard Site-to-Site VPN Setup Guide'
-description: 'Step-by-step guide to configuring a WireGuard site-to-site VPN on TP-Link routers. Bypass static IPs and complex IPsec configurations easily.'
+title: 'TP-Link site-to-site VPN: TP-Link WireGuard Site-to-Site VPN Setup Guide'
+description: 'TP-Link site-to-site VPN: Step-by-step guide to configuring a WireGuard site-to-site VPN on TP-Link routers. Bypass static IPs and complex IPsec configurations easily.'
 pubDate: 2026-05-16
 updatedDate: 2026-05-16
 author: 'MeshWG editorial team'

@@ -1,6 +1,6 @@
 ---
 title: 'Branch Office VPN Guide for SMBs (2026)'
-description: 'A 2026 rollout playbook for setting up a branch office VPN. Compare legacy hardware to modern WireGuard networks for SMB multi-site connectivity.'
+description: 'Branch office VPN: A 2026 rollout playbook for setting up a branch office VPN. Compare legacy hardware to modern WireGuard networks for SMB multi-site connectivity.'
 pubDate: 2026-05-16
 updatedDate: 2026-05-16
 author: 'MeshWG editorial team'

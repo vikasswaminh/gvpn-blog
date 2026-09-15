@@ -1,6 +1,6 @@
 ---
-title: 'How WireGuard Mesh Control Planes Manage Keys, Peers & Routes'
-description: 'A deep technical dive into how modern WireGuard mesh VPN control planes orchestrate public keys, peer discovery across CGNAT, and dynamic AllowedIPs routing tables at scale.'
+title: 'WireGuard mesh VPN control plane: How WireGuard Mesh Control Planes Manage Keys, Peers & Routes'
+description: 'WireGuard mesh VPN control plane: A deep technical dive into how modern WireGuard mesh VPN control planes orchestrate public keys, peer discovery across CGNAT, and dynamic AllowedIPs routing tables at scale.'
 pubDate: 2026-09-07
 updatedDate: 2026-09-07
 author: 'MeshWG Network Architecture Team'

@@ -1,6 +1,6 @@
 ---
-title: 'How to Set Up a WireGuard Mesh VPN (Full Guide)'
-description: 'A comprehensive guide on setting up a WireGuard mesh VPN. Compare manual configurations vs automated cloud control planes for scalable networks.'
+title: 'WireGuard mesh VPN: How to Set Up a WireGuard Mesh VPN (Full Guide)'
+description: 'WireGuard mesh VPN: A comprehensive guide on setting up a WireGuard mesh VPN. Compare manual configurations vs automated cloud control planes for scalable networks.'
 pubDate: 2026-09-04
 updatedDate: 2026-09-04
 author: 'MeshWG Engineering'
